@@ -1,0 +1,57 @@
+# Copyright (C) 2011 Simple Page Ordering
+# This file is distributed under the same license as the Simple Page Ordering package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Page Ordering 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-07-03 23:41-0500\n"
+"PO-Revision-Date: 2011-12-14 11:38+0100\n"
+"Last-Translator: Moriz <info@moriz.nl>\n"
+"Language-Team: 10up <jake@get10up.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+
+#: simple-page-ordering.php:57
+msgid ""
+"Items can only be repositioned within their current branch in the page tree / hierarchy (next to pages with the same parent).\n"
+"\n"
+"If you want to move this item into a different part of the page tree, use the Quick Edit feature to change the parent before continuing."
+msgstr ""
+"Items kunnen alleen verplaatst worden binnen hun huidige niveau (boven of onder pagina's met dezelfde hoofdpagina).\n"
+"\n"
+"Als u een pagina onder een andere hoofdpagina wilt plaatsen, kies dan eerst de functie Snel bewerken om een andere hoofdpagina te kiezen."
+
+#: simple-page-ordering.php:71
+msgid "Show all"
+msgstr "Toon alles"
+
+#: simple-page-ordering.php:76
+msgid "per page"
+msgstr "per pagina"
+
+#: simple-page-ordering.php:86
+msgid "Simple Page Ordering"
+msgstr "Simple Page Ordering"
+
+#: simple-page-ordering.php:86
+msgid "is a plug-in by"
+msgstr "is een plug-in door"
+
+#: simple-page-ordering.php:86
+msgid "that  allows you to order pages and other hierarchical post types with drag and drop."
+msgstr "welke het mogelijk maakt om pagina's en andere posttypes door drag and drop te verplaatsen."
+
+#: simple-page-ordering.php:87
+msgid "To reposition an item, simply drag and drop the row by \"clicking and holding\" it anywhere (outside of the links and form controls) and moving it to its new position."
+msgstr "Om een item te verplaatsen, gebruik eenvoudigweg drag en drop (slepen en loslaten) door klikken en vasthouden (buiten de links en knoppen) en het te verplaatsen naar de nieuwe positie."
+
+#: simple-page-ordering.php:88
+msgid "If you have a large number of pages, it may be helpful to adjust the new \"items per page\" filter located above the table and before the filter button."
+msgstr "Als er een groot aantal pagina's zijn, dan kan het handig zijn om het nieuwe Items per pagina filter bovenin de tabel en voor de filter knop aan te passen."
+
+#: simple-page-ordering.php:89
+msgid "To keep things relatively simple, the current version only allows you to reposition items within their current tree / hierarchy (next to pages with the same parent). If you want to move an item into or out of a different part of the page tree, use the \"quick edit\" feature to change the parent."
+msgstr "Om alles relatief eenvoudig te houden staat de huidige versie alleen toe om items binnen hun eigen niveau te verplaatsen. Als een item naar een andere hoofdpagina verplaatst moet worden, gebruik dan eerst de Snel bewerken functie om een andere hoofdpagina te kiezen."
+

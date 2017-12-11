@@ -1,0 +1,33 @@
+.wp-list-table .ui-sortable tr {
+	cursor: move;
+}
+
+.wp-list-table .spo-updating tr,
+.wp-list-table .ui-sortable tr.inline-editor {
+	cursor: default;
+}
+
+.wp-list-table .ui-sortable-placeholder {
+	outline: 1px dashed #bbb;
+	background: #F1F1F1;
+	visibility: visible !important;
+}
+.wp-list-table .ui-sortable-helper {
+	background-color: #fff;
+	outline: 1px solid #e1e1e1;
+}
+.spo-updating-row .check-column {
+	background: url('../../../wp-admin/images/spinner.gif') 10px 9px no-repeat;
+}
+@media print,
+(-o-min-device-pixel-ratio: 5/4),
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 120dpi) {
+	.spo-updating-row .check-column {
+		background-image: url('../../../wp-admin/images/spinner-2x.gif');
+		background-size: 20px 20px;
+	}
+}
+.spo-updating-row .check-column input {
+	visibility: hidden;
+}
