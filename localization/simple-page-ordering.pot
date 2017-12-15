@@ -1,0 +1,49 @@
+# Copyright (C) 2017 Jake Goldman, 10up
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple Page Ordering 2.2.4\n"
+"Report-Msgid-Bugs-To: "
+"https://wordpress.org/support/plugin/simple-page-ordering\n"
+"POT-Creation-Date: 2017-12-11 17:32:24+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n1.0.1\n"
+
+#: simple-page-ordering.php:99
+msgid ""
+"To reposition an item, simply drag and drop the row by \"clicking and "
+"holding\" it anywhere (outside of the links and form controls) and moving "
+"it to its new position."
+msgstr ""
+
+#: simple-page-ordering.php:289
+msgid "Sort by Order"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Order your pages and hierarchical post types using drag and drop on the "
+"built in page list. For further instructions, open the \"Help\" tab on the "
+"Pages screen."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Simple Page Ordering"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://10up.com/plugins/simple-page-ordering-wordpress/"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jake Goldman, 10up"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://10up.com"
+msgstr ""
