@@ -8,8 +8,7 @@ module.exports = function(grunt) {
 					domainPath: 'localization/',
 					mainFile: 'simple-page-ordering.php',
 					type: 'wp-plugin',
-					updateTimestamp: false,
-					updatePoFiles: true
+					updateTimestamp: false
 				}
 			}
 		},
