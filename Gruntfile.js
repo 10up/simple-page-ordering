@@ -13,23 +13,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-		/**
-		 * Clean existing files
-		 */
-		clean : {
-			styles : {
-				src : [
-					'assets/css/*'
-				]
-			},
-			scripts : {
-				src : [
-					'assets/js/*',
-					'!assets/js/src'
-				]
-			}
-		},
-
 		sass: {
 			dist: {
 				options: {
@@ -59,7 +42,6 @@ module.exports = function(grunt) {
 
 	});
 
-	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-sass' );
 	grunt.loadNpmTasks( 'grunt-autoprefixer' );
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
