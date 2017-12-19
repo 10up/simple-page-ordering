@@ -13,6 +13,35 @@ module.exports = function(grunt) {
 			}
 		},
 
+		/**
+		 * Clean existing files
+		 */
+		clean : {
+			styles : {
+				src : [
+					'assets/css/*'
+				]
+			},
+			scripts : {
+				src : [
+					'assets/js/*',
+					'!assets/js/src'
+				]
+			}
+		},
+
+		sass: {
+			dist: {
+				options: {
+					precision: 2,
+					sourceMap: true
+				},
+				files: {
+					'assets/css/simple-page-ordering.css': 'assets/sass/simple-page-ordering.scss'
+				}
+			}
+		},
+
 		uglify: {
 			js: {
 				files: {
@@ -30,10 +59,13 @@ module.exports = function(grunt) {
 
 	});
 
+	grunt.loadNpmTasks( 'grunt-contrib-clean' );
+	grunt.loadNpmTasks( 'grunt-sass' );
+	grunt.loadNpmTasks( 'grunt-autoprefixer' );
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 
 	grunt.registerTask( 'i18n', ['makepot'] );
-	grunt.registerTask( 'default', ['uglify:js'] );
+	grunt.registerTask( 'default', [ 'sass','uglify:js'] );
 };
