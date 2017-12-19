@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 					sourceMap: true
 				},
 				files: {
-					'assets/css/simple-page-ordering.css': 'assets/css/sass/simple-page-ordering.scss'
+					'assets/css/simple-page-ordering.css': 'assets/css/scss/simple-page-ordering.scss'
 				}
 			}
 		},
