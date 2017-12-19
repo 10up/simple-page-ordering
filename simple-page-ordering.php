@@ -34,9 +34,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 		/**
 		 * An empty constructor
+		 *
+		 * Purposely do nothing here
 		 */
-		public function __construct() { /* Purposely do nothing here */
-		}
+		public function __construct() {}
 
 		/**
 		 * Handles registering hooks that initialize this plugin.
@@ -60,7 +61,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		public static function load_edit_screen() {
 			$screen    = get_current_screen();
 			$post_type = $screen->post_type;
-	
+
 			// is post type sortable?
 			$sortable = ( post_type_supports( $post_type, 'page-attributes' ) || is_post_type_hierarchical( $post_type ) );        // check permission
 			if ( ! $sortable = apply_filters( 'simple_page_ordering_is_sortable', $sortable, $post_type ) ) {
@@ -74,7 +75,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			add_filter( 'views_' . $screen->id, array(
 				__CLASS__,
-				'sort_by_order_link'
+				'sort_by_order_link',
 			) );        // add view by menu order to views
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
@@ -85,7 +86,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function wp() {
 			$orderby = get_query_var( 'orderby' );
-			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && $orderby['menu_order'] == 'ASC' ) ) {
+			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
 				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
 				wp_enqueue_style( 'simple-page-ordering', plugins_url( 'simple-page-ordering.css', __FILE__ ) );
@@ -145,7 +146,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			} elseif ( $next_post_parent !== $parent_id ) {  // otherwise, if the next post's parent isn't the same as our parent, we need to study
 				$prev_post_parent = $previd ? wp_get_post_parent_id( $previd ) : false;
 				if ( $prev_post_parent !== $parent_id ) {    // if the previous post is not our parent now, make it so!
-					$parent_id = ( $prev_post_parent !== false ) ? $prev_post_parent : $next_post_parent;
+					$parent_id = ( false !== $prev_post_parent ) ? $prev_post_parent : $next_post_parent;
 				}
 			}
 			// if the next post's parent isn't our parent, it might as well be false (irrelevant to our query)
@@ -169,7 +170,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
-				'orderby'                => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+				'orderby'                => array(
+					'menu_order' => 'ASC',
+					'title'      => 'ASC',
+				),
 				'post__not_in'           => $excluded,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
@@ -228,13 +232,13 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					wp_update_post( array(
 						'ID'          => $post->ID,
 						'menu_order'  => $start,
-						'post_parent' => $parent_id
+						'post_parent' => $parent_id,
 					) );
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
 						'menu_order'  => $start,
 						'post_parent' => $parent_id,
-						'depth'       => count( $ancestors )
+						'depth'       => count( $ancestors ),
 					);
 					$start ++;
 				}
@@ -292,7 +296,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
 				$query_string = add_query_arg( 'order', 'asc', $query_string );
 			}
-			$views['byorder'] = sprintf( '<a href="%s" class="%s">%s</a>', $query_string, $class, __( "Sort by Order", 'simple-page-ordering' ) );
+			$views['byorder'] = sprintf( '<a href="%s" class="%s">%s</a>', $query_string, $class, __( 'Sort by Order', 'simple-page-ordering' ) );
 
 			return $views;
 		}
