@@ -281,12 +281,12 @@ class Simple_Page_Ordering {
 	 */
 	public static function sort_by_order_link( $views ) {
 		$class = ( get_query_var('orderby') == 'menu_order title' ) ? 'current' : '';
-		$query_string = esc_url( remove_query_arg( array( 'orderby', 'order' ) ) );
+		$query_string = remove_query_arg( array( 'orderby', 'order' ) );
 		if ( ! is_post_type_hierarchical( get_post_type() ) ) {
 			$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
 			$query_string = add_query_arg( 'order', 'asc', $query_string );
 		}
-		$views['byorder'] = sprintf('<a href="%s" class="%s">%s</a>', $query_string, $class, __("Sort by Order", 'simple-page-ordering'));
+		$views['byorder'] = sprintf('<a href="%s" class="%s">%s</a>', esc_url( $query_string ), $class, __("Sort by Order", 'simple-page-ordering'));
 			
 		return $views;
 	}
