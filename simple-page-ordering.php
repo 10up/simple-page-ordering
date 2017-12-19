@@ -285,9 +285,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Append a sort by order link to the post actions
 		 *
-		 * @param string $views
+		 * @param array $views
 		 *
-		 * @return string
+		 * @return array
 		 */
 		public static function sort_by_order_link( $views ) {
 			$class        = ( get_query_var( 'orderby' ) == 'menu_order title' ) ? 'current' : '';
