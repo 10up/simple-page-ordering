@@ -1,0 +1,15 @@
+{
+  "name": "simple-page-ordering",
+  "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
+  "version": "0.0.1",
+  "author": "10up <sales@10up.com",
+  "license": "GPLv2 ( or later )",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-uglify": "^3.2.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^2.0.0",
+    "grunt-wp-i18n": "^1.0.1"
+  }
+}

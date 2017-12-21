@@ -1,3 +1,42 @@
+.wp-list-table {
+	.ui-sortable {
+		tr {
+			cursor: move;
+			&.inline-editor {
+				cursor: default;
+			}
+		}
+	}
+
+	.spo-updating {
+		tr {
+			cursor: default;
+		}
+	}
+
+	.ui-sortable-placeholder {
+		outline: 1px dashed #bbb;
+		background: #F1F1F1;
+		visibility: visible !important;
+	}
+
+	.ui-sortable-helper {
+		background-color: #fff;
+		outline: 1px solid #e1e1e1;
+	}
+}
+
+.spo-updating-row {
+	.check-column {
+		background: url('../../../wp-admin/images/spinner.gif') 10px 9px no-repeat;
+
+		input {
+			visibility: hidden;
+		}
+	}
+}
+
+/**
 .wp-list-table .ui-sortable tr {
 	cursor: move;
 }
@@ -19,6 +58,7 @@
 .spo-updating-row .check-column {
 	background: url('../../../wp-admin/images/spinner.gif') 10px 9px no-repeat;
 }
+**/
 @media print,
 (-o-min-device-pixel-ratio: 5/4),
 (-webkit-min-device-pixel-ratio: 1.25),
@@ -28,6 +68,8 @@
 		background-size: 20px 20px;
 	}
 }
+/**
 .spo-updating-row .check-column input {
 	visibility: hidden;
 }
+**/
