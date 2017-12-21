@@ -278,7 +278,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			$return_data->new_pos = $new_pos;
-
 			die( json_encode( $return_data ) );
 		}
 
