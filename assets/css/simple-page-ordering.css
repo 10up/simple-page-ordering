@@ -16,7 +16,7 @@
   outline: 1px solid #e1e1e1; }
 
 .spo-updating-row .check-column {
-  background: url("../../../wp-admin/images/spinner.gif") 10px 9px no-repeat; }
+  background: url("../../../../../../wp-admin/images/spinner.gif") 10px 9px no-repeat; }
   .spo-updating-row .check-column input {
     visibility: hidden; }
 

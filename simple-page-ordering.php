@@ -89,7 +89,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
 				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
-				wp_enqueue_style( 'simple-page-ordering', plugins_url( 'simple-page-ordering.css', __FILE__ ) );
+				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ) );
 			}
 		}
 
@@ -278,7 +278,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			$return_data->new_pos = $new_pos;
-
 			die( json_encode( $return_data ) );
 		}
 
