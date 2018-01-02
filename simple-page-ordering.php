@@ -131,7 +131,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) $_POST['excluded'], 'intval' );
+			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
 
 			$new_pos     = array(); // store new positions for ajax
 			$return_data = new stdClass;
