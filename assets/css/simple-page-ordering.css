@@ -22,7 +22,7 @@
 
 @media print, (-o-min-device-pixel-ratio: 5 / 4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
   .spo-updating-row .check-column {
-    background-image: url("../../../wp-admin/images/spinner-2x.gif");
+    background-image: url("../../../../../../wp-admin/images/spinner-2x.gif");
     background-size: 20px 20px; } }
 
 /*# sourceMappingURL=simple-page-ordering.css.map */

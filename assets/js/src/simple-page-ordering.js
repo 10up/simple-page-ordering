@@ -54,7 +54,7 @@ function update_simple_ordering_callback(response) {
 			previd: changes.next['previd'],
 			nextid: changes.next['nextid'],
 			start: changes.next['start'],
-			excluded: changes.next['excluded']
+			excluded: JSON.stringify( changes.next['excluded'] )
 		}, update_simple_ordering_callback );
 	} else {
 		jQuery('.spo-updating-row').removeClass('spo-updating-row');
