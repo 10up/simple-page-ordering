@@ -276,7 +276,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					)
 				);
 
-				if ( ! $children->have_posts() ) {
+				if ( $children->have_posts() ) {
 					die( 'children' );
 				}
 			}
