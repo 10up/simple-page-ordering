@@ -16,13 +16,11 @@
   outline: 1px solid #e1e1e1; }
 
 .spo-updating-row .check-column {
-  background: url("../../../../../../wp-admin/images/spinner.gif") 10px 9px no-repeat; }
+  display: table-cell;
+  float: none;
+  margin: 0;
+  background-position: 9px 9px; }
   .spo-updating-row .check-column input {
     visibility: hidden; }
-
-@media print, (-o-min-device-pixel-ratio: 5 / 4), (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
-  .spo-updating-row .check-column {
-    background-image: url("../../../wp-admin/images/spinner-2x.gif");
-    background-size: 20px 20px; } }
 
 /*# sourceMappingURL=simple-page-ordering.css.map */
