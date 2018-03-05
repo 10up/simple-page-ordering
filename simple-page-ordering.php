@@ -262,17 +262,21 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			if ( ! $return_data->next ) {
 				// if the moved post has children, we need to refresh the page (unless we're continuing)
-				$children = get_posts( array(
-					'numberposts'            => 1,
-					'post_type'              => $post->post_type,
-					'post_status'            => $post_stati,
-					'post_parent'            => $post->ID,
-					'fields'                 => 'ids',
-					'update_post_term_cache' => false,
-					'update_post_meta_cache' => false,
-				) );
+				$children = new WP_Query(
+					array(
+						'posts_per_page'         => 1,
+						'post_type'              => $post->post_type,
+						'post_status'            => $post_stati,
+						'post_parent'            => $post->ID,
+						'fields'                 => 'ids',
+						'update_post_term_cache' => false,
+						'update_post_meta_cache' => false,
+						'ignore_sticky'          => true,
+						'no_found_rows'          => true,
+					)
+				);
 
-				if ( ! empty( $children ) ) {
+				if ( $children->have_posts() ) {
 					die( 'children' );
 				}
 			}
