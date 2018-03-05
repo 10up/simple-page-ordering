@@ -83,6 +83,7 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 * Use `WP_Query` instead of `get_posts()` for better performance
 * Use WordPress core's spinner class
 * Add Grunt-based build process with Sass
+* Remove bundled translations in favor of WordPress.org language packs
 * Fix some PHPDoc and coding standards to align with 10up's Engineering Best Practices
 
 = 2.2.4 =
