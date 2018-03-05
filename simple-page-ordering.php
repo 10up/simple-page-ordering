@@ -8,7 +8,6 @@ Author: Jake Goldman, 10up
 Author URI: http://10up.com
 License: GPLv2 or later
 Text Domain: simple-page-ordering
-Domain Path: /localization/
 */
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
