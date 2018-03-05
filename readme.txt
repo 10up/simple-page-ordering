@@ -20,6 +20,10 @@ Integrated help is included: just click the "help" tab at the top right of the s
 
 Please note that the plug-in is not compatible with Internet Explorer 7 and earlier, due to limitations within those browsers.
 
+=== Contributing ===
+
+We'd love to have you join in on development over on [GitHub](https://github.com/10up/simple-page-ordering).
+
 
 == Installation ==
 
