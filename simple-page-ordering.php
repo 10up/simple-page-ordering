@@ -321,9 +321,3 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 	Simple_Page_Ordering::get_instance();
 
 endif;
-
-// dummy, to be used by poedit
-if ( false ) {
-	// Plugin description
-	__( 'Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.', 'simple-page-ordering' );
-}
