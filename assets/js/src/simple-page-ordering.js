@@ -1,6 +1,5 @@
 function update_simple_ordering_callback(response) {
 	if ( 'children' === response ) {
-		console.log( 'resposne' );
 		window.location.reload();
 		return;
 	}
