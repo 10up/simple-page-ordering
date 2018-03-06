@@ -3,12 +3,11 @@
 Plugin Name: Simple Page Ordering
 Plugin URI: http://10up.com/plugins/simple-page-ordering-wordpress/
 Description: Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
-Version: 2.2.4
+Version: 2.3
 Author: Jake Goldman, 10up
 Author URI: http://10up.com
 License: GPLv2 or later
 Text Domain: simple-page-ordering
-Domain Path: /localization/
 */
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
@@ -262,17 +261,21 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			if ( ! $return_data->next ) {
 				// if the moved post has children, we need to refresh the page (unless we're continuing)
-				$children = get_posts( array(
-					'numberposts'            => 1,
-					'post_type'              => $post->post_type,
-					'post_status'            => $post_stati,
-					'post_parent'            => $post->ID,
-					'fields'                 => 'ids',
-					'update_post_term_cache' => false,
-					'update_post_meta_cache' => false,
-				) );
+				$children = new WP_Query(
+					array(
+						'posts_per_page'         => 1,
+						'post_type'              => $post->post_type,
+						'post_status'            => $post_stati,
+						'post_parent'            => $post->ID,
+						'fields'                 => 'ids',
+						'update_post_term_cache' => false,
+						'update_post_meta_cache' => false,
+						'ignore_sticky'          => true,
+						'no_found_rows'          => true,
+					)
+				);
 
-				if ( ! empty( $children ) ) {
+				if ( $children->have_posts() ) {
 					die( 'children' );
 				}
 			}
@@ -318,9 +321,3 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 	Simple_Page_Ordering::get_instance();
 
 endif;
-
-// dummy, to be used by poedit
-if ( false ) {
-	// Plugin description
-	__( 'Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.', 'simple-page-ordering' );
-}
