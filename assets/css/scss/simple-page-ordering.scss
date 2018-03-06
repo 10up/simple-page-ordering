@@ -1,0 +1,40 @@
+.wp-list-table {
+	.ui-sortable {
+		tr {
+			cursor: move;
+			&.inline-editor {
+				cursor: default;
+			}
+		}
+	}
+
+	.spo-updating {
+		tr {
+			cursor: default;
+		}
+	}
+
+	.ui-sortable-placeholder {
+		outline: 1px dashed #bbb;
+		background: #F1F1F1;
+		visibility: visible !important;
+	}
+
+	.ui-sortable-helper {
+		background-color: #fff;
+		outline: 1px solid #e1e1e1;
+	}
+}
+
+.spo-updating-row {
+	.check-column {
+		display: table-cell; // reset from core .spinner
+		float: none; // reset from core .spinner
+		margin: 0; // reset from core .spinner
+		background-position: 9px 9px;
+
+		input {
+			visibility: hidden;
+		}
+	}
+}

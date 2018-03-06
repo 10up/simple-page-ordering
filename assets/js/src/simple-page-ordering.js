@@ -54,10 +54,10 @@ function update_simple_ordering_callback(response) {
 			previd: changes.next['previd'],
 			nextid: changes.next['nextid'],
 			start: changes.next['start'],
-			excluded: changes.next['excluded']
+			excluded: JSON.stringify( changes.next['excluded'] )
 		}, update_simple_ordering_callback );
 	} else {
-		jQuery('.spo-updating-row').removeClass('spo-updating-row');
+		jQuery('.spo-updating-row').removeClass('spo-updating-row').find('.check-column').removeClass('spinner is-active');
 		sortable_post_table.removeClass('spo-updating').sortable('enable');
 	}
 }
@@ -93,6 +93,7 @@ sortable_post_table.sortable({
 	update: function(e, ui) {
 		sortable_post_table.sortable('disable').addClass('spo-updating');
 		ui.item.addClass('spo-updating-row');
+		ui.item.find('.check-column').addClass('spinner is-active');
 
 		var postid = ui.item[0].id.substr(5); // post id
 
