@@ -77,7 +77,7 @@ sortable_post_table.sortable({
 			inlineEditPost.revert();
 		}
 		ui.placeholder.height(ui.item.height());
-		ui.placeholder.html(ui.item.html()).find('> th, > td').html('');
+		ui.placeholder.empty();
 	},
 	helper: function(e, ui) {
 		var children = ui.children();
