@@ -1,0 +1,26 @@
+.wp-list-table .ui-sortable tr {
+  cursor: move; }
+  .wp-list-table .ui-sortable tr.inline-editor {
+    cursor: default; }
+
+.wp-list-table .spo-updating tr {
+  cursor: default; }
+
+.wp-list-table .ui-sortable-placeholder {
+  outline: 1px dashed #bbb;
+  background: #F1F1F1;
+  visibility: visible !important; }
+
+.wp-list-table .ui-sortable-helper {
+  background-color: #fff;
+  outline: 1px solid #e1e1e1; }
+
+.spo-updating-row .check-column {
+  display: table-cell;
+  float: none;
+  margin: 0;
+  background-position: 9px 9px; }
+  .spo-updating-row .check-column input {
+    visibility: hidden; }
+
+/*# sourceMappingURL=simple-page-ordering.css.map */
