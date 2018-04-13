@@ -163,99 +163,136 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'show_in_admin_all_list' => true,
 			) );
 
-			$siblings_query = array(
-				'depth'                  => 1,
-				'posts_per_page'         => $max_sortable_posts,
-				'post_type'              => $post->post_type,
-				'post_status'            => $post_stati,
-				'post_parent'            => $parent_id,
-				'orderby'                => array(
-					'menu_order' => 'ASC',
-					'title'      => 'ASC',
-				),
-				'post__not_in'           => $excluded,
-				'update_post_term_cache' => false,
-				'update_post_meta_cache' => false,
-				'suppress_filters'       => true,
-				'ignore_sticky_posts'    => true,
-			);
-			if ( version_compare( $wp_version, '4.0', '<' ) ) {
-				$siblings_query['orderby'] = 'menu_order title';
-				$siblings_query['order']   = 'ASC';
+//			$siblings_query = array(
+//				'depth'                  => 1,
+//				'posts_per_page'         => $max_sortable_posts,
+//				'post_type'              => $post->post_type,
+//				'post_status'            => $post_stati,
+//				'post_parent'            => $parent_id,
+//				'orderby'                => array(
+//					'menu_order' => 'ASC',
+//					'title'      => 'ASC',
+//				),
+//				'post__not_in'           => $excluded,
+//				'update_post_term_cache' => false,
+//				'update_post_meta_cache' => false,
+//				'suppress_filters'       => true,
+//				'ignore_sticky_posts'    => true,
+//			);
+//			if ( version_compare( $wp_version, '4.0', '<' ) ) {
+//				$siblings_query['orderby'] = 'menu_order title';
+//				$siblings_query['order']   = 'ASC';
+//			}
+//			$siblings = new WP_Query( $siblings_query ); // fetch all the siblings (relative ordering)
+//
+//			// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
+//			remove_action( 'pre_post_update', 'wp_save_post_revision' );
+//
+//			foreach ( $siblings->posts as $sibling ) :
+//
+//				// don't handle the actual post
+//				if ( $sibling->ID === $post->ID ) {
+//					continue;
+//				}
+//
+//				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
+//				if ( $nextid === $sibling->ID ) {
+//					wp_update_post( array(
+//						'ID'          => $post->ID,
+//						'menu_order'  => $start,
+//						'post_parent' => $parent_id,
+//					) );
+//					$ancestors            = get_post_ancestors( $post->ID );
+//					$new_pos[ $post->ID ] = array(
+//						'menu_order'  => $start,
+//						'post_parent' => $parent_id,
+//						'depth'       => count( $ancestors ),
+//					);
+//					$start ++;
+//				}
+//
+//				// if repositioned post has been set, and new items are already in the right order, we can stop
+//				if ( isset( $new_pos[ $post->ID ] ) && $sibling->menu_order >= $start ) {
+//					$return_data->next = false;
+//					break;
+//				}
+//
+//				// set the menu order of the current sibling and increment the menu order
+//				if ( $sibling->menu_order != $start ) {
+//					wp_update_post( array(
+//						'ID'         => $sibling->ID,
+//						'menu_order' => $start,
+//					) );
+//				}
+//				$new_pos[ $sibling->ID ] = $start;
+//				$start ++;
+//
+//				if ( ! $nextid && $previd == $sibling->ID ) {
+//					wp_update_post( array(
+//						'ID'          => $post->ID,
+//						'menu_order'  => $start,
+//						'post_parent' => $parent_id,
+//					) );
+//					$ancestors            = get_post_ancestors( $post->ID );
+//					$new_pos[ $post->ID ] = array(
+//						'menu_order'  => $start,
+//						'post_parent' => $parent_id,
+//						'depth'       => count( $ancestors ),
+//					);
+//					$start ++;
+//				}
+//
+//			endforeach;
+//
+//			// max per request
+//			if ( ! isset( $return_data->next ) && $siblings->max_num_pages > 1 ) {
+//				$return_data->next = array(
+//					'id'       => $post->ID,
+//					'previd'   => $previd,
+//					'nextid'   => $nextid,
+//					'start'    => $start,
+//					'excluded' => array_merge( array_keys( $new_pos ), $excluded ),
+//				);
+//			} else {
+//				$return_data->next = false;
+//			}
+
+			if ($previd) {
+				$start = $previd;
+				$increment = "+ 1";
 			}
-			$siblings = new WP_Query( $siblings_query ); // fetch all the siblings (relative ordering)
-
-			// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
-			remove_action( 'pre_post_update', 'wp_save_post_revision' );
-
-			foreach ( $siblings->posts as $sibling ) :
-
-				// don't handle the actual post
-				if ( $sibling->ID === $post->ID ) {
-					continue;
-				}
-
-				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
-				if ( $nextid === $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
-					$ancestors            = get_post_ancestors( $post->ID );
-					$new_pos[ $post->ID ] = array(
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-						'depth'       => count( $ancestors ),
-					);
-					$start ++;
-				}
-
-				// if repositioned post has been set, and new items are already in the right order, we can stop
-				if ( isset( $new_pos[ $post->ID ] ) && $sibling->menu_order >= $start ) {
-					$return_data->next = false;
-					break;
-				}
-
-				// set the menu order of the current sibling and increment the menu order
-				if ( $sibling->menu_order != $start ) {
-					wp_update_post( array(
-						'ID'         => $sibling->ID,
-						'menu_order' => $start,
-					) );
-				}
-				$new_pos[ $sibling->ID ] = $start;
-				$start ++;
-
-				if ( ! $nextid && $previd == $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
-					$ancestors            = get_post_ancestors( $post->ID );
-					$new_pos[ $post->ID ] = array(
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-						'depth'       => count( $ancestors ),
-					);
-					$start ++;
-				}
-
-			endforeach;
-
-			// max per request
-			if ( ! isset( $return_data->next ) && $siblings->max_num_pages > 1 ) {
-				$return_data->next = array(
-					'id'       => $post->ID,
-					'previd'   => $previd,
-					'nextid'   => $nextid,
-					'start'    => $start,
-					'excluded' => array_merge( array_keys( $new_pos ), $excluded ),
-				);
-			} else {
-				$return_data->next = false;
+			elseif ($nextid) {
+				$start = $nextid;
+				$increment = "- 1";
 			}
+			else {
+				die(-3);
+			}
+
+			$excluded = array_combine($excluded, $excluded);
+			unset($excluded[ $post->ID ]);
+			$excluded = array_values( $excluded );
+
+			global $wpdb;
+			$stati = "'". implode("','", array_map('esc_sql', $post_stati)) . "'";
+			$excluded = implode(',', array_map('intval', $excluded));
+			if (!$excluded) $excluded = -1;
+			// make room
+			$query1 = $wpdb->prepare("UPDATE {$wpdb->posts} SET menu_order = menu_order * 2 WHERE post_type = %s AND post_status IN ($stati) AND post_parent = %d AND ID NOT IN ($excluded)", $post->post_type, $parent_id);
+			$wpdb->query($query1);
+
+			// move item
+			$query2 = $wpdb->prepare("UPDATE {$wpdb->posts} as a SET a.menu_order = (SELECT c.newOrder FROM ( SELECT (b.menu_order $increment) as newOrder FROM {$wpdb->posts} as b WHERE b.ID = %d LIMIT 1 ) as c ) WHERE a.ID = %d;", $start, $post->ID);
+			$wpdb->query($query2);
+
+			// renumber
+			$query3 = $wpdb->prepare("SET @var_name = %d", 0);
+			$query4 = $wpdb->prepare("UPDATE {$wpdb->posts} SET menu_order = (@var_name := @var_name +1) WHERE post_type = %s AND post_status IN ($stati) AND post_parent = %d AND ID NOT IN ($excluded) ORDER BY menu_order ASC", $post->post_type, $parent_id);
+			$wpdb->query($query3);
+			$wpdb->query($query4);
+
+			// get new position number
+			$new_pos = $wpdb->get_var($wpdb->prepare("SELECT menu_order FROM {$wpdb->posts} WHERE ID = %d", $post->ID));
 
 			do_action( 'simple_page_ordering_ordered_posts', $post, $new_pos );
 
