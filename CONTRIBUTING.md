@@ -55,7 +55,7 @@ New releases are targeted based on number and severity of changes along with hum
 
 ### Roadmap
 
-We are currently working toward [version 2.3.1](https://github.com/10up/simple-page-ordering/milestone/2) to include some lingering bug fixes with a targeted release date of April 10, 2018.
+Simple Page Ordering is considered a feature-complete plugin, with a handful of potential enhancements captured as [issues](https://github.com/10up/simple-page-ordering/issues). Of note are the ability to cancel a dragging operation and explorations of how to further mitigate time-out issues when reordering many pages. These do not currently have a targeted release date.
 
 ### Testing
 

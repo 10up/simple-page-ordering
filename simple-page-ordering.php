@@ -3,7 +3,7 @@
 Plugin Name: Simple Page Ordering
 Plugin URI: http://10up.com/plugins/simple-page-ordering-wordpress/
 Description: Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
-Version: 2.3
+Version: 2.3.1
 Author: Jake Goldman, 10up
 Author URI: http://10up.com
 License: GPLv2 or later
