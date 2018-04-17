@@ -77,7 +77,7 @@ sortable_post_table.sortable({
 			var key = e.key || e.keyCode;
 			if ( 'Escape' === key || 'Esc' === key || 27 === key ) {
 				sortable_post_table.sortable( 'option', 'preventUpdate', true );
-				sortable_post_table.sortable("cancel");
+				sortable_post_table.sortable( 'cancel' );
 			}
 		});
 	},
@@ -99,7 +99,6 @@ sortable_post_table.sortable({
 	stop: function(e, ui) {
 		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
 			sortable_post_table.sortable( 'option', 'preventUpdate', false );
-
 		}
 		// remove fixed widths
 		ui.item.children().css('width','');
