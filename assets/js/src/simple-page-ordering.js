@@ -100,6 +100,7 @@ sortable_post_table.sortable({
 		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
 			sortable_post_table.sortable( 'option', 'preventUpdate', false );
 		}
+
 		// remove fixed widths
 		ui.item.children().css('width','');
 	},
@@ -108,6 +109,7 @@ sortable_post_table.sortable({
 			sortable_post_table.sortable( 'option', 'preventUpdate', false );
 			return;
 		}
+
 		sortable_post_table.sortable('disable').addClass('spo-updating');
 		ui.item.addClass('spo-updating-row');
 		ui.item.find('.check-column').addClass('spinner is-active');
