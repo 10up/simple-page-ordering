@@ -68,7 +68,7 @@ sortable_post_table.sortable({
 	cursor: 'move',
 	axis: 'y',
 	containment: 'table.widefat',
-	cancel:	'.inline-edit-row',
+	cancel:	'input, textarea, button, select, option, .inline-edit-row',
 	distance: 2,
 	opacity: .8,
 	tolerance: 'pointer',
