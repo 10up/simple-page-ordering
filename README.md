@@ -65,6 +65,10 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 
 ## Changelog
 
+### 2.3.2
+* Enhancement: Allow cancellation of drag operation by pressing escape key
+* Bug fix: Allow form input elements added to a row by plugins to be interacted with
+
 ### 2.3.1
 * Bug fix: Prevent rows with hidden columns from jumping around while dragging
 
