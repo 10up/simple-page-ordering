@@ -188,6 +188,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
 			remove_action( 'pre_post_update', 'wp_save_post_revision' );
 
+			// if Jetpack installed, disable the markdown functionality (prevents the markdown getting converted back to HTML)
+			if ( class_exists( 'WPCom_Markdown' ) ) {
+				$markdown = WPCom_Markdown::get_instance();
+				$markdown->unload_markdown_for_posts();
+			}
+
 			foreach ( $siblings->posts as $sibling ) :
 
 				// don't handle the actual post
