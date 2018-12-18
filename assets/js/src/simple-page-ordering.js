@@ -68,15 +68,25 @@ sortable_post_table.sortable({
 	cursor: 'move',
 	axis: 'y',
 	containment: 'table.widefat',
-	cancel:	'.inline-edit-row',
+	cancel:	'input, textarea, button, select, option, .inline-edit-row',
 	distance: 2,
 	opacity: .8,
 	tolerance: 'pointer',
+	create: function() {
+		jQuery( document ).keydown(function(e) {
+			var key = e.key || e.keyCode;
+			if ( 'Escape' === key || 'Esc' === key || 27 === key ) {
+				sortable_post_table.sortable( 'option', 'preventUpdate', true );
+				sortable_post_table.sortable( 'cancel' );
+			}
+		});
+	},
 	start: function(e, ui){
 		if ( typeof(inlineEditPost) !== 'undefined' ) {
 			inlineEditPost.revert();
 		}
 		ui.placeholder.height(ui.item.height());
+		ui.placeholder.empty();
 	},
 	helper: function(e, ui) {
 		var children = ui.children();
@@ -87,10 +97,19 @@ sortable_post_table.sortable({
 		return ui;
 	},
 	stop: function(e, ui) {
+		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
+			sortable_post_table.sortable( 'option', 'preventUpdate', false );
+		}
+
 		// remove fixed widths
 		ui.item.children().css('width','');
 	},
 	update: function(e, ui) {
+		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
+			sortable_post_table.sortable( 'option', 'preventUpdate', false );
+			return;
+		}
+
 		sortable_post_table.sortable('disable').addClass('spo-updating');
 		ui.item.addClass('spo-updating-row');
 		ui.item.find('.check-column').addClass('spinner is-active');
