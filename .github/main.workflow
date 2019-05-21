@@ -26,7 +26,7 @@ action "Filters for GitHub Actions" {
 }
 
 action "Plugin Asset Update" {
-  uses = "10up/actions-wordpress/dotorg-plugin-asset-update@master"
+  uses = "10up/actions-wordpress/dotorg-plugin-asset-update@develop"
   needs = ["Filters for GitHub Actions"]
   secrets = ["SVN_USERNAME", "SVN_PASSWORD"]
 }
