@@ -2,7 +2,8 @@
 
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.2%20tested-success.svg)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level)
+ ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.2%20tested-success.svg)
 
 Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list. 
 
@@ -66,6 +67,10 @@ Where 5 is the number of items to batch on each request (the default is 50). Not
 ### What happened to the drop down box that let me change the number of items on each page in the admin??
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
+
+## Support Level
+
+**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
 
 ## Changelog
 
