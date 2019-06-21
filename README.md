@@ -1,6 +1,7 @@
 # Simple Page Ordering
 
-> Order your pages and other hierarchical post types with simple drag and drop right from the standard page list. 
+> Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
+
 ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.2%20tested-success.svg)
 
 Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list. 
