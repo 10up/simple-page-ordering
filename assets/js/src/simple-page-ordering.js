@@ -54,6 +54,8 @@ function update_simple_ordering_callback(response) {
 			previd: changes.next['previd'],
 			nextid: changes.next['nextid'],
 			start: changes.next['start'],
+			_wpnonce: simple_page_ordering_localized_data._wpnonce,
+			screen_id: simple_page_ordering_localized_data.screen_id,
 			excluded: JSON.stringify( changes.next['excluded'] )
 		}, update_simple_ordering_callback );
 	} else {
@@ -129,7 +131,7 @@ sortable_post_table.sortable({
 		}
 
 		// go do the sorting stuff via ajax
-		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid }, update_simple_ordering_callback );
+		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid, _wpnonce: simple_page_ordering_localized_data._wpnonce, screen_id: simple_page_ordering_localized_data.screen_id, }, update_simple_ordering_callback );
 
 		// fix cell colors
 		var table_rows = document.querySelectorAll('tr.iedit'),

@@ -85,9 +85,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function wp() {
 			$orderby = get_query_var( 'orderby' );
+			$screen  = get_current_screen();
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
 				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
+				wp_localize_script( 'simple-page-ordering', 'simple_page_ordering_data', array(
+					'_wpnonce'  => wp_create_nonce( 'simple-page-ordering_' . $screen->id ),
+					'screen_id' => (string) $screen->id,
+				) );
 				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ) );
 			}
 		}
@@ -118,6 +123,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// does user have the right to manage these post objects?
 			if ( ! self::check_edit_others_caps( $post->post_type ) ) {
 				die( - 1 );
+			}
+
+			// do we have a nonce that verifies?
+			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
+				// no nonce to verify...
+				die( -1 );
+			} else {
+				check_admin_referer( 'simple-page-ordering_' . sanitize_text_field( wp_unslash( $_POST['screen_id'] ) ) );
 			}
 
 			// badly written plug-in hooks for save post can break things
