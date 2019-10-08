@@ -199,7 +199,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$siblings = new WP_Query( $siblings_query ); // fetch all the siblings (relative ordering)
 
 			// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
-			remove_action( 'pre_post_update', 'wp_save_post_revision' );
+			remove_action( 'post_updated', 'wp_save_post_revision' );
 
 			foreach ( $siblings->posts as $sibling ) :
 
