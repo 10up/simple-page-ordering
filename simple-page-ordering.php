@@ -128,7 +128,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// do we have a nonce that verifies?
 			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
 				// no nonce to verify...
-				die( - 1 );
+				die( -1 );
 			} else {
 				check_admin_referer( 'simple-page-ordering_' . sanitize_text_field( wp_unslash( $_POST['screen_id'] ) ) );
 			}
