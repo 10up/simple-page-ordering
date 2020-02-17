@@ -186,7 +186,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
 				),
-				'post__not_in'           => $excluded,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 				'suppress_filters'       => true,
@@ -205,6 +204,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// don't handle the actual post
 				if ( $sibling->ID === $post->ID ) {
+					continue;
+				}
+
+
+				if ( ! in_array( $post->ID, $excluded, true ) ) {
 					continue;
 				}
 
