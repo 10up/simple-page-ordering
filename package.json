@@ -5,11 +5,21 @@
   "author": "10up <sales@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
+    "@10up/eslint-config": "^1.0.9",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-uglify": "^3.2.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0",
     "grunt-wp-i18n": "^1.0.1"
+  },
+  "scripts": {
+    "lint": "eslint assets/js/src",
+    "lint-fix": "eslint assets/js/src --fix"
+  },
+  "eslintConfig": {
+    "extends": "@10up/eslint-config"
   }
 }
