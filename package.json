@@ -13,7 +13,9 @@
     "grunt-contrib-uglify": "^3.2.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0",
-    "grunt-wp-i18n": "^1.0.1"
+    "grunt-wp-i18n": "^1.0.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7"
   },
   "scripts": {
     "lint": "eslint assets/js/src",
@@ -21,5 +23,16 @@
   },
   "eslintConfig": {
     "extends": "@10up/eslint-config"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.php": [
+      "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s --runtime-set testVersion 7.0"
+    ]
   }
 }
