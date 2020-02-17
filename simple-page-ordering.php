@@ -124,9 +124,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
 				// no nonce to verify...
 				die( -1 );
-			} else {
-				check_admin_referer( 'simple-page-ordering_' . sanitize_text_field( wp_unslash( $_POST['screen_id'] ) ) );
 			}
+
+			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
 
 			// real post?
 			$post = empty( $_POST['id'] ) ? false : get_post( (int) $_POST['id'] );
