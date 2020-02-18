@@ -4,6 +4,7 @@
  *
  * @package wpacceptance
  */
+
 /**
  * PHPUnit test class
  */
@@ -25,7 +26,7 @@ class ActivationTest extends \TestCaseBase {
 	/**
 	 * @testdox Plugin is enabled for page.
 	 */
-	public function testPluginEnabledForPage() {
+	public function testPluworksginEnabledForPage() {
 		$actor = $this->openBrowserPage();
 		$actor->loginAs( 'admin' );
 		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
