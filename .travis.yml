@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+
+env:
+  - WP_VERSION=latest WP_MULTISITE=0
+
+branches:
+  except:
+    - /^dist-.*$/
+
+before_script:
+  - composer install
+
+script:
+  - ./vendor/bin/wpacceptance run
+
+sudo: required
+
+services:
+  - mysql
+  - docker
