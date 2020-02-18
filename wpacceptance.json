@@ -7,7 +7,8 @@
     "enforce_clean_db": true,
     "bootstrap": "tests\/wpacceptance\/bootstrap.php",
     "environment_instructions": [
-      "install wordpress where version is latest and url is http://simple-page-ordering.test"
+      "install wordpress where version is latest and url is http://simple-page-ordering.test",
+      "activate plugin where name is simple-page-ordering"
     ],
     "exclude": [
       "node_modules",

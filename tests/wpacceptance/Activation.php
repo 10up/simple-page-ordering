@@ -21,4 +21,14 @@ class ActivationTest extends \TestCaseBase {
 
 		$actor->seeText( 'Plugin activated.', '#message' );
 	}
+
+	/**
+	 * @testdox Plugin is enabled for page.
+	 */
+	public function testPluginEnabledForPage() {
+		$actor = $this->openBrowserPage();
+		$actor->loginAs( 'admin' );
+		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
+		$actor->seeText( 'Sort by Order', '.subsubsub .byorder' );
+	}
 }
