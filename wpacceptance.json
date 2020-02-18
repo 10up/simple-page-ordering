@@ -1,0 +1,16 @@
+{
+    "name": "wpacceptance",
+    "tests": [
+        "./tests/wpacceptance/*.php"
+    ],
+    "project_path": "%WP_ROOT%/wp-content/plugins/simple-page-ordering",
+    "enforce_clean_db": true,
+    "bootstrap": "tests\/wpacceptance\/bootstrap.php",
+    "environment_instructions": [
+      "install wordpress where version is latest and url is http://simple-page-ordering.test"
+    ],
+    "exclude": [
+      "node_modules",
+      "vendor"
+    ]
+}
