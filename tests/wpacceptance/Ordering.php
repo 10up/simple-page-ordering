@@ -27,5 +27,23 @@ class Ordering extends \TestCaseBase {
 		$actor->seeText( $first, '.wp-list-table tbody tr:nth-child(2) .row-title' );
 		$actor->seeText( $second, '.wp-list-table tbody tr:nth-child(1) .row-title' );
 	}
+
+	/**
+	 * @testdox Changing child pages order works as expected.
+	 */
+	public function testChangingChildPageOrder() {
+		$actor = $this->openBrowserPage();
+		$actor->loginAs( 'admin' );
+		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
+
+		$first = $actor->getElementInnerText( '#post-2 + .level-1 .row-title' );
+		$second = $actor->getElementInnerText( '#post-2 + .level-1 + .level-1 .row-title' );
+
+		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery("#post-2 + .level-1").before(jQuery("#post-2 + .level-1 + .level-1")) });' );
+		$actor->waitUntilElementVisible( '#post-2 + .level-1 + .level-1 .check-column input' );
+
+		$actor->seeText( $first, '#post-2 + .level-1 .row-title' );
+		$actor->seeText( $second, '#post-2 + .level-1 + .level-1 .row-title' );
+	}
 }
 
