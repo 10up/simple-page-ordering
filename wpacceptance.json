@@ -6,10 +6,7 @@
     "project_path": "%WP_ROOT%/wp-content/plugins/simple-page-ordering",
     "enforce_clean_db": true,
     "bootstrap": "tests\/wpacceptance\/bootstrap.php",
-    "environment_instructions": [
-      "install wordpress where version is latest and url is http://simple-page-ordering.test",
-      "activate plugin where name is simple-page-ordering"
-    ],
+    "snapshot_id": "77940f9bf98ef744e64147f5f234d649",
     "exclude": [
       "node_modules",
       "vendor"
