@@ -5,7 +5,7 @@
   "author": "10up <sales@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
-    "@10up/eslint-config": "^1.0.9",
+    "@wordpress/eslint-plugin": "^4.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "grunt": "^1.0.1",
@@ -22,7 +22,7 @@
     "lint-fix": "eslint assets/js/src --fix"
   },
   "eslintConfig": {
-    "extends": "@10up/eslint-config"
+    "extends": [ "plugin:@wordpress/eslint-plugin/es5" ]
   },
   "husky": {
     "hooks": {
@@ -30,7 +30,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
+    "assets/js/src/*.js": "eslint --cache --fix",
     "*.php": [
       "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s --runtime-set testVersion 7.0"
     ]
