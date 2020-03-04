@@ -1,6 +1,21 @@
 # Changelog
 
-All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
+All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/), and will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased] - TBD
+
+## [2.3.3] - 2020-03-04
+### Added
+- Nonce verify for AJAX requests (props [@pattonwebz](https://github.com/pattonwebz), [@dtbaker](https://github.com/dtbaker) via [#23](https://github.com/10up/simple-page-ordering/pull/23))
+
+### Changed
+- Disable Post Revisions now using the correct action of `post_updated` (props [@jakejackson1](https://github.com/jakejackson1) via [#26](https://github.com/10up/simple-page-ordering/pull/26))
+- Bump WordPress version "tested up to" 5.3 (props [@adamsilverstein](https://github.com/adamsilverstein), [@dinhtungdu](https://github.com/dinhtungdu) via [#30](https://github.com/10up/simple-page-ordering/pull/30), [#36](https://github.com/10up/simple-page-ordering/pull/36))
+- Documentation updates (props [@jeffpaul](https://github.com/jeffpaul) via [#31](https://github.com/10up/simple-page-ordering/pull/31), [#33](https://github.com/10up/simple-page-ordering/pull/33))
+
+### Fixed
+- Mismatched localized data variable name (props [@dinhtungdu](https://github.com/dinhtungdu) via [#36](https://github.com/10up/simple-page-ordering/pull/36))
+- VIP Go coding standards (props [@asharirfan](https://github.com/asharirfan), [@dinhtungdu](https://github.com/dinhtungdu), [@pereirinha](https://github.com/pereirinha), [@brentvr](https://github.com/brentvr) via [#38](https://github.com/10up/simple-page-ordering/pull/38))
 
 ## [2.3.2] - 2018-05-08
 ### Added
@@ -13,7 +28,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Fixed
 - Prevent rows with hidden columns from jumping around while dragging
 
-## [2.3] - 2018-03-06
+## [2.3.0] - 2018-03-05
 ### Added
 - Use WordPress core's spinner class
 - Grunt-based build process with Sass
@@ -27,32 +42,32 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Malformed URL that would take you to posts instead of pages
 - PHPDoc and coding standards to align with 10up's Engineering Best Practices
 
-## [2.2.4] - 2018-03-06
+## [2.2.4] - 2015-02-08
 ### Fixed
 - Redundant URL encoding when sorting in admin page list
 
-## [2.2.3] - 
+## [2.2.3] - 2014-09-27
 ### Fixed
-- Ordering in WordPress 4.0 following core changes to ORDER BY in WP_Query
+- Ordering in WordPress 4.0 following core changes to `ORDER BY` in `WP_Query`
 
-## [2.2.2] - 
+## [2.2.2] - 2014-08-19
 ### Added
-- German localization (props [@glueckpress](https://github.com/glueckpress)).
+- German localization (props [@glueckpress](https://github.com/glueckpress))
 
 ### Fixed
-- Column widths no longer change when dragging a row (partial props griffinjt)
+- Column widths no longer change when dragging a row (partial props [@thomasgriffin](https://github.com/thomasgriffin))
 
 ### Security
-- Closed obscure XSS vulnerability related to Sort by Order link (props simon-waters)
+- Closed obscure XSS vulnerability related to Sort by Order link (props [@SimonWaters](https://github.com/SimonWaters))
 
-## [2.2.1] - 
+## [2.2.1] - 2014-05-31
 ### Added
 - Brazilian translation (props to "felds")
 
 ### Fixed
 - Bring back translations / text domain (yikes!)
 
-## [2.2] - 
+## [2.2.0] - 2014-04-06
 ### Changed
 - Look and feel to better match WordPress 3.8 admin redesign
 - Improved awareness of and compatibility with Quick Edit (inline editor)
@@ -60,15 +75,15 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Fixed
 - Prevent collisions with themes and plugins bundling Simple Page Ordering
 
-## [2.1.2] - 
+## [2.1.2] - 2013-05-30
 ### Fixed
 - Extreme edge case where post columns did not include the post title now supported
 
-## [2.1.1] - 
+## [2.1.1] - 2013-05-27
 ### Fixed
 - Custom post types with page-attributes or hierarchical properties, but not both, breaking ordering
 
-## [2.1] - 
+## [2.1.0] - 2013-05-19
 ### Added
 - Awareness of custom user capabilities for post types, in addition to a filter (`simple_page_ordering_edit_rights`) for overriding reordering rights (previously used `edit_others_pages` globally)
 - Awareness of custom post statuses (so they are not skipped during backend ordering operation)
@@ -77,7 +92,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - UI refinements: Better "spinner" positioning (and HiDPI), translucent row when moving, improved appearance of "drop" placeholder, wait till row dragged by at least 5px to start sorting
 - Major JavaScript refactoring and simplification (combined with new stylesheet) for better performance
 
-## [2.0] - 
+## [2.0.0] - 2012-11-12
 ### Added
 - Drag pages into any part of the page hierarchy! No longer limited to same branch of tree!
 - Big performance improvements under the hood: leaner queries, batched requests, less processing
@@ -89,7 +104,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Removed "number of pages" drop down, which is repetitive of a field accessible under Screen Options
 - Improved compatibility with newer versions of WordPress
 
-## [1.0] - 
+## [1.0.0] - 2011-07-04
 ### Added
 - Support for ordering non-hierarchical post types that have "page-attributes" support
 - New filter link for "Sort by Order" to restore (hierarchical) or set (non-hierarchical, page attributes support) post list sort to menu order
@@ -105,17 +120,17 @@ All notable changes to this project will be documented in this file, per [the Ke
 - "Per page" drop down filter selection not saving between page loads (was broken in 3.1)
 - Items are always ordered with positive integers (potential negative sort orders had some performance benefits in last version, but sometimes caused issues)
 
-## [0.9.6] - 
+## [0.9.6] - 2011-04-04
 ### Fixed
 - Broken inline editing (quick edit) fields in Firefox
 
-## [0.9.5] - 
+## [0.9.5] - 2011-03-27
 ### Changed
 - Smarter awareness of "sorted" modes in WordPress 3.1 (can only use when sorted by menu order)
 - Smarter awareness of "quick edit" mode (can't drag)
 - Generally simplified / better organized code
 
-## [0.9] - 
+## [0.9.0] - 2010-12-29
 ### Added
 - Further directions in the plug-in description (some users were confused about how to use it)
 - Basic compatibility with 3.1 RC (prevent clashes with post list sorting)
@@ -127,7 +142,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Page count display always showing "0" on non-hierarchical post types (Showing 1-X of X)
 - Hidden menu order not updating after sort (causing Quick Edit to reset order when used right after sorting)
 
-## [0.8.4] - 
+## [0.8.4] - 2010-08-24
 ### Changed
 - Loosened constraints on drag and drop to ease dropping into top and bottom position
 - Improved some terminology (with custom post types in mind)
@@ -136,12 +151,14 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Row background staying "white" after dropping into a new position
 - Double border on the bottom of the row while dragging
 
-## [0.8.2] - 
+## [0.8.2] - 2010-08-21
 ### Changed
 - Simplified code - consolidated hooks
 - Updated version requirements
 
+[Unreleased]: https://github.com/10up/simple-page-ordering/compare/master...develop
+[2.3.3]: https://github.com/10up/simple-page-ordering/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/10up/simple-page-ordering/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/10up/simple-page-ordering/compare/2.3...2.3.1
-[2.3]: https://github.com/10up/simple-page-ordering/compare/2.2.4...2.3
+[2.3.0]: https://github.com/10up/simple-page-ordering/compare/2.2.4...2.3
 [2.2.4]: https://github.com/10up/simple-page-ordering/releases/tag/2.2.4
