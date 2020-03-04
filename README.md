@@ -22,7 +22,6 @@ Want to help? Check out our [contributing guidelines](CONTRIBUTING.md) to get st
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Get to work reordering your content!
 
-
 ## Frequently Asked Questions
 
 ### Why can't I reorder my posts?
@@ -66,6 +65,14 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+
+## Changelog
+
+A complete listing of all notable changes to Simple Page Ordering are documented in [CHANGELOG.md](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
+
+## Contributing
+
+Please read [CODE_OF_CONDUCT.md](https://github.com/10up/simple-page-ordering/blob/develop/CODE_OF_CONDUCT.md) for details on our code of conduct, [CONTRIBUTING.md](https://github.com/10up/simple-page-ordering/blob/develop/CONTRIBUTING.md) for details on the process for submitting pull requests to us, and [CREDITS.md](https://github.com/10up/simple-page-ordering/blob/develop/CREDITS.md) for a listing of maintainers, contributors, and libraries for Simple Page Ordering.
 
 ## Like what you see?
 
