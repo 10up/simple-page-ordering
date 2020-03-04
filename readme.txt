@@ -4,13 +4,15 @@ Donate link: http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags: order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
 Tested up to: 5.2
-Stable tag: 2.3.2
+Stable tag: 2.3.3
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
 == Description ==
 
-Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list. 
+Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list.
 
 Simply drag and drop the page into the desired position. It's that simple. No new admin menus pages, no clunky, bolted on user interfaces. Just drag and drop on the page or post-type screen.
 
@@ -60,13 +62,13 @@ This plug-in doesn't change any *behavior* on the front end, it simply changes t
 
 If you want a list of pages or custom post types to display in that defined order, you must change the post query's `orderby` parameter to `menu_order` (if it's not already).
 
-= I reordered my content, it seemed to work, but when I refreshed, it went back to the old order! = 
+= I reordered my content, it seemed to work, but when I refreshed, it went back to the old order! =
 
 This most likely means the AJAX request - the server side code - failed after you dropped the content into the new position. Some shared hosts aggressively time out and limit AJAX requests. Version 2.0 batches these requests so you can try reducing the number of items it updates on each request using a filter in your theme's functions.php or a custom plug-in:
 
 `add_filter( 'simple_page_ordering_limit', function($number) { return 5; } );`
 
-Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback. 
+Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback.
 
 = What happened to the drop down box that let me change the number of items on each page in the admin?? =
 
