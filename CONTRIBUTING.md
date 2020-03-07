@@ -67,13 +67,12 @@ Head to the Pages list table and drag and drop pages to change the order. Refres
 2. Version bump: Bump the version number in `package.json`, `readme.txt`, and `simple-page-ordering.php` if it does not already reflect the version being released.
 3. Changelog: Add/update the changelog in `readme.txt` and `CHANGELOG.md`.
 4. Props: update `CREDITS.md` file with any new contributors, confirm maintainers are accurate.
-5. Translations: Update the .pot file by running `npm run makepot`.
-6. New files: Check to be sure any new files/paths that are unnecessary in the production version are included in `.gitattributes`.
-7. Readme updates: Make any other readme changes as necessary. `README.md` is geared toward GitHub and `readme.txt` contains WordPress.org-specific content. The two are slightly different.
-8. Merge: Make a non-fast-forward merge from your release branch to `develop` (or merge the pull request), then do the same for `develop` into `master` (`git checkout master && git merge --no-ff develop`). `master` contains the stable development version.
-9. Push: Push your master branch to GitHub (e.g. `git push origin master`).
-10. Release: Create a [new release](https://github.com/10up/simple-page-ordering/releases/new), naming the tag and the release with the new version number, and targeting the `master` branch. Paste the changelog from `CHANGELOG.md` into the body of the release and include a link to the closed issues on the [X.Y.Z milestone](https://github.com/10up/simple-page-ordering/milestone/#?closed=1).  The release should now appear under [releases](https://github.com/10up/simple-page-ordering/releases) and in the WordPress admin as an update as well.
-11. SVN: Wait for the [GitHub Action](https://github.com/10up/simple-page-ordering/actions) to finish deploying to the WordPress.org repository. If all goes well, users with SVN commit access for that plugin will receive an emailed diff of changes.
-12. Check WordPress.org: Ensure that the changes are live on https://wordpress.org/plugins/simple-page-ordering/. This may take a few minutes.
-13. Close milestone: Edit the [X.Y.Z milestone](https://github.com/10up/simple-page-ordering/milestone/#) with release date (in the `Due date (optional)` field) and link to GitHub release (in the `Description field`), then close the milestone.
-14. Punt incomplete items: If any open issues or PRs which were milestoned for `X.Y.Z` do not make it into the release, update their milestone to `X.Y.Z+1`, `X.Y+1.0`, `X+1.0.0` or `Future Release`.
+5. New files: Check to be sure any new files/paths that are unnecessary in the production version are included in `.gitattributes`.
+6. Readme updates: Make any other readme changes as necessary. `README.md` is geared toward GitHub and `readme.txt` contains WordPress.org-specific content. The two are slightly different.
+7. Merge: Make a non-fast-forward merge from your release branch to `develop` (or merge the pull request), then do the same for `develop` into `master` (`git checkout master && git merge --no-ff develop`). `master` contains the stable development version.
+8. Push: Push your master branch to GitHub (e.g. `git push origin master`).
+9. Release: Create a [new release](https://github.com/10up/simple-page-ordering/releases/new), naming the tag and the release with the new version number, and targeting the `master` branch. Paste the changelog from `CHANGELOG.md` into the body of the release and include a link to the closed issues on the [X.Y.Z milestone](https://github.com/10up/simple-page-ordering/milestone/#?closed=1).  The release should now appear under [releases](https://github.com/10up/simple-page-ordering/releases) and in the WordPress admin as an update as well.
+10. SVN: Wait for the [GitHub Action](https://github.com/10up/simple-page-ordering/actions) to finish deploying to the WordPress.org repository. If all goes well, users with SVN commit access for that plugin will receive an emailed diff of changes.
+11. Check WordPress.org: Ensure that the changes are live on https://wordpress.org/plugins/simple-page-ordering/. This may take a few minutes.
+12. Close milestone: Edit the [X.Y.Z milestone](https://github.com/10up/simple-page-ordering/milestone/#) with release date (in the `Due date (optional)` field) and link to GitHub release (in the `Description field`), then close the milestone.
+13. Punt incomplete items: If any open issues or PRs which were milestoned for `X.Y.Z` do not make it into the release, update their milestone to `X.Y.Z+1`, `X.Y+1.0`, `X+1.0.0` or `Future Release`.
