@@ -18,12 +18,12 @@ function update_simple_ordering_callback(response) {
 
 			if ( undefined !== new_pos[key]['menu_order'] ) {
 				if ( null !== dom_menu_order ) {
-					dom_menu_order.innerHTML = new_pos[key]['menu_order'];
+					dom_menu_order.textContent = new_pos[key]['menu_order'];
 				}
 
 				var dom_post_parent = inline_key.querySelector('.post_parent');
 				if ( null !== dom_post_parent ) {
-					dom_post_parent.innerHTML = new_pos[key]['post_parent'];
+					dom_post_parent.textContent = new_pos[key]['post_parent'];
 				}
 
 				var post_title = null;
@@ -39,10 +39,10 @@ function update_simple_ordering_callback(response) {
 				}
 				var dom_row_title = inline_key.parentNode.querySelector('.row-title');
 				if ( null !== dom_row_title && null !== post_title ) {
-					dom_row_title.innerHTML = post_title;
+					dom_row_title.textContent = post_title;
 				}
 			} else if ( null !== dom_menu_order ) {
-				dom_menu_order.innerHTML = new_pos[key];
+				dom_menu_order.textContent = new_pos[key];
 			}
 		}
 	}
@@ -54,6 +54,8 @@ function update_simple_ordering_callback(response) {
 			previd: changes.next['previd'],
 			nextid: changes.next['nextid'],
 			start: changes.next['start'],
+			_wpnonce: simple_page_ordering_localized_data._wpnonce,
+			screen_id: simple_page_ordering_localized_data.screen_id,
 			excluded: JSON.stringify( changes.next['excluded'] )
 		}, update_simple_ordering_callback );
 	} else {
@@ -129,7 +131,7 @@ sortable_post_table.sortable({
 		}
 
 		// go do the sorting stuff via ajax
-		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid }, update_simple_ordering_callback );
+		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid, _wpnonce: simple_page_ordering_localized_data._wpnonce, screen_id: simple_page_ordering_localized_data.screen_id, }, update_simple_ordering_callback );
 
 		// fix cell colors
 		var table_rows = document.querySelectorAll('tr.iedit'),

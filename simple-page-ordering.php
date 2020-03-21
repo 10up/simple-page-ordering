@@ -1,14 +1,16 @@
 <?php
-/*
-Plugin Name: Simple Page Ordering
-Plugin URI: http://10up.com/plugins/simple-page-ordering-wordpress/
-Description: Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
-Version: 2.3.2
-Author: Jake Goldman, 10up
-Author URI: http://10up.com
-License: GPLv2 or later
-Text Domain: simple-page-ordering
-*/
+/**
+ * Plugin Name:       Simple Page Ordering
+ * Plugin URI:        http://10up.com/plugins/simple-page-ordering-wordpress/
+ * Description:       Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
+ * Version:           2.3.3
+ * Requires at least: 3.8
+ * Author:            Jake Goldman, 10up
+ * Author URI:        https://10up.com
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       simple-page-ordering
+ */
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -63,7 +65,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// is post type sortable?
 			$sortable = ( post_type_supports( $post_type, 'page-attributes' ) || is_post_type_hierarchical( $post_type ) );        // check permission
-			if ( ! $sortable = apply_filters( 'simple_page_ordering_is_sortable', $sortable, $post_type ) ) {
+			$sortable = apply_filters( 'simple_page_ordering_is_sortable', $sortable, $post_type );
+			if ( ! $sortable ) {
 				return;
 			}
 
@@ -85,9 +88,18 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function wp() {
 			$orderby = get_query_var( 'orderby' );
+			$screen  = get_current_screen();
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
 				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
+				wp_localize_script(
+					'simple-page-ordering',
+					'simple_page_ordering_localized_data',
+					array(
+						'_wpnonce'  => wp_create_nonce( 'simple-page-ordering_' . $screen->id ),
+						'screen_id' => (string) $screen->id,
+					)
+				);
 				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ) );
 			}
 		}
@@ -110,8 +122,17 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( - 1 );
 			}
 
+			// do we have a nonce that verifies?
+			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
+				// no nonce to verify...
+				die( -1 );
+			}
+
+			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
+
 			// real post?
-			if ( ! $post = get_post( $_POST['id'] ) ) {
+			$post = empty( $_POST['id'] ) ? false : get_post( (int) $_POST['id'] );
+			if ( ! $post ) {
 				die( - 1 );
 			}
 
@@ -120,9 +141,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( - 1 );
 			}
 
-			// badly written plug-in hooks for save post can break things
+			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				error_reporting( 0 );
+				error_reporting( 0 ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting
 			}
 
 			global $wp_version;
@@ -130,7 +151,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
+			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$new_pos     = array(); // store new positions for ajax
 			$return_data = new stdClass;
@@ -140,7 +161,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// attempt to get the intended parent... if either sibling has a matching parent ID, use that
 			$parent_id        = $post->post_parent;
 			$next_post_parent = $nextid ? wp_get_post_parent_id( $nextid ) : false;
-			if ( $previd == $next_post_parent ) {    // if the preceding post is the parent of the next post, move it inside
+			if ( $previd === $next_post_parent ) {    // if the preceding post is the parent of the next post, move it inside
 				$parent_id = $next_post_parent;
 			} elseif ( $next_post_parent !== $parent_id ) {  // otherwise, if the next post's parent isn't the same as our parent, we need to study
 				$prev_post_parent = $previd ? wp_get_post_parent_id( $previd ) : false;
@@ -173,22 +194,27 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
 				),
-				'post__not_in'           => $excluded,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
-				'suppress_filters'       => true,
+				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
 				'ignore_sticky_posts'    => true,
 			);
+
 			if ( version_compare( $wp_version, '4.0', '<' ) ) {
 				$siblings_query['orderby'] = 'menu_order title';
 				$siblings_query['order']   = 'ASC';
 			}
+
 			$siblings = new WP_Query( $siblings_query ); // fetch all the siblings (relative ordering)
 
 			// don't waste overhead of revisions on a menu order change (especially since they can't *all* be rolled back at once)
-			remove_action( 'pre_post_update', 'wp_save_post_revision' );
+			remove_action( 'post_updated', 'wp_save_post_revision' );
 
 			foreach ( $siblings->posts as $sibling ) :
+				// Skip the excluded posts.
+				if ( in_array( $sibling->ID, $excluded, true ) ) {
+					continue;
+				}
 
 				// don't handle the actual post
 				if ( $sibling->ID === $post->ID ) {
@@ -218,7 +244,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				}
 
 				// set the menu order of the current sibling and increment the menu order
-				if ( $sibling->menu_order != $start ) {
+				if ( $sibling->menu_order !== $start ) {
 					wp_update_post( array(
 						'ID'         => $sibling->ID,
 						'menu_order' => $start,
@@ -227,7 +253,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$new_pos[ $sibling->ID ] = $start;
 				$start ++;
 
-				if ( ! $nextid && $previd == $sibling->ID ) {
+				if ( ! $nextid && $previd === $sibling->ID ) {
 					wp_update_post( array(
 						'ID'          => $post->ID,
 						'menu_order'  => $start,
@@ -281,7 +307,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			$return_data->new_pos = $new_pos;
-			die( json_encode( $return_data ) );
+			die( wp_json_encode( $return_data ) );
 		}
 
 		/**
@@ -292,7 +318,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @return array
 		 */
 		public static function sort_by_order_link( $views ) {
-			$class        = ( get_query_var( 'orderby' ) == 'menu_order title' ) ? 'current' : '';
+			$class        = ( get_query_var( 'orderby' ) === 'menu_order title' ) ? 'current' : '';
 			$query_string = remove_query_arg( array( 'orderby', 'order' ) );
 			if ( ! is_post_type_hierarchical( get_post_type() ) ) {
 				$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
