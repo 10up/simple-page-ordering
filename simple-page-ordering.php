@@ -16,6 +16,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 	class Simple_Page_Ordering {
 
+		const VERSION = '2.3.2';
+
 		/**
 		 * Handles initializing this class and returning the singleton instance after it's been cached.
 		 *
@@ -66,6 +68,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// is post type sortable?
 			$sortable = ( post_type_supports( $post_type, 'page-attributes' ) || is_post_type_hierarchical( $post_type ) );        // check permission
 			$sortable = apply_filters( 'simple_page_ordering_is_sortable', $sortable, $post_type );
+
 			if ( ! $sortable ) {
 				return;
 			}
@@ -75,10 +78,13 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return;
 			}
 
-			add_filter( 'views_' . $screen->id, array(
-				__CLASS__,
-				'sort_by_order_link',
-			) );        // add view by menu order to views
+			add_filter(
+				'views_' . $screen->id,
+				array(
+					__CLASS__,
+					'sort_by_order_link',
+				)
+			);        // add view by menu order to views
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
 		}
@@ -91,7 +97,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$screen  = get_current_screen();
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
-				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
+				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), self::VERSION, true );
 				wp_localize_script(
 					'simple-page-ordering',
 					'simple_page_ordering_localized_data',
@@ -100,7 +106,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'screen_id' => (string) $screen->id,
 					)
 				);
-				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ) );
+				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ), array(), self::VERSION );
 			}
 		}
 
@@ -109,13 +115,18 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function admin_head() {
 			$screen = get_current_screen();
-			$screen->add_help_tab( array(
-				'id'      => 'simple_page_ordering_help_tab',
-				'title'   => 'Simple Page Ordering',
-				'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p>',
-			) );
+			$screen->add_help_tab(
+				array(
+					'id'      => 'simple_page_ordering_help_tab',
+					'title'   => 'Simple Page Ordering',
+					'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p>',
+				)
+			);
 		}
 
+		/**
+		 * Handle page ordering.
+		 */
 		public static function ajax_simple_page_ordering() {
 			// check and make sure we have what we need
 			if ( empty( $_POST['id'] ) || ( ! isset( $_POST['previd'] ) && ! isset( $_POST['nextid'] ) ) ) {
@@ -132,6 +143,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// real post?
 			$post = empty( $_POST['id'] ) ? false : get_post( (int) $_POST['id'] );
+
 			if ( ! $post ) {
 				die( - 1 );
 			}
@@ -154,7 +166,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$new_pos     = array(); // store new positions for ajax
-			$return_data = new stdClass;
+			$return_data = new stdClass();
 
 			do_action( 'simple_page_ordering_pre_order_posts', $post, $start );
 
@@ -180,9 +192,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			// we need to handle all post stati, except trash (in case of custom stati)
-			$post_stati = get_post_stati( array(
-				'show_in_admin_all_list' => true,
-			) );
+			$post_stati = get_post_stati(
+				array(
+					'show_in_admin_all_list' => true,
+				)
+			);
 
 			$siblings_query = array(
 				'depth'                  => 1,
@@ -223,11 +237,13 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
 				if ( $nextid === $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
+					wp_update_post(
+						array(
+							'ID'          => $post->ID,
+							'menu_order'  => $start,
+							'post_parent' => $parent_id,
+						)
+					);
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
 						'menu_order'  => $start,
@@ -244,21 +260,25 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				}
 
 				// set the menu order of the current sibling and increment the menu order
-				if ( $sibling->menu_order !== $start ) {
-					wp_update_post( array(
-						'ID'         => $sibling->ID,
-						'menu_order' => $start,
-					) );
+				if ( $sibling->menu_order != $start ) {
+					wp_update_post(
+						array(
+							'ID'         => $sibling->ID,
+							'menu_order' => $start,
+						)
+					);
 				}
 				$new_pos[ $sibling->ID ] = $start;
 				$start ++;
 
-				if ( ! $nextid && $previd === $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
+				if ( ! $nextid && $previd == $sibling->ID ) {
+					wp_update_post(
+						array(
+							'ID'          => $post->ID,
+							'menu_order'  => $start,
+							'post_parent' => $parent_id,
+						)
+					);
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
 						'menu_order'  => $start,
@@ -313,7 +333,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Append a sort by order link to the post actions
 		 *
-		 * @param array $views
+		 * @param array $views Array of available list table views.
 		 *
 		 * @return array
 		 */

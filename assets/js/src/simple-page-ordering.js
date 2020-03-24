@@ -1,4 +1,12 @@
-function update_simple_ordering_callback(response) {
+/* global simple_page_ordering_localized_data jQuery ajaxurl inlineEditPost window document */
+/* eslint camelcase: "off", vars-on-top: "off" */
+
+/**
+ * Update menu order after ordering.
+ *
+ * @param {string|Object} response AJAX response after changing page order.
+ */
+function update_simple_ordering_callback( response ) {
 	if ( 'children' === response ) {
 		window.location.reload();
 		return;
@@ -12,32 +20,32 @@ function update_simple_ordering_callback(response) {
 			continue;
 		}
 
-		var inline_key = document.getElementById('inline_' + key);
-		if ( null !== inline_key && new_pos.hasOwnProperty(key) ) {
-			var dom_menu_order = inline_key.querySelector('.menu_order');
+		var inline_key = document.getElementById( 'inline_' + key );
+		if ( null !== inline_key && new_pos.hasOwnProperty( key ) ) {
+			var dom_menu_order = inline_key.querySelector( '.menu_order' );
 
-			if ( undefined !== new_pos[key]['menu_order'] ) {
+			if ( undefined !== new_pos[key].menu_order ) {
 				if ( null !== dom_menu_order ) {
-					dom_menu_order.textContent = new_pos[key]['menu_order'];
+					dom_menu_order.textContent = new_pos[key].menu_order;
 				}
 
-				var dom_post_parent = inline_key.querySelector('.post_parent');
+				var dom_post_parent = inline_key.querySelector( '.post_parent' );
 				if ( null !== dom_post_parent ) {
-					dom_post_parent.textContent = new_pos[key]['post_parent'];
+					dom_post_parent.textContent = new_pos[key].post_parent;
 				}
 
 				var post_title = null;
-				var dom_post_title = inline_key.querySelector('.post_title');
+				var dom_post_title = inline_key.querySelector( '.post_title' );
 				if ( null !== dom_post_title ) {
 					post_title = dom_post_title.innerHTML;
 				}
 
 				var dashes = 0;
-				while ( dashes < new_pos[key]['depth'] ) {
+				while ( dashes < new_pos[key].depth ) {
 					post_title = '&mdash; ' + post_title;
 					dashes++;
 				}
-				var dom_row_title = inline_key.parentNode.querySelector('.row-title');
+				var dom_row_title = inline_key.parentNode.querySelector( '.row-title' );
 				if ( null !== dom_row_title && null !== post_title ) {
 					dom_row_title.textContent = post_title;
 				}
@@ -50,22 +58,22 @@ function update_simple_ordering_callback(response) {
 	if ( changes.next ) {
 		jQuery.post( ajaxurl, {
 			action: 'simple_page_ordering',
-			id: changes.next['id'],
-			previd: changes.next['previd'],
-			nextid: changes.next['nextid'],
-			start: changes.next['start'],
+			id: changes.next.id,
+			previd: changes.next.previd,
+			nextid: changes.next.nextid,
+			start: changes.next.start,
 			_wpnonce: simple_page_ordering_localized_data._wpnonce,
 			screen_id: simple_page_ordering_localized_data.screen_id,
-			excluded: JSON.stringify( changes.next['excluded'] )
+			excluded: JSON.stringify( changes.next.excluded ),
 		}, update_simple_ordering_callback );
 	} else {
-		jQuery('.spo-updating-row').removeClass('spo-updating-row').find('.check-column').removeClass('spinner is-active');
-		sortable_post_table.removeClass('spo-updating').sortable('enable');
+		jQuery( '.spo-updating-row' ).removeClass( 'spo-updating-row' ).find( '.check-column' ).removeClass( 'spinner is-active' );
+		sortable_post_table.removeClass( 'spo-updating' ).sortable( 'enable' );
 	}
 }
 
-var sortable_post_table = jQuery(".wp-list-table tbody");
-sortable_post_table.sortable({
+var sortable_post_table = jQuery( '.wp-list-table tbody' );
+sortable_post_table.sortable( {
 	items: '> tr',
 	cursor: 'move',
 	axis: 'y',
@@ -75,73 +83,73 @@ sortable_post_table.sortable({
 	opacity: .8,
 	tolerance: 'pointer',
 	create: function() {
-		jQuery( document ).keydown(function(e) {
+		jQuery( document ).keydown( function( e ) {
 			var key = e.key || e.keyCode;
 			if ( 'Escape' === key || 'Esc' === key || 27 === key ) {
 				sortable_post_table.sortable( 'option', 'preventUpdate', true );
 				sortable_post_table.sortable( 'cancel' );
 			}
-		});
+		} );
 	},
-	start: function(e, ui){
-		if ( typeof(inlineEditPost) !== 'undefined' ) {
+	start: function( e, ui ) {
+		if ( typeof ( inlineEditPost ) !== 'undefined' ) {
 			inlineEditPost.revert();
 		}
-		ui.placeholder.height(ui.item.height());
+		ui.placeholder.height( ui.item.height() );
 		ui.placeholder.empty();
 	},
-	helper: function(e, ui) {
+	helper: function( e, ui ) {
 		var children = ui.children();
-		for ( var i=0; i<children.length; i++ ) {
-			var selector = jQuery(children[i]);
+		for ( var i = 0; i < children.length; i++ ) {
+			var selector = jQuery( children[i] );
 			selector.width( selector.width() );
-		};
+		}
 		return ui;
 	},
-	stop: function(e, ui) {
-		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
+	stop: function( e, ui ) {
+		if ( sortable_post_table.sortable( 'option', 'preventUpdate' ) ) {
 			sortable_post_table.sortable( 'option', 'preventUpdate', false );
 		}
 
 		// remove fixed widths
-		ui.item.children().css('width','');
+		ui.item.children().css( 'width', '' );
 	},
-	update: function(e, ui) {
-		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
+	update: function( e, ui ) {
+		if ( sortable_post_table.sortable( 'option', 'preventUpdate' ) ) {
 			sortable_post_table.sortable( 'option', 'preventUpdate', false );
 			return;
 		}
 
-		sortable_post_table.sortable('disable').addClass('spo-updating');
-		ui.item.addClass('spo-updating-row');
-		ui.item.find('.check-column').addClass('spinner is-active');
+		sortable_post_table.sortable( 'disable' ).addClass( 'spo-updating' );
+		ui.item.addClass( 'spo-updating-row' );
+		ui.item.find( '.check-column' ).addClass( 'spinner is-active' );
 
-		var postid = ui.item[0].id.substr(5); // post id
+		var postid = ui.item[0].id.substr( 5 ); // post id
 
 		var prevpostid = false;
 		var prevpost = ui.item.prev();
 		if ( prevpost.length > 0 ) {
-			prevpostid = prevpost.attr('id').substr(5);
+			prevpostid = prevpost.attr( 'id' ).substr( 5 );
 		}
 
 		var nextpostid = false;
 		var nextpost = ui.item.next();
 		if ( nextpost.length > 0 ) {
-			nextpostid = nextpost.attr('id').substr(5);
+			nextpostid = nextpost.attr( 'id' ).substr( 5 );
 		}
 
 		// go do the sorting stuff via ajax
-		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid, _wpnonce: simple_page_ordering_localized_data._wpnonce, screen_id: simple_page_ordering_localized_data.screen_id, }, update_simple_ordering_callback );
+		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid, _wpnonce: simple_page_ordering_localized_data._wpnonce, screen_id: simple_page_ordering_localized_data.screen_id }, update_simple_ordering_callback );
 
 		// fix cell colors
-		var table_rows = document.querySelectorAll('tr.iedit'),
+		var table_rows = document.querySelectorAll( 'tr.iedit' ),
 			table_row_count = table_rows.length;
-		while( table_row_count-- ) {
-			if ( 0 === table_row_count%2 ) {
-				jQuery(table_rows[table_row_count]).addClass('alternate');
+		while ( table_row_count-- ) {
+			if ( 0 === table_row_count % 2 ) {
+				jQuery( table_rows[table_row_count] ).addClass( 'alternate' );
 			} else {
-				jQuery(table_rows[table_row_count]).removeClass('alternate');
+				jQuery( table_rows[table_row_count] ).removeClass( 'alternate' );
 			}
 		}
-	}
-});
+	},
+} );

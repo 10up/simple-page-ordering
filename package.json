@@ -5,11 +5,34 @@
   "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
+    "@wordpress/eslint-plugin": "^4.0.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-uglify": "^3.2.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0",
-    "grunt-wp-i18n": "^1.0.1"
+    "grunt-wp-i18n": "^1.0.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7"
+  },
+  "scripts": {
+    "lint": "eslint assets/js/src",
+    "lint-fix": "eslint assets/js/src --fix"
+  },
+  "eslintConfig": {
+    "extends": [ "plugin:@wordpress/eslint-plugin/es5" ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "assets/js/src/*.js": "eslint --cache --fix",
+    "*.php": [
+      "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s --runtime-set testVersion 7.0"
+    ]
   }
 }
