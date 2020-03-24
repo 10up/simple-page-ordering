@@ -1,8 +1,8 @@
 {
   "name": "simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
-  "version": "2.3.2",
-  "author": "10up <sales@10up.com>",
+  "version": "2.3.3",
+  "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
     "@wordpress/eslint-plugin": "^4.0.0",

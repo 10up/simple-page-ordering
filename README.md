@@ -2,9 +2,9 @@
 
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.2%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.3%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
 
-Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list. 
+Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list.
 
 Simply drag and drop the page into the desired position. It's that simple. No new admin menus pages, no clunky, bolted on user interfaces. Just drag and drop on the page or post-type screen.
 
@@ -21,7 +21,6 @@ Want to help? Check out our [contributing guidelines](CONTRIBUTING.md) to get st
 1. Install either via the WordPress.org plugin directory, or by uploading the files to your server.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Get to work reordering your content!
-
 
 ## Frequently Asked Questions
 
@@ -57,7 +56,7 @@ This most likely means the AJAX request - the server side code - failed after yo
 
 `add_filter( 'simple_page_ordering_limit', function($number) { return 5; } );`
 
-Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback. 
+Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback.
 
 ### What happened to the drop down box that let me change the number of items on each page in the admin??
 
@@ -66,6 +65,14 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+
+## Changelog
+
+A complete listing of all notable changes to Simple Page Ordering are documented in [CHANGELOG.md](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
+
+## Contributing
+
+Please read [CODE_OF_CONDUCT.md](https://github.com/10up/simple-page-ordering/blob/develop/CODE_OF_CONDUCT.md) for details on our code of conduct, [CONTRIBUTING.md](https://github.com/10up/simple-page-ordering/blob/develop/CONTRIBUTING.md) for details on the process for submitting pull requests to us, and [CREDITS.md](https://github.com/10up/simple-page-ordering/blob/develop/CREDITS.md) for a listing of maintainers, contributors, and libraries for Simple Page Ordering.
 
 ## Like what you see?
 
