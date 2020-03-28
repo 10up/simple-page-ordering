@@ -1,6 +1,6 @@
 <?php
 /**
- * Test if the plugin works without issue.
+ * Test if we can order pages
  *
  * @package wpacceptance
  */
@@ -8,12 +8,12 @@
 /**
  * PHPUnit test class
  */
-class Ordering extends \TestCaseBase {
+class PagesOrderingTest extends \TestCaseBase {
 
 	/**
 	 * @testdox Changing parent pages order works as expected.
 	 */
-	public function testChangingParentPageOrder() {
+	public function testChangingParentPagesOrder() {
 		$actor = $this->openBrowserPage();
 		$actor->loginAs( 'admin' );
 		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
@@ -31,7 +31,7 @@ class Ordering extends \TestCaseBase {
 	/**
 	 * @testdox Changing child pages order works as expected.
 	 */
-	public function testChangingChildPageOrder() {
+	public function testChangingChildPagesOrder() {
 		$actor = $this->openBrowserPage();
 		$actor->loginAs( 'admin' );
 		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
