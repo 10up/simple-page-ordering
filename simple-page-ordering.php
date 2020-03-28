@@ -186,7 +186,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			$siblings_query = array(
 				'depth'                  => 1,
-				'posts_per_page'         => $max_sortable_posts,
+				'posts_per_page'         => $max_sortable_posts + count( $excluded ),
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
