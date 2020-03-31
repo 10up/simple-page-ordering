@@ -151,7 +151,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$offset   = empty( $_POST['offset'] ) ? 0 : (int) $_POST['offset'];
 
 			$new_pos     = array(); // store new positions for ajax
 			$return_data = new stdClass;
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			$siblings_query = array(
 				'depth'                  => 1,
-				'posts_per_page'         => $max_sortable_posts + count( $excluded ),
+				'posts_per_page'         => $max_sortable_posts,
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
@@ -198,6 +198,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'update_post_meta_cache' => false,
 				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
 				'ignore_sticky_posts'    => true,
+				'offset' => $offset,
 			);
 
 			if ( version_compare( $wp_version, '4.0', '<' ) ) {
@@ -211,10 +212,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			remove_action( 'post_updated', 'wp_save_post_revision' );
 
 			foreach ( $siblings->posts as $sibling ) :
-				// Skip the excluded posts.
-				if ( in_array( $sibling->ID, $excluded, true ) ) {
-					continue;
-				}
 
 				// don't handle the actual post
 				if ( $sibling->ID === $post->ID ) {
@@ -273,11 +270,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// max per request
 			if ( ! isset( $return_data->next ) && $siblings->max_num_pages > 1 ) {
 				$return_data->next = array(
-					'id'       => $post->ID,
-					'previd'   => $previd,
-					'nextid'   => $nextid,
-					'start'    => $start,
-					'excluded' => array_merge( array_keys( $new_pos ), $excluded ),
+					'id'     => $post->ID,
+					'previd' => $previd,
+					'nextid' => $nextid,
+					'start'  => $start,
+					'offset' => count( $new_pos ) + $offset,
 				);
 			} else {
 				$return_data->next = false;

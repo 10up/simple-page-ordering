@@ -56,7 +56,7 @@ function update_simple_ordering_callback(response) {
 			start: changes.next['start'],
 			_wpnonce: simple_page_ordering_localized_data._wpnonce,
 			screen_id: simple_page_ordering_localized_data.screen_id,
-			excluded: JSON.stringify( changes.next['excluded'] )
+			offset: changes.next['offset']
 		}, update_simple_ordering_callback );
 	} else {
 		jQuery('.spo-updating-row').removeClass('spo-updating-row').find('.check-column').removeClass('spinner is-active');
