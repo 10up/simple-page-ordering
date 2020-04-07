@@ -36,14 +36,14 @@ class PagesOrderingTest extends \TestCaseBase {
 		$actor->loginAs( 'admin' );
 		$actor->moveTo( 'wp-admin/edit.php?post_type=page' );
 
-		$first = $actor->getElementInnerText( '#post-2 + .level-1 .row-title' );
-		$second = $actor->getElementInnerText( '#post-2 + .level-1 + .level-1 .row-title' );
+		$first = $actor->getElementInnerText( '.level-0 + .level-1 .row-title' );
+		$second = $actor->getElementInnerText( '.level-0 + .level-1 + .level-1 .row-title' );
 
-		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery("#post-2 + .level-1").before(jQuery("#post-2 + .level-1 + .level-1")) });' );
-		$actor->waitUntilElementVisible( '#post-2 + .level-1 + .level-1 .check-column input' );
+		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery(".level-0 + .level-1").first().before(jQuery(".level-0 + .level-1 + .level-1").first()) });' );
+		$actor->waitUntilElementVisible( '.level-0 + .level-1 + .level-1 .check-column input' );
 
-		$actor->seeText( $second, '#post-2 + .level-1 .row-title' );
-		$actor->seeText( $first, '#post-2 + .level-1 + .level-1 .row-title' );
+		$actor->seeText( $second, '.level-0 + .level-1 .row-title' );
+		$actor->seeText( $first, '.level-0 + .level-1 + .level-1 .row-title' );
 	}
 }
 
