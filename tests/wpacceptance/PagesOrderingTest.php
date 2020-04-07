@@ -39,7 +39,7 @@ class PagesOrderingTest extends \TestCaseBase {
 		$first = $actor->getElementInnerText( '.level-0 + .level-1 .row-title' );
 		$second = $actor->getElementInnerText( '.level-0 + .level-1 + .level-1 .row-title' );
 
-		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery(".level-0 + .level-1").before(jQuery(".level-0 + .level-1 + .level-1")) });' );
+		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery(".level-0 + .level-1").first().before(jQuery(".level-0 + .level-1 + .level-1").first()) });' );
 		$actor->waitUntilElementVisible( '.level-0 + .level-1 + .level-1 .check-column input' );
 
 		$actor->seeText( $second, '.level-0 + .level-1 .row-title' );
