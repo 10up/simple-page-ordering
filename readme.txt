@@ -26,13 +26,11 @@ Please note that the plug-in is not compatible with Internet Explorer 7 and earl
 
 We'd love to have you join in on development over on [GitHub](https://github.com/10up/simple-page-ordering).
 
-
 == Installation ==
 
 1. Install either via the WordPress.org plugin directory, or by uploading the files to your server.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Get to work reordering your content!
-
 
 == Frequently Asked Questions ==
 
@@ -74,14 +72,20 @@ Where 5 is the number of items to batch on each request (the default is 50). Not
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
 
-
 == Screenshots ==
 
 1. Dragging the page to its new position
 1. Processing indicator
 
-
 == Changelog ==
+
+= 2.3.4 =
+* **Added:** Pre-commit hooks and linters to keep the coding style consistent and prevent potential syntax errors (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Added:** Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Changed:** Revert the removal of `post__not_in` introduced in v2.3.3 (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Changed:** Bumped WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/))
+* **Fixed:** Increase `offset` to include potential excluded Posts (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Fixed:** Decode em dash character before rendering the title (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 
 = 2.3.3 =
 * **Added:** Nonce verify for AJAX requests (props [@williampatton](https://profiles.wordpress.org/williampatton/), [@dtbaker](https://profiles.wordpress.org/dtbaker/))
