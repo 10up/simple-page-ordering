@@ -33,7 +33,3 @@ jobs:
 
     - name: Test
       run: ./bin/run-acceptance.sh ${{ matrix.snapshot }}
-      env:
-        GITHUB_WORKSPACE: ${{ github.workspace }}
-        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-        SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
