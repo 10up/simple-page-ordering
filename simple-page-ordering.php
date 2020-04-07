@@ -190,6 +190,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
+				'post__not_in'           => $excluded, // phpcs:ignore
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
@@ -211,11 +212,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			remove_action( 'post_updated', 'wp_save_post_revision' );
 
 			foreach ( $siblings->posts as $sibling ) :
-				// Skip the excluded posts.
-				if ( in_array( $sibling->ID, $excluded, true ) ) {
-					continue;
-				}
-
 				// don't handle the actual post
 				if ( $sibling->ID === $post->ID ) {
 					continue;
