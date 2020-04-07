@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.3.4] - 2020-04-07
+### Added
+- Pre-commit hooks and linters to keep the coding style consistent and prevent potential syntax errors (props [@dinhtungdu](https://github.com/dinhtungdu) via [#41](https://github.com/10up/simple-page-ordering/pull/41))
+- Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://github.com/dinhtungdu) via [#42](https://github.com/10up/simple-page-ordering/pull/42))
+
+### Changed
+- Revert the removal of `post__not_in` introduced in v2.3.3 (props [@dinhtungdu](https://github.com/dinhtungdu) via [#51](https://github.com/10up/simple-page-ordering/pull/51))
+- Bumped WordPress version support to 5.4 (props [@tmoorewp](https://github.com/tmoorewp) via [#50](https://github.com/10up/simple-page-ordering/pull/50))
+
+### Fixed
+- Increase `offset` to include potential excluded Posts (props [@dinhtungdu](https://github.com/dinhtungdu) via [#49](https://github.com/10up/simple-page-ordering/pull/49))
+- Decode em dash character before rendering the title (props [@dinhtungdu](https://github.com/dinhtungdu) via [#53](https://github.com/10up/simple-page-ordering/pull/53))
+
 ## [2.3.3] - 2020-03-04
 ### Added
 - Nonce verify for AJAX requests (props [@pattonwebz](https://github.com/pattonwebz), [@dtbaker](https://github.com/dtbaker) via [#23](https://github.com/10up/simple-page-ordering/pull/23))
@@ -157,6 +170,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/master...develop
+[2.3.4]: https://github.com/10up/simple-page-ordering/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/10up/simple-page-ordering/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/10up/simple-page-ordering/compare/2.3.1...2.3.2
 [2.3.1]: https://github.com/10up/simple-page-ordering/compare/2.3...2.3.1
