@@ -42,8 +42,8 @@ class PagesOrderingTest extends \TestCaseBase {
 		$actor->executeJavaScript( 'jQuery(".wp-list-table tbody").sortable("option","update")(null, { item: jQuery("#post-2 + .level-1").before(jQuery("#post-2 + .level-1 + .level-1")) });' );
 		$actor->waitUntilElementVisible( '#post-2 + .level-1 + .level-1 .check-column input' );
 
-		$actor->seeText( $first, '#post-2 + .level-1 .row-title' );
-		$actor->seeText( $second, '#post-2 + .level-1 + .level-1 .row-title' );
+		$actor->seeText( $second, '#post-2 + .level-1 .row-title' );
+		$actor->seeText( $first, '#post-2 + .level-1 + .level-1 .row-title' );
 	}
 }
 
