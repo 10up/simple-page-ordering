@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        snapshot: ['77940f9bf98ef744e64147f5f234d649', '9c872e2dfe1d8b565662efdd7c7cc724']
+        snapshot: ['9c872e2dfe1d8b565662efdd7c7cc724']
     
     steps:
     - name: Checkout
