@@ -190,7 +190,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
-				'post__not_in'           => $excluded,
+				'post__not_in'           => $excluded, // phpcs:ignore
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
