@@ -80,10 +80,9 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 == Changelog ==
 
 = 2.3.4 =
-* **Added:** Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
-* **Changed:** Revert the removal of `post__not_in` introduced in v2.3.3 (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
-* **Changed:** Bumped WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/))
-* **Fixed:** Decode em dash character before rendering the title (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Changed:** Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Changed:** Bump WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/))
+* **Fixed:** Ensure titles of reordered items appear in a human-readable way (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 
 = 2.3.3 =
 * **Added:** Nonce verify for AJAX requests (props [@williampatton](https://profiles.wordpress.org/williampatton/), [@dtbaker](https://profiles.wordpress.org/dtbaker/))

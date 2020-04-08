@@ -9,11 +9,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://github.com/dinhtungdu) via [#42](https://github.com/10up/simple-page-ordering/pull/42))
 
 ### Changed
-- Revert the removal of `post__not_in` introduced in v2.3.3 (props [@dinhtungdu](https://github.com/dinhtungdu) via [#51](https://github.com/10up/simple-page-ordering/pull/51))
-- Bumped WordPress version support to 5.4 (props [@tmoorewp](https://github.com/tmoorewp) via [#50](https://github.com/10up/simple-page-ordering/pull/50))
+- Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://github.com/dinhtungdu) via [#51](https://github.com/10up/simple-page-ordering/pull/51))
+- Bump WordPress version support to 5.4 (props [@tmoorewp](https://github.com/tmoorewp) via [#50](https://github.com/10up/simple-page-ordering/pull/50))
 
 ### Fixed
-- Decode em dash character before rendering the title (props [@dinhtungdu](https://github.com/dinhtungdu) via [#53](https://github.com/10up/simple-page-ordering/pull/53))
+- Ensure titles of reordered items appear in a human-readable way (props [@dinhtungdu](https://github.com/dinhtungdu) via [#53](https://github.com/10up/simple-page-ordering/pull/53))
 
 ## [2.3.3] - 2020-03-04
 ### Added
