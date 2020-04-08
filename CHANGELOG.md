@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.3.4] - 2020-04-07
 ### Added
-- Pre-commit hooks and linters to keep the coding style consistent and prevent potential syntax errors (props [@dinhtungdu](https://github.com/dinhtungdu) via [#41](https://github.com/10up/simple-page-ordering/pull/41))
 - Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://github.com/dinhtungdu) via [#42](https://github.com/10up/simple-page-ordering/pull/42))
 
 ### Changed
