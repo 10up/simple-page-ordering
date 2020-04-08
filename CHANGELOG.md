@@ -14,7 +14,6 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Bumped WordPress version support to 5.4 (props [@tmoorewp](https://github.com/tmoorewp) via [#50](https://github.com/10up/simple-page-ordering/pull/50))
 
 ### Fixed
-- Increase `offset` to include potential excluded Posts (props [@dinhtungdu](https://github.com/dinhtungdu) via [#49](https://github.com/10up/simple-page-ordering/pull/49))
 - Decode em dash character before rendering the title (props [@dinhtungdu](https://github.com/dinhtungdu) via [#53](https://github.com/10up/simple-page-ordering/pull/53))
 
 ## [2.3.3] - 2020-03-04
