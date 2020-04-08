@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test_wpa:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        snapshot: ['77940f9bf98ef744e64147f5f234d649']
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set PHP version
+      uses: shivammathur/setup-php@v1
+      with:
+        php-version: '7.2'
+        coverage: none
+
+    - name: Install dependencies
+      run: composer install
+
+    - name: Setup WP Snapshots
+      run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY }} --aws_secret=${{ secrets.SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
+
+    - name: Test
+      run: ./bin/run-acceptance.sh ${{ matrix.snapshot }}

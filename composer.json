@@ -1,0 +1,26 @@
+{
+  "name": "10up/simple-page-ordering",
+  "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
+  "version": "2.3.4",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "wordpress",
+    "10up"
+  ],
+  "homepage": "https://github.com/10up/simple-page-ordering",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "10up",
+      "homepage": "https://10up.com/"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/10up/simple-page-ordering/issues",
+    "source": "https://github.com/10up/simple-page-ordering"
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "10up/wpacceptance": "dev-master"
+  }
+}

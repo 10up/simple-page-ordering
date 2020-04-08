@@ -3,7 +3,7 @@
  * Plugin Name:       Simple Page Ordering
  * Plugin URI:        http://10up.com/plugins/simple-page-ordering-wordpress/
  * Description:       Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
- * Version:           2.3.3
+ * Version:           2.3.4
  * Requires at least: 3.8
  * Author:            Jake Goldman, 10up
  * Author URI:        https://10up.com
@@ -190,6 +190,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
+				'post__not_in'           => $excluded, // phpcs:ignore
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
@@ -211,11 +212,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			remove_action( 'post_updated', 'wp_save_post_revision' );
 
 			foreach ( $siblings->posts as $sibling ) :
-				// Skip the excluded posts.
-				if ( in_array( $sibling->ID, $excluded, true ) ) {
-					continue;
-				}
-
 				// don't handle the actual post
 				if ( $sibling->ID === $post->ID ) {
 					continue;

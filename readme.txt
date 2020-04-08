@@ -3,8 +3,8 @@ Contributors: 10up, jakemgold, welcher, helen, thinkoomph
 Donate link: http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags: order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to: 5.3
-Stable tag: 2.3.3
+Tested up to: 5.4
+Stable tag: 2.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,13 +26,11 @@ Please note that the plug-in is not compatible with Internet Explorer 7 and earl
 
 We'd love to have you join in on development over on [GitHub](https://github.com/10up/simple-page-ordering).
 
-
 == Installation ==
 
 1. Install either via the WordPress.org plugin directory, or by uploading the files to your server.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Get to work reordering your content!
-
 
 == Frequently Asked Questions ==
 
@@ -74,14 +72,17 @@ Where 5 is the number of items to batch on each request (the default is 50). Not
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
 
-
 == Screenshots ==
 
 1. Dragging the page to its new position
 1. Processing indicator
 
-
 == Changelog ==
+
+= 2.3.4 =
+* **Changed:** Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
+* **Changed:** Bump WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/))
+* **Fixed:** Ensure titles of reordered items appear in a human-readable way (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 
 = 2.3.3 =
 * **Added:** Nonce verify for AJAX requests (props [@williampatton](https://profiles.wordpress.org/williampatton/), [@dtbaker](https://profiles.wordpress.org/dtbaker/))
