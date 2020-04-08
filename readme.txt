@@ -84,7 +84,6 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 * **Added:** Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 * **Changed:** Revert the removal of `post__not_in` introduced in v2.3.3 (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 * **Changed:** Bumped WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/))
-* **Fixed:** Increase `offset` to include potential excluded Posts (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 * **Fixed:** Decode em dash character before rendering the title (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
 
 = 2.3.3 =
