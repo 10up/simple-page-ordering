@@ -6,7 +6,12 @@
     "project_path": "%WP_ROOT%/wp-content/plugins/simple-page-ordering",
     "enforce_clean_db": true,
     "bootstrap": "tests\/wpacceptance\/bootstrap.php",
-    "snapshot_id": "77940f9bf98ef744e64147f5f234d649",
+    "snapshots": [
+      {
+        "snapshot_name": "WP 5.4 with less than 50 pages/posts",
+        "snapshot_id": "77940f9bf98ef744e64147f5f234d649"
+      }
+    ],
     "before_scripts" : [
       "mv tests/test-plugins/* ../"
     ],
