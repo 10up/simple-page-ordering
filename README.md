@@ -64,7 +64,9 @@ This feature is already built into WordPress natively, but a bit tucked away. If
 
 ### How to exclude certain custom post type?
 
-Custom post type can be excluded by using `simple_page_ordering_is_sortable` filter. For example:
+Custom post type can be excluded by using `simple_page_ordering_is_sortable` filter.
+
+For example, with `excluded_post_type` is the custom post type id, put the following snippet in the theme function file or custom plugin:
 
 ```
 add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
@@ -74,8 +76,6 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 	return $sortable;
 }, 10, 2 );
 ```
-
-With `excluded_post_type` is the custom post type id.
 
 ## Support Level
 

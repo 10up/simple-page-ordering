@@ -68,9 +68,24 @@ This most likely means the AJAX request - the server side code - failed after yo
 
 Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback.
 
-= What happened to the drop down box that let me change the number of items on each page in the admin?? =
+= What happened to the drop down box that let me change the number of items on each page in the admin? =
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
+
+= How to exclude certain custom post type? =
+
+Custom post type can be excluded by using `simple_page_ordering_is_sortable` filter.
+
+For example, with `excluded_post_type` is the custom post type id, put the following snippet in the theme function file or custom plugin:
+
+`
+add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
+	if ( 'excluded_post_type' === $post_type ) {
+		return false;
+	}
+	return $sortable;
+}, 10, 2 );
+`
 
 == Screenshots ==
 
