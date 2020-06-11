@@ -8,6 +8,9 @@ module.exports = {
 		filename: '[name].min.js',
 		path: path.resolve('./assets/js')
 	},
+	resolve: {
+		modules: ['node_modules'],
+	},
 	module: {
 		rules: [
 			{

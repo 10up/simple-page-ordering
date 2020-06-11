@@ -16,5 +16,8 @@
     "build": "webpack --mode=production",
     "dev": "webpack --watch --mode=development",
     "makepot": "wpi18n makepot --domain-path localization --type plugin --main-file simple-page-ordering.php"
+  },
+  "dependencies": {
+    "@wordpress/html-entities": "^2.7.0"
   }
 }

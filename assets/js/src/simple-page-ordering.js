@@ -1,3 +1,5 @@
+import { decodeEntities } from '@wordpress/html-entities';
+
 function update_simple_ordering_callback(response) {
 	if ( 'children' === response ) {
 		window.location.reload();
@@ -40,9 +42,7 @@ function update_simple_ordering_callback(response) {
 				var dom_row_title = inline_key.parentNode.querySelector('.row-title');
 				if ( null !== dom_row_title && null !== post_title ) {
 					// Decode mdash character before rendering the title.
-					var textArea = document.createElement('textarea');
-					textArea.innerHTML = post_title;
-					dom_row_title.textContent = textArea.value;
+					dom_row_title.textContent = decodeEntities( post_title );
 				}
 			} else if ( null !== dom_menu_order ) {
 				dom_menu_order.textContent = new_pos[key];
