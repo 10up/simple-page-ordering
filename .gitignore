@@ -2,3 +2,4 @@
 localization
 node_modules
 vendor
+*.min.js

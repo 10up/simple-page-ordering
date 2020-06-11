@@ -26,7 +26,12 @@ jobs:
         coverage: none
 
     - name: Install dependencies
-      run: composer install
+      run: |
+        composer install
+        npm install
+
+    - name: Build
+      run: npm run build
 
     - name: Setup WP Snapshots
       run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY }} --aws_secret=${{ secrets.SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
