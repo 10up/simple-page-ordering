@@ -5,11 +5,16 @@
   "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-autoprefixer": "^3.0.4",
-    "grunt-contrib-uglify": "^3.2.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-sass": "^2.0.0",
-    "grunt-wp-i18n": "^1.0.1"
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "babel-loader": "^8.1.0",
+    "node-wp-i18n": "^1.2.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --watch --mode=development",
+    "makepot": "wpi18n makepot --domain-path localization --type plugin --main-file simple-page-ordering.php"
   }
 }
