@@ -6,7 +6,16 @@
     "project_path": "%WP_ROOT%/wp-content/plugins/simple-page-ordering",
     "enforce_clean_db": true,
     "bootstrap": "tests\/wpacceptance\/bootstrap.php",
-    "snapshot_id": "67bab8d66a265af74711f1975ed77913",
+    "snapshots": [
+      {
+        "snapshot_name": "WP latest",
+        "snapshot_id": "fc25bf0e70eb8a0ea1ad204772c7c81c"
+      },
+      {
+        "snapshot_name": "WP nightly",
+        "snapshot_id": "f8cd3aafdfbec18f8d2bc9a1ac9f5a08"
+      }
+    ],
     "before_scripts" : [
       "mv tests/test-plugins/* ../"
     ],
