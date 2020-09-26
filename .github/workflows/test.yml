@@ -12,9 +12,6 @@ on:
 jobs:
   test_wpa:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        snapshot: ['67bab8d66a265af74711f1975ed77913']
     
     steps:
     - name: Checkout
@@ -29,7 +26,7 @@ jobs:
       run: composer install
 
     - name: Setup WP Snapshots
-      run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY }} --aws_secret=${{ secrets.SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
+      run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY_ID }} --aws_secret=${{ secrets.AWS_SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
 
     - name: Test
-      run: ./bin/run-acceptance.sh ${{ matrix.snapshot }}
+      run: ./vendor/bin/wpacceptance run
