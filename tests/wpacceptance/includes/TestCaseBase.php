@@ -8,6 +8,10 @@ use WPAcceptance\Log;
  * Class extends \WPAcceptance\PHPUnit\TestCase
  */
 class TestCaseBase extends \WPAcceptance\PHPUnit\TestCase {
+	public function setUp(): void {
+		parent::setUp();
+		$this->runCommand( 'wp core update-db' );
+	}
 	/**
 	 * Activate the plugin.
 	 *
