@@ -90,8 +90,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$orderby = get_query_var( 'orderby' );
 			$screen  = get_current_screen();
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
-				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
-				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
+				wp_enqueue_script( 'simple-page-ordering', plugins_url( '/assets/js/simple-page-ordering.min.js', __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
 				wp_localize_script(
 					'simple-page-ordering',
 					'simple_page_ordering_localized_data',
