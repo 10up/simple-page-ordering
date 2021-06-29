@@ -1,6 +1,8 @@
 name: Test
 
 on:
+  schedule:
+    - cron:  '0 0 * * *'
   push:
     branches:
       - develop
@@ -12,9 +14,6 @@ on:
 jobs:
   test_wpa:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        snapshot: ['77940f9bf98ef744e64147f5f234d649']
     
     steps:
     - name: Checkout
@@ -29,7 +28,7 @@ jobs:
       run: composer install
 
     - name: Setup WP Snapshots
-      run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY }} --aws_secret=${{ secrets.SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
+      run: ./vendor/bin/wpsnapshots configure 10up --aws_key=${{ secrets.AWS_ACCESS_KEY_ID }} --aws_secret=${{ secrets.AWS_SECRET_ACCESS_KEY }} --user_name=wp-acceptance --user_email=travis@10up.com
 
     - name: Test
-      run: ./bin/run-acceptance.sh ${{ matrix.snapshot }}
+      run: ./vendor/bin/wpacceptance run
