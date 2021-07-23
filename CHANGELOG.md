@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/), and will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - TBD
+### Changed
+- Bump WordPress "tested up to" version to 5.8 (props [@phpbits](https://github.com/phpbits) via [#72](https://github.com/10up/simple-local-avatars/pull/72)).
 
 ## [2.3.4] - 2020-04-07
 ### Added
