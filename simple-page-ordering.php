@@ -47,6 +47,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
+			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
 		}
 
 		/**
@@ -116,6 +117,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			) );
 		}
 
+		/**
+		 * Page ordering ajax callback
+		 */
 		public static function ajax_simple_page_ordering() {
 			// check and make sure we have what we need
 			if ( empty( $_POST['id'] ) || ( ! isset( $_POST['previd'] ) && ! isset( $_POST['nextid'] ) ) ) {
@@ -130,8 +134,21 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
 
+			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
+			$previd   = empty( $_POST['prev_id'] ) ? false : (int) $_POST['prev_id'];
+			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
+			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
+			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+		}
+
+		/**
+		 * Page ordering function
+		 */
+		public static function page_ordering( $post_id, $prev_id, $nextid, $start, $excluded ) {
 			// real post?
-			$post = empty( $_POST['id'] ) ? false : get_post( (int) $_POST['id'] );
+			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
 			if ( ! $post ) {
 				die( - 1 );
 			}
@@ -148,10 +165,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			global $wp_version;
 
-			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
-			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
-			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $post->ID ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$previd   = empty( $prev_id ) ? false : (int) $prev_id;
+			$nextid   = empty( $nextid ) ? false : (int) $nextid;
+			$start    = empty( $start ) ? 1 : (int) $start;
+			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) json_decode( $excluded ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
 			$new_pos     = array(); // store new positions for ajax
 			$return_data = new stdClass;
@@ -161,6 +178,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// attempt to get the intended parent... if either sibling has a matching parent ID, use that
 			$parent_id        = $post->post_parent;
 			$next_post_parent = $nextid ? wp_get_post_parent_id( $nextid ) : false;
+
 			if ( $previd === $next_post_parent ) {    // if the preceding post is the parent of the next post, move it inside
 				$parent_id = $next_post_parent;
 			} elseif ( $next_post_parent !== $parent_id ) {  // otherwise, if the next post's parent isn't the same as our parent, we need to study
@@ -169,12 +187,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					$parent_id = ( false !== $prev_post_parent ) ? $prev_post_parent : $next_post_parent;
 				}
 			}
+
 			// if the next post's parent isn't our parent, it might as well be false (irrelevant to our query)
 			if ( $next_post_parent !== $parent_id ) {
 				$nextid = false;
 			}
 
 			$max_sortable_posts = (int) apply_filters( 'simple_page_ordering_limit', 50 );    // should reliably be able to do about 50 at a time
+
 			if ( $max_sortable_posts < 5 ) {    // don't be ridiculous!
 				$max_sortable_posts = 50;
 			}
@@ -337,6 +357,29 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$edit_others_cap  = empty( $post_type_object ) ? 'edit_others_' . $post_type . 's' : $post_type_object->cap->edit_others_posts;
 
 			return apply_filters( 'simple_page_ordering_edit_rights', current_user_can( $edit_others_cap ), $post_type );
+		}
+
+		/**
+		 * Registers the API endpoint for sorting from the REST endpoint
+		 */
+		public function rest_api_init() {
+			register_rest_route(
+				'simplepageordering/v1',
+				'simple_page_ordering',
+				[
+					'methods'             => 'GET',
+					'callback'            => array( __CLASS__, 'handle_rest_simple_page_ordering' ),
+					'permission_callback' => '__return_true',
+					'args'                => [
+						's' => [
+							'validate_callback' => function ( $param ) {
+								return ! empty( $param );
+							},
+							'required'          => true,
+						],
+					],
+				]
+			);
 		}
 	}
 
