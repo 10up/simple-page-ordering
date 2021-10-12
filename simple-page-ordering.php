@@ -135,18 +135,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
 
 			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
-			$previd   = empty( $_POST['prev_id'] ) ? false : (int) $_POST['prev_id'];
+			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
 			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
-		}
-
-		/**
-		 * Page ordering function
-		 */
-		public static function page_ordering( $post_id, $prev_id, $nextid, $start, $excluded ) {
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
 			if ( ! $post ) {
@@ -158,6 +151,19 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( - 1 );
 			}
 
+			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+		}
+
+		/**
+		 * Page ordering function
+		 */
+		public static function page_ordering( $post_id, $previd, $nextid, $start, $excluded ) {
+			// real post?
+			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
+			if ( ! $post ) {
+				die( - 1 );
+			}
+
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
 				error_reporting( 0 ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting
@@ -165,7 +171,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			global $wp_version;
 
-			$previd   = empty( $prev_id ) ? false : (int) $prev_id;
+			$previd   = empty( $previd ) ? false : (int) $previd;
 			$nextid   = empty( $nextid ) ? false : (int) $nextid;
 			$start    = empty( $start ) ? 1 : (int) $start;
 			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) json_decode( $excluded ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -362,24 +368,62 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Registers the API endpoint for sorting from the REST endpoint
 		 */
-		public function rest_api_init() {
+		public static function rest_api_init() {
 			register_rest_route(
 				'simplepageordering/v1',
-				'simple_page_ordering',
+				'page_ordering',
 				[
-					'methods'             => 'GET',
-					'callback'            => array( __CLASS__, 'handle_rest_simple_page_ordering' ),
+					'methods'             => 'POST',
+					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => '__return_true',
 					'args'                => [
-						's' => [
-							'validate_callback' => function ( $param ) {
-								return ! empty( $param );
-							},
-							'required'          => true,
+						'id'     => [
+							'description' => 'Post ID.',
+							'type'        => 'numeric',
+						],
+						'previd' => [
+							'description' => 'Previous post ID',
+							'type'        => 'numeric',
+						],
+						'nextid' => [
+							'description' => 'Next post ID',
+							'type'        => 'numeric',
+						],
+						'start' => [
+							'description' => 'Start index',
+							'type'        => 'numeric',
+						],
+						'exclude' => [
+							'description' => 'Array of excluded post id',
+							'type'        => 'array',
+						],
+						'screen_id' => [
+							'description' => 'Screen ID',
+							'type'        => 'string',
 						],
 					],
 				]
 			);
+		}
+
+		/**
+		 * Handle REST page sorting
+		 */
+		public static function rest_page_ordering() {
+			$post_id  = empty( $_GET['id'] ) ? false : (int) $_GET['id'];
+			$previd   = empty( $_GET['previd'] ) ? false : (int) $_GET['previd'];
+			$nextid   = empty( $_GET['nextid'] ) ? false : (int) $_GET['nextid'];
+			$start    = empty( $_GET['start'] ) ? 1 : (int) $_GET['start'];
+			$excluded = empty( $_GET['excluded'] ) ? array( $_GET['id'] ) : array_filter( (array) json_decode( $_GET['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+			// check and make sure we have what we need
+			if ( empty( $post_id ) || ( ! isset( $previd ) && ! isset( $nextid ) ) ) {
+				wp_send_json_error();
+			}
+
+			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+
+			wp_send_json_error();
 		}
 	}
 
