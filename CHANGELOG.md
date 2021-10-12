@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.3.5] - 2021-10-09
+- Added REST endpoint for reordering posts. /wp-json/simplepageordering/v1/page_ordering/ (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
+
 ## [2.3.4] - 2020-04-07
 ### Added
 - Acceptance testing using [WP Acceptance](https://github.com/10up/wpacceptance/) (props [@dinhtungdu](https://github.com/dinhtungdu) via [#42](https://github.com/10up/simple-page-ordering/pull/42))
