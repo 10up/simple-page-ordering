@@ -370,7 +370,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function rest_api_init() {
 			register_rest_route(
-				'simplepageordering/v1',
+				'simple-page-ordering/v1',
 				'page_ordering',
 				[
 					'methods'             => 'POST',
