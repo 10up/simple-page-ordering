@@ -21,6 +21,7 @@
   },
   "minimum-stability": "dev",
   "require-dev": {
-    "10up/wpacceptance": "dev-master"
+    "10up/wpacceptance": "dev-master",
+    "10up/phpcs-composer": "dev-master"
   }
 }

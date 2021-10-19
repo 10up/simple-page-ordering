@@ -10,10 +10,18 @@
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       simple-page-ordering
+ *
+ * @package simple-page-ordering
  */
+
+// Useful global constants.
+define( 'PLUGIN_VERSION', '2.3.5' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
+	/**
+	 * Simple_Page_Ordering class
+	 */
 	class Simple_Page_Ordering {
 
 		/**
@@ -27,7 +35,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			if ( null === $instance ) {
 				$instance = new self();
-				self::_add_actions();
+				self::add_actions();
 			}
 
 			return $instance;
@@ -43,7 +51,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Handles registering hooks that initialize this plugin.
 		 */
-		public static function _add_actions() {
+		public static function add_actions() {
 			add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
@@ -76,10 +84,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return;
 			}
 
-			add_filter( 'views_' . $screen->id, array(
-				__CLASS__,
-				'sort_by_order_link',
-			) );        // add view by menu order to views
+			// add view by menu order to views
+			add_filter(
+				'views_' . $screen->id,
+				array(
+					__CLASS__,
+					'sort_by_order_link',
+				)
+			);
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
 		}
@@ -101,7 +113,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'screen_id' => (string) $screen->id,
 					)
 				);
-				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ) );
+
+				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ), [], PLUGIN_VERSION );
 			}
 		}
 
@@ -110,15 +123,19 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 */
 		public static function admin_head() {
 			$screen = get_current_screen();
-			$screen->add_help_tab( array(
-				'id'      => 'simple_page_ordering_help_tab',
-				'title'   => 'Simple Page Ordering',
-				'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p>',
-			) );
+			$screen->add_help_tab(
+				array(
+					'id'      => 'simple_page_ordering_help_tab',
+					'title'   => 'Simple Page Ordering',
+					'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p>',
+				)
+			);
 		}
 
 		/**
 		 * Page ordering ajax callback
+		 *
+		 * @return void
 		 */
 		public static function ajax_simple_page_ordering() {
 			// check and make sure we have what we need
@@ -138,7 +155,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
 			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
 			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
 
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
@@ -151,22 +168,36 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( - 1 );
 			}
 
-			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+			$result = self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+
+			if ( is_wp_error( $result ) ) {
+				die( -1 );
+			}
+
+			die( wp_json_encode( $result ) );
 		}
 
 		/**
 		 * Page ordering function
+		 *
+		 * @param int    $post_id  The post ID.
+		 * @param int    $previd   The previous post ID.
+		 * @param int    $nextid   The next post ID.
+		 * @param int    $start    The start index.
+		 * @param string $excluded Array of post IDs.
+		 *
+		 * @return obj|WP_Error
 		 */
 		public static function page_ordering( $post_id, $previd, $nextid, $start, $excluded ) {
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
 			if ( ! $post ) {
-				die( - 1 );
+				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				error_reporting( 0 ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting
+				error_reporting( 0 ); // phpcs:ignore
 			}
 
 			global $wp_version;
@@ -174,10 +205,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$previd   = empty( $previd ) ? false : (int) $previd;
 			$nextid   = empty( $nextid ) ? false : (int) $nextid;
 			$start    = empty( $start ) ? 1 : (int) $start;
-			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) json_decode( $excluded ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) $excluded, 'intval' );
 
 			$new_pos     = array(); // store new positions for ajax
-			$return_data = new stdClass;
+			$return_data = new stdClass();
 
 			do_action( 'simple_page_ordering_pre_order_posts', $post, $start );
 
@@ -206,9 +237,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			// we need to handle all post stati, except trash (in case of custom stati)
-			$post_stati = get_post_stati( array(
-				'show_in_admin_all_list' => true,
-			) );
+			$post_stati = get_post_stati(
+				array(
+					'show_in_admin_all_list' => true,
+				)
+			);
 
 			$siblings_query = array(
 				'depth'                  => 1,
@@ -245,17 +278,21 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
 				if ( $nextid === $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
+					wp_update_post(
+						array(
+							'ID'          => $post->ID,
+							'menu_order'  => $start,
+							'post_parent' => $parent_id,
+						)
+					);
+
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
 						'menu_order'  => $start,
 						'post_parent' => $parent_id,
 						'depth'       => count( $ancestors ),
 					);
+
 					$start ++;
 				}
 
@@ -267,20 +304,25 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// set the menu order of the current sibling and increment the menu order
 				if ( $sibling->menu_order !== $start ) {
-					wp_update_post( array(
-						'ID'         => $sibling->ID,
-						'menu_order' => $start,
-					) );
+					wp_update_post(
+						array(
+							'ID'         => $sibling->ID,
+							'menu_order' => $start,
+						)
+					);
 				}
 				$new_pos[ $sibling->ID ] = $start;
 				$start ++;
 
 				if ( ! $nextid && $previd === $sibling->ID ) {
-					wp_update_post( array(
-						'ID'          => $post->ID,
-						'menu_order'  => $start,
-						'post_parent' => $parent_id,
-					) );
+					wp_update_post(
+						array(
+							'ID'          => $post->ID,
+							'menu_order'  => $start,
+							'post_parent' => $parent_id,
+						)
+					);
+
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
 						'menu_order'  => $start,
@@ -324,18 +366,19 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				);
 
 				if ( $children->have_posts() ) {
-					die( 'children' );
+					return( 'children' );
 				}
 			}
 
 			$return_data->new_pos = $new_pos;
-			die( wp_json_encode( $return_data ) );
+
+			return $return_data;
 		}
 
 		/**
 		 * Append a sort by order link to the post actions
 		 *
-		 * @param array $views
+		 * @param array $views An array of available list table views.
 		 *
 		 * @return array
 		 */
@@ -377,23 +420,23 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => '__return_true',
 					'args'                => [
-						'id'     => [
+						'id'        => [
 							'description' => 'Post ID.',
 							'type'        => 'numeric',
 						],
-						'previd' => [
+						'previd'    => [
 							'description' => 'Previous post ID',
 							'type'        => 'numeric',
 						],
-						'nextid' => [
+						'nextid'    => [
 							'description' => 'Next post ID',
 							'type'        => 'numeric',
 						],
-						'start' => [
+						'start'     => [
 							'description' => 'Start index',
 							'type'        => 'numeric',
 						],
-						'exclude' => [
+						'exclude'   => [
 							'description' => 'Array of excluded post id',
 							'type'        => 'array',
 						],
@@ -408,22 +451,34 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 		/**
 		 * Handle REST page sorting
+		 *
+		 * @param WP_REST_Request $request The REST request object.
 		 */
-		public static function rest_page_ordering() {
-			$post_id  = empty( $_GET['id'] ) ? false : (int) $_GET['id'];
-			$previd   = empty( $_GET['previd'] ) ? false : (int) $_GET['previd'];
-			$nextid   = empty( $_GET['nextid'] ) ? false : (int) $_GET['nextid'];
-			$start    = empty( $_GET['start'] ) ? 1 : (int) $_GET['start'];
-			$excluded = empty( $_GET['excluded'] ) ? array( $_GET['id'] ) : array_filter( (array) json_decode( $_GET['excluded'] ), 'intval' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		public static function rest_page_ordering( WP_REST_Request $request ) {
+			$post_id  = empty( $request->get_param( 'id' ) ) ? false : (int) $request->get_param( 'id' );
+			$previd   = empty( $request->get_param( 'previd' ) ) ? false : (int) $request->get_param( 'previd' );
+			$nextid   = empty( $request->get_param( 'nextid' ) ) ? false : (int) $request->get_param( 'nextid' );
+			$start    = empty( $request->get_param( 'start' ) ) ? 1 : (int) $request->get_param( 'start' );
+			$excluded = empty( $request->get_param( 'excluded' ) ) ? array( $request->get_param( 'id' ) ) : array_filter( (array) json_decode( $request->get_param( 'excluded' ) ), 'intval' );
 
 			// check and make sure we have what we need
 			if ( empty( $post_id ) || ( ! isset( $previd ) && ! isset( $nextid ) ) ) {
-				wp_send_json_error();
+				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
-			self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
+			$page_ordering = self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
 
-			wp_send_json_error();
+			if ( is_wp_error( $page_ordering ) ) {
+				return $page_ordering;
+			}
+
+			return new WP_REST_Response(
+				array(
+					'status'        => 200,
+					'response'      => 'successs',
+					'body_response' => $page_ordering,
+				)
+			);
 		}
 	}
 
