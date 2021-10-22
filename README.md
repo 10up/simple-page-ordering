@@ -2,7 +2,7 @@
 
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.7%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.8%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
 
 Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list.
 
