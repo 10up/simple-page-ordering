@@ -180,11 +180,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Page ordering function
 		 *
-		 * @param int    $post_id  The post ID.
-		 * @param int    $previd   The previous post ID.
-		 * @param int    $nextid   The next post ID.
-		 * @param int    $start    The start index.
-		 * @param string $excluded Array of post IDs.
+		 * @param int   $post_id  The post ID.
+		 * @param int   $previd   The previous post ID.
+		 * @param int   $nextid   The next post ID.
+		 * @param int   $start    The start index.
+		 * @param array $excluded Array of post IDs.
 		 *
 		 * @return obj|WP_Error
 		 */
