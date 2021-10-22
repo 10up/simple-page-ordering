@@ -420,29 +420,25 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => '__return_true',
 					'args'                => [
-						'id'        => [
+						'id'      => [
 							'description' => 'Post ID.',
 							'type'        => 'numeric',
 						],
-						'previd'    => [
+						'previd'  => [
 							'description' => 'Previous post ID',
 							'type'        => 'numeric',
 						],
-						'nextid'    => [
+						'nextid'  => [
 							'description' => 'Next post ID',
 							'type'        => 'numeric',
 						],
-						'start'     => [
+						'start'   => [
 							'description' => 'Start index',
 							'type'        => 'numeric',
 						],
-						'exclude'   => [
-							'description' => 'Array of excluded post id',
+						'exclude' => [
+							'description' => 'Array of excluded post IDs',
 							'type'        => 'array',
-						],
-						'screen_id' => [
-							'description' => 'Screen ID',
-							'type'        => 'string',
 						],
 					],
 				]
