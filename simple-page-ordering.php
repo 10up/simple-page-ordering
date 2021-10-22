@@ -422,22 +422,29 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'args'                => [
 						'id'      => [
 							'description' => 'Post ID.',
+							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'previd'  => [
 							'description' => 'Previous post ID',
+							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'nextid'  => [
 							'description' => 'Next post ID',
+							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'start'   => [
+							'default'     => 1,
 							'description' => 'Start index',
+							'required'    => false,
 							'type'        => 'numeric',
 						],
 						'exclude' => [
+							'default'     => [],
 							'description' => 'Array of excluded post IDs',
+							'required'    => false,
 							'type'        => 'array',
 						],
 					],
