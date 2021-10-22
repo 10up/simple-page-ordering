@@ -77,6 +77,25 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 }, 10, 2 );
 ```
 
+### Can I use REST to order posts?
+
+Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
+
+#### Input parameters
+| Name    | Type    |Description                                                  | Mandatory |  Default value |
+|--------:|--------:|------------------------------------------------------------:|----------:|---------------:|
+| id      | integer | The ID of the post you are positioning                      | yes       |                |
+| previd  | integer | The ID of the post previous to the one you want to position | yes       |                |
+| nextid  | integer | The ID of the post next to the one you want to position     | yes       |                |
+| start   | integer | The start index                                             | no        | 1              |
+| exclude | array   | Array of post IDs to be excluded                            | no        | empty array    |
+
+#### Example request
+| Type    | URL                                                                                  |
+|--------:|-------------------------------------------------------------------------------------:|
+| post    | /wp-json/simple-page-ordering/v1/page_ordering/?id=2&previd=13&nextid=14&excluded=[] |
+
+
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.

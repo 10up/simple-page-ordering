@@ -3,9 +3,13 @@
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/), and will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - TBD
+### Changed
+- Bump WordPress "tested up to" version to 5.8 (props [@phpbits](https://github.com/phpbits) via [#72](https://github.com/10up/simple-local-avatars/pull/72)).
 
-## [2.3.5] - 2021-10-09
-- Added REST endpoint for reordering posts. /wp-json/simplepageordering/v1/page_ordering/ (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
+## [2.3.5] - 2021-10-22
+### Added
+- REST endpoint for reordering posts. `/wp-json/simplepageordering/v1/page_ordering/` (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
+- REST Endpoint Documentation: https://github.com/10up/simple-page-ordering/blob/develop/README.md
 
 ## [2.3.4] - 2020-04-07
 ### Added

@@ -3,8 +3,8 @@ Contributors: 10up, jakemgold, welcher, helen, thinkoomph
 Donate link: http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags: order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to: 5.7
-Stable tag: 2.3.4
+Tested up to: 5.8
+Stable tag: 2.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,9 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 1. Processing indicator
 
 == Changelog ==
+
+= 2.3.5 =
+* **Added:** REST endpoint for reordering posts. `/wp-json/simplepageordering/v1/`  (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
 
 = 2.3.4 =
 * **Changed:** Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/))
