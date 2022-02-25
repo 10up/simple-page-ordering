@@ -15,7 +15,7 @@
  */
 
 // Useful global constants.
-define( 'PLUGIN_VERSION', '2.3.5' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.3.5' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -114,7 +114,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					)
 				);
 
-				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ), [], PLUGIN_VERSION );
+				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ), [], SIMPLE_PAGE_ORDERING_VERSION );
 			}
 		}
 
