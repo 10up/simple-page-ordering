@@ -19,3 +19,4 @@
 /package-lock.json export-ignore
 /README.md export-ignore
 /.wp-env.json export-ignore
+/.wp-env.override.json export-ignore

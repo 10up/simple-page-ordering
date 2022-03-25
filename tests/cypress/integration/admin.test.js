@@ -3,9 +3,17 @@ describe("Admin can login and make sure plugin is activated", () => {
 		cy.login();
 		cy.visit("/wp-admin/plugins.php");
 
-		cy.get('#the-list tr[data-slug="simple-page-ordering"] .deactivate > a').click();
-		cy.get('#the-list tr[data-slug="simple-page-ordering"] .activate > a').click();
-		cy.get('#the-list tr[data-slug="simple-page-ordering"] .deactivate > a').should('have.text', 'Deactivate');
+		cy.get( 'body' ).then( ( $body ) => {
+			if( $body.find( '#the-list tr[data-slug="simple-page-ordering"] .deactivate > a' ).length > 0 ) {
+				cy.get('#the-list tr[data-slug="simple-page-ordering"] .deactivate > a').click();
+				cy.get('#the-list tr[data-slug="simple-page-ordering"] .activate > a').click();
+				cy.get('#the-list tr[data-slug="simple-page-ordering"] .deactivate > a').should('have.text', 'Deactivate');
+			} else {
+				cy.get('#the-list tr#simple-page-ordering .deactivate > a').click();
+				cy.get('#the-list tr#simple-page-ordering .activate > a').click();
+				cy.get('#the-list tr#simple-page-ordering .deactivate > a').should('have.text', 'Deactivate');
+			}
+		});
 	});
 
 	it('Can see "Sort by Order" on Pages list page.', () => {
