@@ -5,11 +5,22 @@
   "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
+    "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
+    "@wordpress/env": "^4.4.0",
+    "cypress": "^9.5.2",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-uglify": "^3.2.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0",
     "grunt-wp-i18n": "^1.0.1"
+  },
+  "scripts": {
+    "cypress:open": "cypress open --config-file tests/cypress/config.json",
+    "cypress:run": "cypress run --config-file tests/cypress/config.json",
+    "env": "wp-env",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "postenv:start": "./tests/bin/initialize.sh"
   }
 }
