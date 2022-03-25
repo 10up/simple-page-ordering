@@ -19,7 +19,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Install dependencies
-      run: npm install
+      run: node -v && npm install
     - name: Install Composer dependencies
       run: composer install
       continue-on-error: true
