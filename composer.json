@@ -21,7 +21,11 @@
   },
   "minimum-stability": "dev",
   "require-dev": {
-    "10up/wpacceptance": "dev-master",
     "10up/phpcs-composer": "dev-master"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

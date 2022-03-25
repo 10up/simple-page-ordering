@@ -17,4 +17,4 @@
 /LICENSE.md export-ignore
 /package.json export-ignore
 /README.md export-ignore
-/wpacceptance.json export-ignore
+/.wp-env.json export-ignore
