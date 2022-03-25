@@ -2,7 +2,6 @@
   "plugins": [".","./tests/test-plugins"],
   "env": {
     "tests": {
-      "phpVersion": "5.6",
       "mappings": {
         "wp-cli.yml": "./tests/bin/wp-cli.yml"
       }
