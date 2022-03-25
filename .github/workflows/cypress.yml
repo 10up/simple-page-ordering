@@ -18,6 +18,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '12.8.0'
     - name: Install dependencies
       run: node -v && npm install
     - name: Install Composer dependencies
