@@ -3,7 +3,7 @@ describe( 'Page ordering', () => {
 		cy.login( 'admin', 'password' );
 	} );
 
-	it( 'Page can be reordered', async () => {
+	it( 'Pages can be reordered', async () => {
 		cy.visit( `${ Cypress.config().baseUrl }wp-admin/edit.php?post_type=page` );
 
 		cy
