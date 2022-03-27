@@ -11,11 +11,21 @@ on:
 
 jobs:
   phpcs:
-    name: WPCS
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: WPCS check
-        uses: 10up/wpcs-action@stable
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set PHP version
+        uses: shivammathur/setup-php@v2
         with:
-          standard: 'WordPress'
+          php-version: '7.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run PHPCS
+        run: vendor/bin/phpcs simple-page-ordering.php --extensions=php -s
