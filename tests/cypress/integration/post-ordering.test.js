@@ -1,5 +1,5 @@
-describe("Test Post Order Change", () => {
-	it("Can change posts order", () => {
+describe('Test Post Order Change', () => {
+	it('Can change posts order', () => {
 		cy.login();
 		cy.visit('/wp-admin/edit.php?orderby=menu_order+title&order=asc');
 
