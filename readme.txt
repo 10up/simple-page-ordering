@@ -95,14 +95,15 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 == Changelog ==
 
 = 2.4.0 =
-**Added:** Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@jeffpaul](https://profiles.wordpress.org/jeffpaul/))
-**Added:** REST API for reordering posts (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav))
-**Added:** E2E Cypress tests (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [dharm1025](https://profiles.wordpress.org/dharm1025/), [faisal03](https://profiles.wordpress.org/faisal03/))
-**Added:** PHP8 compatibility testing Github action. (props [nomnom99](https://profiles.wordpress.org/nomnom99/), [dharm1025](https://profiles.wordpress.org/dharm1025/))
-**Changed:** `PLUGIN_VERSION` to `SIMPLE_PAGE_ORDERING_VERSION` (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dkotter](https://profiles.wordpress.org/dkotter/))
-**Security:** Bump rmccue/requests from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot))
-**Security:** Added dependency security scanning Github action. (props [@jeffpaul](https://profiles.wordpress.org/jeffpaul/), [nomnom99](https://profiles.wordpress.org/nomnom99/))
-**Security:** Bump async from 2.6.3 to 2.6.4. (props [@dependabot](https://github.com/apps/dependabot))
+* **Added:** Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@jeffpaul](https://profiles.wordpress.org/jeffpaul/))
+* **Added:** REST API for reordering posts (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav))
+* **Added:** E2E Cypress tests (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dharm1025](https://profiles.wordpress.org/dharm1025/), [@faisal03](https://profiles.wordpress.org/faisal03/))
+* **Added:** PHP8 compatibility testing Github action. (props [@nomnom99](https://profiles.wordpress.org/nomnom99/), [@dharm1025](https://profiles.wordpress.org/dharm1025/))
+* **Changed:** `PLUGIN_VERSION` to `SIMPLE_PAGE_ORDERING_VERSION` (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dkotter](https://profiles.wordpress.org/dkotter/))
+* **Changed:** Bump WordPress "tested up to" version to 5.9 (props [@ankitguptaindia](https://github.com/ankitguptaindia), [@phpbits](https://github.com/phpbits), [@sudip-10up](https://github.com/sudip-10up) via [#69](https://github.com/10up/simple-page-ordering/pull/69), [#72](https://github.com/10up/simple-page-ordering/pull/72), [#76](https://github.com/10up/simple-page-ordering/pull/76))
+* **Security:** Bump rmccue/requests from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot))
+* **Security:** Added dependency security scanning Github action. (props [@jeffpaul](https://profiles.wordpress.org/jeffpaul/), [@nomnom99](https://profiles.wordpress.org/nomnom99/))
+* **Security:** Bump async from 2.6.3 to 2.6.4. (props [@dependabot](https://github.com/apps/dependabot))
 
 = 2.3.5 =
 * **Added:** REST endpoint for reordering posts. `/wp-json/simplepageordering/v1/`  (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
