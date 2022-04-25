@@ -3,24 +3,23 @@
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/), and will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - TBD
-### Changed
-- Bump WordPress "tested up to" version to 5.8 (props [@phpbits](https://github.com/phpbits) via [#72](https://github.com/10up/simple-local-avatars/pull/72)).
 
-## [2.4.0]
+## [2.4.0] - 2022-04-26
 ### Added
-- Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://github.com/dinhtungdu), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/simple-page-ordering/pull/60))
-- REST API for reordering posts (props [@rmccue](https://github.com/rmccue), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://github.com/cadic), [@lkraav](https://github.com/lkraav) via [#74](https://github.com/10up/simple-page-ordering/pull/74))
-- E2E Cypress tests (props [@dinhtungdu](https://github.com/dinhtungdu), [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#82](https://github.com/10up/simple-page-ordering/pull/82))
-- PHP8 compatibility testing Github action. (props [@Sidsector9](https://profiles.wordpress.org/Sidsector9/), [@iamdharmesh](https://github.com/iamdharmesh) via [#84](https://github.com/10up/simple-page-ordering/pull/84))
+- REST API for reordering posts (props [@rmccue](https://github.com/rmccue), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://github.com/cadic), [@lkraav](https://github.com/lkraav) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
+- Documentation to exclude post types (props [@dzulfriday](https://profiles.wordpress.org/dzulfriday/) [@dinhtungdu](https://github.com/dinhtungdu), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/simple-page-ordering/pull/60)).
+- PHP8 compatibility testing GitHub Action (props [@Sidsector9](https://profiles.wordpress.org/Sidsector9/), [@iamdharmesh](https://github.com/iamdharmesh) via [#84](https://github.com/10up/simple-page-ordering/pull/84)).
+- Cypress E2E tests (props [@dinhtungdu](https://github.com/dinhtungdu), [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#82](https://github.com/10up/simple-page-ordering/pull/82)).
+- Dependency security scanning GiHhub Action. (props [@jeffpaul](https://github.com/jeffpaul), [Sidsector9](https://profiles.wordpress.org/Sidsector9/) via [#86](https://github.com/10up/simple-page-ordering/pull/86)).
+
 
 ### Changed
-- `PLUGIN_VERSION` to `SIMPLE_PAGE_ORDERING_VERSION` (props [@dinhtungdu](https://github.com/dinhtungdu), [@dkotter](https://github.com/dkotter) via [#81](https://github.com/10up/simple-page-ordering/pull/81))
-- Bump WordPress "tested up to" version to 5.9 (props [@ankitguptaindia](https://github.com/ankitguptaindia), [@phpbits](https://github.com/phpbits), [@sudip-10up](https://github.com/sudip-10up) via [#69](https://github.com/10up/simple-page-ordering/pull/69), [#72](https://github.com/10up/simple-page-ordering/pull/72), [#76](https://github.com/10up/simple-page-ordering/pull/76))
+- `PLUGIN_VERSION` to `SIMPLE_PAGE_ORDERING_VERSION` (props [@dinhtungdu](https://github.com/dinhtungdu), [@dkotter](https://github.com/dkotter) via [#81](https://github.com/10up/simple-page-ordering/pull/81)).
+- Bump WordPress "tested up to" version to 5.9 (props [@ankitguptaindia](https://github.com/ankitguptaindia), [@phpbits](https://github.com/phpbits), [@sudip-10up](https://github.com/sudip-10up) via [#69](https://github.com/10up/simple-page-ordering/pull/69), [#72](https://github.com/10up/simple-page-ordering/pull/72), [#76](https://github.com/10up/simple-page-ordering/pull/76)).
 
 ### Security
-- Bump rmccue/requests from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot) via [#70](https://github.com/10up/simple-page-ordering/pull/70))
-- Added dependency security scanning Github action. (props [@jeffpaul](https://github.com/jeffpaul), [Sidsector9](https://profiles.wordpress.org/Sidsector9/) via [#86](https://github.com/10up/simple-page-ordering/pull/86))
-- Bump async from 2.6.3 to 2.6.4. (props [@dependabot](https://github.com/apps/dependabot) via [#87](https://github.com/10up/simple-page-ordering/pull/87))
+- Bump `rmccue/requests` from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot) via [#70](https://github.com/10up/simple-page-ordering/pull/70)).
+- Bump `async` from 2.6.3 to 2.6.4. (props [@dependabot](https://github.com/apps/dependabot) via [#87](https://github.com/10up/simple-page-ordering/pull/87)).
 
 ## [2.3.5] - 2021-10-22
 ### Added
