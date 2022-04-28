@@ -1,12 +1,12 @@
 === Simple Page Ordering ===
-Contributors: 10up, jakemgold, welcher, helen, thinkoomph
-Donate link: http://10up.com/plugins/simple-page-ordering-wordpress/
-Tags: order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
+Contributors:      10up, jakemgold, welcher, helen, thinkoomph
+Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
+Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to: 5.9
-Stable tag: 2.4.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to:      5.9
+Stable tag:        2.4.0
+License:           GPLv2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
@@ -95,7 +95,8 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 == Changelog ==
 
 = 2.4.0 - 2022-04-28 =
-* **Added:** REST API for reordering posts (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav)).
+* **Added:** REST API for reordering posts: `/wp-json/simplepageordering/v1/` (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu)).
+* **Added:** [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
 * **Added:** Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@jeffpaul](https://profiles.wordpress.org/jeffpaul/)).
 * **Added:** PHP8 compatibility testing GitHub Action (props [@nomnom99](https://profiles.wordpress.org/nomnom99/), [@dharm1025](https://profiles.wordpress.org/dharm1025/)).
 * **Added:** Cypress E2E tests (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dharm1025](https://profiles.wordpress.org/dharm1025/), [@faisal03](https://profiles.wordpress.org/faisal03/)).
@@ -104,10 +105,6 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 * **Changed:** Bump WordPress "tested up to" version to 5.9 (props [@ankitguptaindia](https://github.com/ankitguptaindia), [@phpbits](https://github.com/phpbits), [@sudip-10up](https://github.com/sudip-10up)).
 * **Security:** Bump rmccue/requests from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot)).
 * **Security:** Bump async from 2.6.3 to 2.6.4 (props [@dependabot](https://github.com/apps/dependabot)).
-
-= 2.3.5 - 2021-10-22 =
-* **Added:** REST endpoint for reordering posts. `/wp-json/simplepageordering/v1/`  (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
-- [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
 
 = 2.3.4 - 2020-04-07 =
 * **Changed:** Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/)).
