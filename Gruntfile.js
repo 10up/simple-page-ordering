@@ -1,3 +1,5 @@
+const sass = require('node-sass');
+
 module.exports = function(grunt) {
 
 	grunt.initConfig({
@@ -17,6 +19,7 @@ module.exports = function(grunt) {
 			dist: {
 				options: {
 					precision: 2,
+					implementation: sass,
 					sourceMap: true
 				},
 				files: {

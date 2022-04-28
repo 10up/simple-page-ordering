@@ -1,7 +1,6 @@
 {
   "name": "10up/simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
-  "version": "2.3.4",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
@@ -21,6 +20,11 @@
   },
   "minimum-stability": "dev",
   "require-dev": {
-    "10up/wpacceptance": "dev-master"
+    "10up/phpcs-composer": "dev-master"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

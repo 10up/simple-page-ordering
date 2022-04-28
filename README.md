@@ -2,7 +2,7 @@
 
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.4%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
 
 Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list.
 
@@ -58,9 +58,43 @@ This most likely means the AJAX request - the server side code - failed after yo
 
 Where 5 is the number of items to batch on each request (the default is 50). Note that this example uses PHP 5.3+ callback functions, so if you're still on PHP 5.2, you'll need to add a traditional callback.
 
-### What happened to the drop down box that let me change the number of items on each page in the admin??
+### What happened to the drop down box that let me change the number of items on each page in the admin?
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
+
+### How can I exclude certain custom post types?
+
+Custom post types can be excluded by using the `simple_page_ordering_is_sortable` filter.
+
+For example, with `excluded_post_type` as the custom post type ID, add the following snippet in the theme function file or custom plugin:
+
+```
+add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
+	if ( 'excluded_post_type' === $post_type ) {
+		return false;
+	}
+	return $sortable;
+}, 10, 2 );
+```
+
+### Can I use REST to order posts?
+
+Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
+
+#### Input parameters
+| Name    | Type    |Description                                                  | Mandatory |  Default value |
+|--------:|--------:|------------------------------------------------------------:|----------:|---------------:|
+| id      | integer | The ID of the post you are positioning                      | yes       |                |
+| previd  | integer | The ID of the post previous to the one you want to position | yes       |                |
+| nextid  | integer | The ID of the post next to the one you want to position     | yes       |                |
+| start   | integer | The start index                                             | no        | 1              |
+| exclude | array   | Array of post IDs to be excluded                            | no        | empty array    |
+
+#### Example request
+| Type    | URL                                                                                  |
+|--------:|-------------------------------------------------------------------------------------:|
+| post    | /wp-json/simple-page-ordering/v1/page_ordering/?id=2&previd=13&nextid=14&excluded=[] |
+
 
 ## Support Level
 
@@ -77,5 +111,5 @@ Please read [CODE_OF_CONDUCT.md](https://github.com/10up/simple-page-ordering/bl
 ## Like what you see?
 
 <p align="center">
-<a href="http://10up.com/contact/"><img src="https://10updotcom-wpengine.s3.amazonaws.com/uploads/2016/10/10up-Github-Banner.png" width="850"></a>
+<a href="http://10up.com/contact/"><img src="https://10up.com/uploads/2016/10/10up-Github-Banner.png" width="850"></a>
 </p>
