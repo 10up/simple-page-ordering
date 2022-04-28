@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.4.0] - 2022-04-28
 ### Added
-- REST API for reordering posts (props [@rmccue](https://github.com/rmccue), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://github.com/cadic), [@lkraav](https://github.com/lkraav) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
+- REST API for reordering posts: `/wp-json/simplepageordering/v1/page_ordering/` (props [@rmccue](https://github.com/rmccue), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://github.com/cadic), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
+- [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
 - Documentation to exclude post types (props [@dzulfriday](https://profiles.wordpress.org/dzulfriday/) [@dinhtungdu](https://github.com/dinhtungdu), [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/simple-page-ordering/pull/60)).
 - PHP8 compatibility testing GitHub Action (props [@Sidsector9](https://profiles.wordpress.org/Sidsector9/), [@iamdharmesh](https://github.com/iamdharmesh) via [#84](https://github.com/10up/simple-page-ordering/pull/84)).
 - Cypress E2E tests (props [@dinhtungdu](https://github.com/dinhtungdu), [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#82](https://github.com/10up/simple-page-ordering/pull/82)).
@@ -19,11 +20,6 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Security
 - Bump `rmccue/requests` from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot) via [#70](https://github.com/10up/simple-page-ordering/pull/70)).
 - Bump `async` from 2.6.3 to 2.6.4 (props [@dependabot](https://github.com/apps/dependabot) via [#87](https://github.com/10up/simple-page-ordering/pull/87)).
-
-## [2.3.5] - 2021-10-22
-### Added
-- REST endpoint for reordering posts. `/wp-json/simplepageordering/v1/page_ordering/` (props [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
-- [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
 
 ## [2.3.4] - 2020-04-07
 ### Added
@@ -189,8 +185,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/master...develop
-[2.4.0]: https://github.com/10up/simple-page-ordering/compare/2.3.5...2.4.0
-[2.3.5]: https://github.com/10up/simple-page-ordering/compare/2.3.4...2.3.5
+[2.4.0]: https://github.com/10up/simple-page-ordering/compare/2.3.4...2.4.0
 [2.3.4]: https://github.com/10up/simple-page-ordering/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/10up/simple-page-ordering/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/10up/simple-page-ordering/compare/2.3.1...2.3.2
