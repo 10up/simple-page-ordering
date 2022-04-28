@@ -94,7 +94,7 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 == Changelog ==
 
-= 2.4.0 - 2022-04-26 =
+= 2.4.0 - 2022-04-28 =
 * **Added:** REST API for reordering posts (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav)).
 * **Added:** Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@jeffpaul](https://profiles.wordpress.org/jeffpaul/)).
 * **Added:** PHP8 compatibility testing GitHub Action (props [@nomnom99](https://profiles.wordpress.org/nomnom99/), [@dharm1025](https://profiles.wordpress.org/dharm1025/)).
