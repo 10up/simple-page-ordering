@@ -27,7 +27,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Handles initializing this class and returning the singleton instance after it's been cached.
 		 *
-		 * @return null|Simple_page_Ordering
+		 * @return null|Simple_Page_Ordering
 		 */
 		public static function get_instance() {
 			// Store the instance locally to avoid private static replication
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @param int   $start    The start index.
 		 * @param array $excluded Array of post IDs.
 		 *
-		 * @return obj|WP_Error
+		 * @return object|WP_Error|"children"
 		 */
 		public static function page_ordering( $post_id, $previd, $nextid, $start, $excluded ) {
 			// real post?
@@ -366,7 +366,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				);
 
 				if ( $children->have_posts() ) {
-					return( 'children' );
+					return 'children';
 				}
 			}
 
