@@ -421,29 +421,29 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'permission_callback' => '__return_true',
 					'args'                => [
 						'id'      => [
-							'description' => 'Post ID.',
+							'description' => __( 'Post ID.', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'previd'  => [
-							'description' => 'Previous post ID',
+							'description' => __( 'Previous post ID', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'nextid'  => [
-							'description' => 'Next post ID',
+							'description' => __( 'Next post ID', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'start'   => [
 							'default'     => 1,
-							'description' => 'Start index',
+							'description' => __( 'Start index', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'numeric',
 						],
 						'exclude' => [
 							'default'     => [],
-							'description' => 'Array of excluded post IDs',
+							'description' => __( 'Array of excluded post IDs', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
 						],
