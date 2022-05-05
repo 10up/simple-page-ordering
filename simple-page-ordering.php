@@ -464,8 +464,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$start    = empty( $request->get_param( 'start' ) ) ? 1 : (int) $request->get_param( 'start' );
 			$excluded = empty( $request->get_param( 'excluded' ) ) ? array( $request->get_param( 'id' ) ) : array_filter( (array) json_decode( $request->get_param( 'excluded' ) ), 'intval' );
 
-			// check and make sure we have what we need
-			if ( empty( $post_id ) || ( ! isset( $previd ) && ! isset( $nextid ) ) ) {
+			// Check and make sure we have what we need.
+			if ( false === $post_id || ( false === $previd && false === $nextid ) ) {
 				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
