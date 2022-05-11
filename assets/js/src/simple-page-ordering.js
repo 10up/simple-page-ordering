@@ -1,4 +1,5 @@
 import '../../css/scss/simple-page-ordering.scss';
+import 'jquery-ui-sortable';
 
 function update_simple_ordering_callback(response) {
 	if ( 'children' === response ) {
