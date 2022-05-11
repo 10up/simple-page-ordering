@@ -9,7 +9,8 @@
     "@wordpress/dependency-extraction-webpack-plugin": "^3.4.1",
     "@wordpress/env": "^4.4.0",
     "10up-toolkit": "^4.0.0",
-    "cypress": "^9.5.2"
+    "cypress": "^9.5.2",
+    "node-wp-i18n": "^1.2.6"
   },
   "scripts": {
     "cypress:open": "cypress open --config-file tests/cypress/config.json",
@@ -18,8 +19,9 @@
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
     "postenv:start": "./tests/bin/initialize.sh",
-    "build": "10up-toolkit build",
-    "dev": "10up-toolkit build --watch"
+    "build": "10up-toolkit build && npm run makepot",
+    "dev": "10up-toolkit build --watch",
+	"makepot": "wpi18n makepot --domain-path localization --pot-file simple-page-ordering.pot --type plugin --main-file simple-page-ordering.php --exclude bin,dist,node_modules,tests,vendor"
   },
   "10up-toolkit": {
     "devURL": "https://simple-page-ordering.test",
