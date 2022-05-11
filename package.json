@@ -7,14 +7,8 @@
   "devDependencies": {
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "@wordpress/env": "^4.4.0",
-    "cypress": "^9.5.2",
-    "grunt": "^1.5.2",
-    "grunt-autoprefixer": "^3.0.4",
-    "grunt-contrib-uglify": "^5.0.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-sass": "^3.1.0",
-    "grunt-wp-i18n": "^1.0.3",
-    "node-sass": "^7.0.1"
+    "10up-toolkit": "^4.0.0",
+    "cypress": "^9.5.2"
   },
   "scripts": {
     "cypress:open": "cypress open --config-file tests/cypress/config.json",
@@ -22,7 +16,14 @@
     "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
-    "postenv:start": "./tests/bin/initialize.sh"
+    "postenv:start": "./tests/bin/initialize.sh",
+    "build": "10up-toolkit build",
+    "dev": "10up-toolkit build --watch"
   },
-  "dependencies": {}
+  "10up-toolkit": {
+    "devURL": "https://simple-page-ordering.test",
+    "entry": {
+      "simple-page-ordering": "./assets/js/src/simple-page-ordering.js"
+    }
+  }
 }
