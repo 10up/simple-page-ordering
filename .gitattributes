@@ -2,8 +2,11 @@
 /.git export-ignore
 /.github export-ignore
 /.wordpress-org export-ignore
+/assets export-ignore
 /bin export-ignore
+/node_modules export-ignore
 /tests export-ignore
+/vendor export-ignore
 
 # Files to ignore
 /.editorconfig export-ignore
@@ -23,3 +26,4 @@
 /package-lock.json export-ignore
 /package.json export-ignore
 /README.md export-ignore
+/webpack.config.js export-ignore
