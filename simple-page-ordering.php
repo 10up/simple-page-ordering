@@ -103,8 +103,19 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$orderby = get_query_var( 'orderby' );
 			$screen  = get_current_screen();
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
-				$script_name = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '/assets/js/src/simple-page-ordering.js' : '/assets/js/simple-page-ordering.min.js';
-				wp_enqueue_script( 'simple-page-ordering', plugins_url( $script_name, __FILE__ ), array( 'jquery-ui-sortable' ), '2.1', true );
+
+				$script_name       = 'dist/js/simple-page-ordering.js';
+				$script_asset_path = plugin_dir_path( __FILE__ ) . 'dist/js/simple-page-ordering.asset.php';
+				$script_asset      = file_exists( $script_asset_path )
+					? require $script_asset_path
+					: array(
+						'dependencies' => array(),
+						'version'      => filemtime( $script_name ),
+					);
+
+				$script_url = plugins_url( $script_name, __FILE__ );
+				wp_enqueue_script( 'simple-page-ordering', $script_url, $script_asset['dependencies'], $script_asset['version'], true );
+
 				wp_localize_script(
 					'simple-page-ordering',
 					'simple_page_ordering_localized_data',
@@ -114,7 +125,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					)
 				);
 
-				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/assets/css/simple-page-ordering.css', __FILE__ ), [], SIMPLE_PAGE_ORDERING_VERSION );
+				wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], SIMPLE_PAGE_ORDERING_VERSION );
 			}
 		}
 
