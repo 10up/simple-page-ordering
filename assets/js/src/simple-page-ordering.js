@@ -1,3 +1,5 @@
+import '../../css/scss/simple-page-ordering.scss';
+
 function update_simple_ordering_callback(response) {
 	if ( 'children' === response ) {
 		window.location.reload();
