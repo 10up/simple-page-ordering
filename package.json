@@ -8,7 +8,7 @@
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "@wordpress/env": "^4.4.0",
     "cypress": "^9.5.2",
-    "grunt": "^1.5.2",
+    "grunt": "^1.5.3",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
