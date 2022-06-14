@@ -199,6 +199,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.4.1]: https://github.com/10up/simple-page-ordering/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/10up/simple-page-ordering/compare/2.3.4...2.4.0
 [2.3.4]: https://github.com/10up/simple-page-ordering/compare/2.3.3...2.3.4
 [2.3.3]: https://github.com/10up/simple-page-ordering/compare/2.3.2...2.3.3
