@@ -94,6 +94,14 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 == Changelog ==
 
+= 2.4.1 - TBD =
+* **Added** - Missing text domain to strings (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@kebbet](https://github.com/kebbet)) via [#92](https://github.com/10up/simple-page-ordering/pull/92))
+* **Fixed** - Condition in rest_page_ordering (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh)) via [#94](https://github.com/10up/simple-page-ordering/pull/94))
+* **Fixed** - PHP Coding standards (props [@phpstan](https://github.com/phpstan), [@jeffpaul](https://github.com/jeffpaul), [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu)) via [#93](https://github.com/10up/simple-page-ordering/pull/93))
+* **Fixed** - Condition in REST page sorting logic (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh)) via [#94](https://github.com/10up/simple-page-ordering/pull/94))
+* **Changed** - Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul)) via [#95](https://github.com/10up/simple-page-ordering/pull/95))
+* **Security** - Bump grunt from 1.5.2 to 1.5.3 (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul)) via [#99](https://github.com/10up/simple-page-ordering/pull/99))
+
 = 2.4.0 - 2022-04-28 =
 * **Added:** REST API for reordering posts: `/wp-json/simplepageordering/v1/` (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu)).
 * **Added:** [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
