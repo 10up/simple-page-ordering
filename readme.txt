@@ -1,5 +1,5 @@
 === Simple Page Ordering ===
-Contributors:      10up, jakemgold, welcher, helen, thinkoomph
+Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
