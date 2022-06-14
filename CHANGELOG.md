@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.4.1] - TBD
+### Added
+- Missing text domain to strings (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@kebbet](https://github.com/kebbet)) via [#92](https://github.com/10up/simple-page-ordering/pull/92)
+
+### Fixed
+- Condition in rest_page_ordering (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh)) via [#94](https://github.com/10up/simple-page-ordering/pull/94)
+- PHP Coding standards (props [@phpstan](https://github.com/phpstan), [@jeffpaul](https://github.com/jeffpaul), [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu)) via [#93](https://github.com/10up/simple-page-ordering/pull/93)
+- Condition in REST page sorting logic (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh)) via [#94](https://github.com/10up/simple-page-ordering/pull/94)
+
+### Changed
+- Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@Sidsector9](https://github.com/Sidsector9), [@jeffpaul](https://github.com/jeffpaul)) via [#95](https://github.com/10up/simple-page-ordering/pull/95), [#98](https://github.com/10up/simple-page-ordering/pull/98)
+
+### Security
+- Bump grunt from 1.5.2 to 1.5.3 (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul)) via [#99](https://github.com/10up/simple-page-ordering/pull/99)
+
 ## [2.4.0] - 2022-04-28
 ### Added
 - REST API for reordering posts: `/wp-json/simplepageordering/v1/page_ordering/` (props [@rmccue](https://github.com/rmccue), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://github.com/cadic), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu) via [#74](https://github.com/10up/simple-page-ordering/pull/74)).
