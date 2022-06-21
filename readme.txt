@@ -94,7 +94,7 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 == Changelog ==
 
-= 2.4.1 - TBD =
+= 2.4.1 - 2022-06-21 =
 * **Added:** Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
 * **Fixed:** Condition in REST page sorting logic in `rest_page_ordering` method (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#94](https://github.com/10up/simple-page-ordering/pull/94).
 * **Fixed:** PHP Coding standards (props [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu) via [#93](https://github.com/10up/simple-page-ordering/pull/93).
