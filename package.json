@@ -1,14 +1,14 @@
 {
   "name": "simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "@wordpress/env": "^4.4.0",
     "cypress": "^9.5.2",
-    "grunt": "^1.5.2",
+    "grunt": "^1.5.3",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",

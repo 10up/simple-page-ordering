@@ -3,7 +3,7 @@
  * Plugin Name:       Simple Page Ordering
  * Plugin URI:        http://10up.com/plugins/simple-page-ordering-wordpress/
  * Description:       Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
- * Version:           2.4.0
+ * Version:           2.4.1
  * Requires at least: 3.8
  * Author:            Jake Goldman, 10up
  * Author URI:        https://10up.com
@@ -27,7 +27,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		/**
 		 * Handles initializing this class and returning the singleton instance after it's been cached.
 		 *
-		 * @return null|Simple_page_Ordering
+		 * @return null|Simple_Page_Ordering
 		 */
 		public static function get_instance() {
 			// Store the instance locally to avoid private static replication
@@ -186,7 +186,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @param int   $start    The start index.
 		 * @param array $excluded Array of post IDs.
 		 *
-		 * @return obj|WP_Error
+		 * @return object|WP_Error|"children"
 		 */
 		public static function page_ordering( $post_id, $previd, $nextid, $start, $excluded ) {
 			// real post?
@@ -366,7 +366,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				);
 
 				if ( $children->have_posts() ) {
-					return( 'children' );
+					return 'children';
 				}
 			}
 
@@ -421,29 +421,29 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'permission_callback' => '__return_true',
 					'args'                => [
 						'id'      => [
-							'description' => 'Post ID.',
+							'description' => __( 'Post ID.', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'previd'  => [
-							'description' => 'Previous post ID',
+							'description' => __( 'Previous post ID', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'nextid'  => [
-							'description' => 'Next post ID',
+							'description' => __( 'Next post ID', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'numeric',
 						],
 						'start'   => [
 							'default'     => 1,
-							'description' => 'Start index',
+							'description' => __( 'Start index', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'numeric',
 						],
 						'exclude' => [
 							'default'     => [],
-							'description' => 'Array of excluded post IDs',
+							'description' => __( 'Array of excluded post IDs', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
 						],
@@ -464,8 +464,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$start    = empty( $request->get_param( 'start' ) ) ? 1 : (int) $request->get_param( 'start' );
 			$excluded = empty( $request->get_param( 'excluded' ) ) ? array( $request->get_param( 'id' ) ) : array_filter( (array) json_decode( $request->get_param( 'excluded' ) ), 'intval' );
 
-			// check and make sure we have what we need
-			if ( empty( $post_id ) || ( ! isset( $previd ) && ! isset( $nextid ) ) ) {
+			// Check and make sure we have what we need.
+			if ( false === $post_id || ( false === $previd && false === $nextid ) ) {
 				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
