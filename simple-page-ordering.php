@@ -130,7 +130,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						function () {
 							?>
 							<div class="notice notice-warning is-dismissible">
-								<p><?php echo wp_kses_post( __( 'Looks like you are using a development copy of <strong>Simple Page Ordering</strong>. Please run <code>npm run build</code> to create assets.', 'simple-page-ordering' ) ); ?></p>
+								<p><?php echo wp_kses_post( __( 'It looks like you are using a development copy of <strong>Simple Page Ordering</strong>. Please run <code>npm i; npm run build</code> to create assets.', 'simple-page-ordering' ) ); ?></p>
 							</div>
 							<?php
 						}
