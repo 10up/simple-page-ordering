@@ -1,10 +1,10 @@
 === Simple Page Ordering ===
-Contributors:      10up, jakemgold, welcher, helen, thinkoomph
+Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to:      5.9
-Stable tag:        2.4.0
+Tested up to:      6.0
+Stable tag:        2.4.1
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -93,6 +93,13 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 1. Processing indicator
 
 == Changelog ==
+
+= 2.4.1 - 2022-06-21 =
+* **Added:** Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
+* **Fixed:** Condition in REST page sorting logic in `rest_page_ordering` method (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#94](https://github.com/10up/simple-page-ordering/pull/94).
+* **Fixed:** PHP Coding standards (props [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu) via [#93](https://github.com/10up/simple-page-ordering/pull/93).
+* **Changed:** Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@jeffpaul](https://github.com/jeffpaul) via [#95](https://github.com/10up/simple-page-ordering/pull/95), [#98](https://github.com/10up/simple-page-ordering/pull/98).
+* **Security:** Bump `grunt` from 1.5.2 to 1.5.3 (props [@dependabot](https://github.com/apps/dependabot) via [#99](https://github.com/10up/simple-page-ordering/pull/99).
 
 = 2.4.0 - 2022-04-28 =
 * **Added:** REST API for reordering posts: `/wp-json/simplepageordering/v1/` (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu)).
