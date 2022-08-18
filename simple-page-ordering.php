@@ -123,7 +123,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						)
 					);
 
-					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], SIMPLE_PAGE_ORDERING_VERSION );
+					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], $script_asset['version'] );
 				} else {
 					add_action(
 						'admin_notices',
