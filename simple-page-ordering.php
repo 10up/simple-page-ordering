@@ -66,6 +66,17 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		}
 
 		/**
+		 * Determine whether given post type is sortable or not.
+		 *
+		 * @param string $post_type Post type to check.
+		 *
+		 * @return boolean
+		 */
+		private static function is_post_type_sortable( $post_type = 'post' ) {
+			return apply_filters( 'simple_page_ordering_is_sortable', post_type_supports( $post_type, 'page-attributes' ), $post_type );
+		}
+
+		/**
 		 * Load up page ordering scripts for the edit screen
 		 */
 		public static function load_edit_screen() {
@@ -73,8 +84,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$post_type = $screen->post_type;
 
 			// is post type sortable?
-			$sortable = ( post_type_supports( $post_type, 'page-attributes' ) || is_post_type_hierarchical( $post_type ) );        // check permission
-			$sortable = apply_filters( 'simple_page_ordering_is_sortable', $sortable, $post_type );
+			$sortable = self::is_post_type_sortable( $post_type );
 			if ( ! $sortable ) {
 				return;
 			}
@@ -385,7 +395,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		public static function sort_by_order_link( $views ) {
 			$class        = ( get_query_var( 'orderby' ) === 'menu_order title' ) ? 'current' : '';
 			$query_string = remove_query_arg( array( 'orderby', 'order' ) );
-			if ( ! is_post_type_hierarchical( get_post_type() ) ) {
+			$sortable     = self::is_post_type_sortable( get_post_type() );
+			if ( $sortable ) {
 				$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
 				$query_string = add_query_arg( 'order', 'asc', $query_string );
 			}

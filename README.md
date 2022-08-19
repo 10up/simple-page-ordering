@@ -32,11 +32,9 @@ Generic posts are not displayed by menu order - they're displayed by chronology.
 
 ### Can I make my custom post type take advantage of this plug-in?
 
-Yep. There are two ways to turn on support for Simple Page Ordering.
+Ideally, when you register the post type, include `page-attributes` feature in the support list. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
 
-Ideally, when you register the post type, set `hierarchical` to `true` - hierarchical post types natively order by menu order.
-
-Alternatively, when you define the features the post type supports, include `page-attributes`. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
+`'supports' => array( 'title', 'editor', 'page-attributes' ),`
 
 Finally, you can take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
