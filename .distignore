@@ -1,0 +1,30 @@
+# Directories to ignore
+/.git
+/.github
+/.wordpress-org
+/assets
+/bin
+/node_modules
+/tests
+/vendor
+
+# Files to ignore
+/.distignore
+/.editorconfig
+/.gitattributes
+/.gitignore
+/.phpcs.xml.dist
+/.wp-env.json
+/.wp-env.override.json
+/CHANGELOG.md
+/CODE_OF_CONDUCT.md
+/composer.json
+/composer.lock
+/CONTRIBUTING.md
+/CREDITS.md
+/Gruntfile.js
+/LICENSE.md
+/package-lock.json
+/package.json
+/README.md
+/webpack.config.js

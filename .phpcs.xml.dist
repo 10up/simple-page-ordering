@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="Project Rules">
 	<rule ref="10up-Default" />
+
+	<exclude-pattern>dist/</exclude-pattern>
 </ruleset>
