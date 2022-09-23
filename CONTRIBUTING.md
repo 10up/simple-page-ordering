@@ -67,7 +67,7 @@ Head to the Pages list table and drag and drop pages to change the order. Refres
 2. Version bump: Bump the version number in `package.json`, `package-lock.json`, `readme.txt`, and `simple-page-ordering.php` if it does not already reflect the version being released. In `simple-page-ordering.php` update both the plugin "Version:" property and the plugin `SIMPLE_PAGE_ORDERING_VERSION` constant.
 3. Changelog: Add/update the changelog in `readme.txt` and `CHANGELOG.md`.
 4. Props: update `CREDITS.md` file with any new contributors, confirm maintainers are accurate.
-5. New files: Check to be sure any new files/paths that are unnecessary in the production version are included in `.gitattributes`.
+5. New files: Check to be sure any new files/paths that are unnecessary in the production version are included in `.distignore`.
 6. Readme updates: Make any other readme changes as necessary. `README.md` is geared toward GitHub and `readme.txt` contains WordPress.org-specific content. The two are slightly different.
 7. Merge: Make a non-fast-forward merge from your release branch to `develop` (or merge the pull request), then do the same for `develop` into `trunk` (`git checkout trunk && git merge --no-ff develop`). `trunk` contains the stable development version.
 8. Push: Push your `trunk` branch to GitHub (e.g. `git push origin trunk`).

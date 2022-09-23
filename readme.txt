@@ -8,7 +8,7 @@ Stable tag:        2.4.2
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
-Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
+Order your pages and other custom post types that support "page-attributes" with simple drag and drop right from the standard page list.
 
 == Description ==
 
@@ -42,9 +42,11 @@ Generic posts are not displayed by menu order - they're displayed by chronology.
 
 = Can I make my custom post type take advantage of this plug-in? =
 
-Ideally, when you register the post type, include `page-attributes` feature in the support list. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
+Yep. When you register the post type, include the `page-attributes` feature in the support list. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
 
 `'supports' => array( 'title', 'editor', 'page-attributes' ),`
+
+You can also take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
 = I want my non-hierarchical post type to be sortable. Help! =
 
@@ -82,6 +84,10 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 	return $sortable;
 }, 10, 2 );
 `
+
+= Can I use REST to order posts? =
+
+Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
 
 == Screenshots ==
 
