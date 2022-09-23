@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.4.2] - 2022-09-26
+### Fixed
+- Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc ) via [#103](https://github.com/10up/simple-page-ordering/pull/103).
+
+### Changed
+- Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc ) via [#97](https://github.com/10up/simple-page-ordering/pull/97).
+
 ## [2.4.1] - 2022-06-21
 ### Added
 - Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
@@ -199,6 +206,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.4.2]: https://github.com/10up/simple-page-ordering/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/10up/simple-page-ordering/compare/2.4.0...2.4.1
 [2.4.0]: https://github.com/10up/simple-page-ordering/compare/2.3.4...2.4.0
 [2.3.4]: https://github.com/10up/simple-page-ordering/compare/2.3.3...2.3.4

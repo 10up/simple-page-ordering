@@ -27,7 +27,7 @@
     "postenv:start": "./tests/bin/initialize.sh",
     "build": "10up-toolkit build && npm run makepot",
     "dev": "10up-toolkit build --watch",
-	"makepot": "wpi18n makepot --domain-path localization --pot-file simple-page-ordering.pot --type plugin --main-file simple-page-ordering.php --exclude bin,dist,node_modules,tests,vendor"
+    "makepot": "wpi18n makepot --domain-path localization --pot-file simple-page-ordering.pot --type plugin --main-file simple-page-ordering.php --exclude bin,dist,node_modules,tests,vendor"
   },
   "10up-toolkit": {
     "devURL": "https://simple-page-ordering.test",
