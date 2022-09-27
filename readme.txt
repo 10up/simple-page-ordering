@@ -97,8 +97,8 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 == Changelog ==
 
 = 2.4.2 - 2022-09-26 =
-* **Fixed:** Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc ) via [#103](https://github.com/10up/simple-page-ordering/pull/103).
-* **Changed:** Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc ) via [#97](https://github.com/10up/simple-page-ordering/pull/97).
+* **Changed:** Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dinhtungdu](https://github.com/dinhtungdu) via [#97](https://github.com/10up/simple-page-ordering/pull/97).
+* **Fixed:** Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#103](https://github.com/10up/simple-page-ordering/pull/103).
 
 = 2.4.1 - 2022-06-21 =
 * **Added:** Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
