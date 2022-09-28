@@ -4,7 +4,7 @@
 
 [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
 
-Order your pages, hierarchical custom post types, or custom post types with "page-attributes" with simple drag and drop right from the built in page list.
+Order your pages and other custom post types that support "page-attributes" with simple drag and drop right from the built in page list.
 
 Simply drag and drop the page into the desired position. It's that simple. No new admin menus pages, no clunky, bolted on user interfaces. Just drag and drop on the page or post-type screen.
 
@@ -32,13 +32,11 @@ Generic posts are not displayed by menu order - they're displayed by chronology.
 
 ### Can I make my custom post type take advantage of this plug-in?
 
-Yep. There are two ways to turn on support for Simple Page Ordering.
+Yep. When you register the post type, include the `page-attributes` feature in the support list. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
 
-Ideally, when you register the post type, set `hierarchical` to `true` - hierarchical post types natively order by menu order.
+`'supports' => array( 'title', 'editor', 'page-attributes' ),`
 
-Alternatively, when you define the features the post type supports, include `page-attributes`. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
-
-Finally, you can take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
+You can also take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
 ### I want my non-hierarchical post type to be sortable. Help!
 

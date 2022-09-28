@@ -4,11 +4,11 @@ Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
 Tested up to:      6.0
-Stable tag:        2.4.1
+Stable tag:        2.4.2
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
-Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
+Order your pages and other custom post types that support "page-attributes" with simple drag and drop right from the standard page list.
 
 == Description ==
 
@@ -42,13 +42,11 @@ Generic posts are not displayed by menu order - they're displayed by chronology.
 
 = Can I make my custom post type take advantage of this plug-in? =
 
-Yep. There are two ways to turn on support for Simple Page Ordering.
+Yep. When you register the post type, include the `page-attributes` feature in the support list. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
 
-Ideally, when you register the post type, set `hierarchical` to `true` - hierarchical post types natively order by menu order.
+`'supports' => array( 'title', 'editor', 'page-attributes' ),`
 
-Alternatively, when you define the features the post type supports, include `page-attributes`. This will add a `Sort by Order` option to the filter links above the drop downs. Once you sort by order, you can drag and drop the content.
-
-Finally, you can take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
+You can also take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
 = I want my non-hierarchical post type to be sortable. Help! =
 
@@ -87,12 +85,20 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 }, 10, 2 );
 `
 
+= Can I use REST to order posts? =
+
+Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
+
 == Screenshots ==
 
 1. Dragging the page to its new position
 1. Processing indicator
 
 == Changelog ==
+
+= 2.4.2 - 2022-09-28 =
+* **Changed:** Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dinhtungdu](https://github.com/dinhtungdu) via [#97](https://github.com/10up/simple-page-ordering/pull/97).
+* **Fixed:** Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#103](https://github.com/10up/simple-page-ordering/pull/103).
 
 = 2.4.1 - 2022-06-21 =
 * **Added:** Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
