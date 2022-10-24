@@ -27,3 +27,4 @@
 /package.json export-ignore
 /README.md export-ignore
 /webpack.config.js export-ignore
+/.nvmrc export-ignore
