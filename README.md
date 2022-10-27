@@ -36,6 +36,8 @@ Yep. When you register the post type, include the `page-attributes` feature in t
 
 `'supports' => array( 'title', 'editor', 'page-attributes' ),`
 
+Alternatively, when you register the post type, set `hierarchical` to `true` - hierarchical post types natively order by menu order.
+
 You can also take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
 ### I want my non-hierarchical post type to be sortable. Help!
