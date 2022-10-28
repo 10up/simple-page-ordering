@@ -78,6 +78,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			/**
 			 * Change default ordering support for a post type.
 			 *
+			 * @since 2.2.4
+			 *
 			 * @param boolean $sortable Whether this post type is sortable or not.
 			 * @param string  $post_type The post type being checked.
 			 */
