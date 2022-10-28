@@ -62,11 +62,11 @@ Where 5 is the number of items to batch on each request (the default is 50). Not
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
 
-### How can I exclude certain custom post types?
+### How can I modify sortable post types?
 
-Custom post types can be excluded by using the `simple_page_ordering_is_sortable` filter.
+Post types can be included or excluded by using the `simple_page_ordering_is_sortable` filter.
 
-For example, with `excluded_post_type` as the custom post type ID, add the following snippet in the theme function file or custom plugin:
+For example, to exclude the `excluded_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
 
 ```
 add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
@@ -74,6 +74,17 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 		return false;
 	}
 	return $sortable;
+}, 10, 2 );
+```
+
+To include the `include_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
+
+```
+add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
+    if ( 'include_post_type' === $post_type ) {
+        return true;
+    }
+    return $sortable;
 }, 10, 2 );
 ```
 
