@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.4.3] - 2022-10-31
+## [2.4.3] - 2022-11-08
 
 ### Changed
 - Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108).

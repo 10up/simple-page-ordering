@@ -109,7 +109,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
-= 2.4.3 - 2022-10-31 =
+= 2.4.3 - 2022-11-08 =
 * **Changed:** Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108).
 * **Security:** Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106).
 * **Security:** Bump `@wordpress/env` from 4.9.0 to 5.3.0 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106).
