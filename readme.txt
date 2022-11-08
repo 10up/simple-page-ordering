@@ -89,14 +89,14 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 To include the `include_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
 
-```
+`
 add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
 	if ( 'include_post_type' === $post_type ) {
 		return true;
 	}
 	return $sortable;
 }, 10, 2 );
-```
+`
 
 = Can I use REST to order posts? =
 
