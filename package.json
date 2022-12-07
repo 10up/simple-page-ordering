@@ -19,8 +19,8 @@
     "node-sass": "^7.0.3"
   },
   "scripts": {
-    "cypress:open": "CYPRESS_BASE_URL=http://localhost:8889/ cypress open --config-file tests/cypress/config.config.js",
-    "cypress:run": "CYPRESS_BASE_URL=http://localhost:8889/ cypress run --config-file tests/cypress/config.config.js",
+    "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
+    "cypress:run": "cypress run --config-file tests/cypress/config.config.js",
     "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
