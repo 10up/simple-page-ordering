@@ -4,8 +4,17 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.4.3] - 2022-11-08
+## [2.4.4] - 2023-01-10
+### Changed
+- Update Support Level from `Active` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#123](https://github.com/10up/simple-page-ordering/pull/123).
+- Update the "Build release zip" workflow ot use 10up's build-zip action (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#119](https://github.com/10up/simple-page-ordering/pull/119).
+- Bump WordPress "tested up to" version to 6.1 props [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter) via [#118](https://github.com/10up/simple-page-ordering/pull/118)).
 
+### Security
+- Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115).
+- Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121).
+
+## [2.4.3] - 2022-11-08
 ### Changed
 - Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108).
 
@@ -217,6 +226,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.4.4]: https://github.com/10up/simple-page-ordering/compare/2.4.3...2.4.4
 [2.4.3]: https://github.com/10up/simple-page-ordering/compare/2.4.2...2.4.3
 [2.4.2]: https://github.com/10up/simple-page-ordering/compare/2.4.1...2.4.2
 [2.4.1]: https://github.com/10up/simple-page-ordering/compare/2.4.0...2.4.1
