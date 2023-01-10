@@ -6,44 +6,44 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.4.4] - 2023-01-10
 ### Changed
-- Update Support Level from `Active` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#123](https://github.com/10up/simple-page-ordering/pull/123).
-- Bump WordPress "tested up to" version to 6.1 props [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter) via [#118](https://github.com/10up/simple-page-ordering/pull/118)).
-- Update the "Build release zip" workflow to use 10up's `build-zip` action (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#119](https://github.com/10up/simple-page-ordering/pull/119).
+- Update Support Level from `Active` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#123](https://github.com/10up/simple-page-ordering/pull/123)).
+- Bump WordPress "tested up to" version to 6.1 (props [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter) via [#118](https://github.com/10up/simple-page-ordering/pull/118)).
+- Update the "Build release zip" workflow to use 10up's `build-zip` action (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#119](https://github.com/10up/simple-page-ordering/pull/119)).
 
 ### Security
-- Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115).
-- Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121).
+- Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115)).
+- Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121)).
 
 ## [2.4.3] - 2022-11-08
 ### Changed
-- Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108).
+- Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108)).
 
 ### Security
-- Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106).
-- Bump `@wordpress/env` from 4.9.0 to 5.3.0 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106).
-- Bump `scss-tokenizer` from 0.3.0 to 0.4.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107).
-- Bump `node-sass` from 7.0.1 to 7.0.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107).
+- Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106)).
+- Bump `@wordpress/env` from 4.9.0 to 5.3.0 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106)).
+- Bump `scss-tokenizer` from 0.3.0 to 0.4.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107)).
+- Bump `node-sass` from 7.0.1 to 7.0.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107)).
 
 ## [2.4.2] - 2022-09-28
 ### Changed
-- Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dinhtungdu](https://github.com/dinhtungdu) via [#97](https://github.com/10up/simple-page-ordering/pull/97).
+- Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dinhtungdu](https://github.com/dinhtungdu) via [#97](https://github.com/10up/simple-page-ordering/pull/97)).
 
 ### Fixed
-- Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#103](https://github.com/10up/simple-page-ordering/pull/103).
+- Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#103](https://github.com/10up/simple-page-ordering/pull/103)).
 
 ## [2.4.1] - 2022-06-21
 ### Added
-- Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92).
+- Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92)).
 
 ### Fixed
-- Condition in REST page sorting logic in `rest_page_ordering` method (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#94](https://github.com/10up/simple-page-ordering/pull/94).
-- PHP Coding standards (props [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu) via [#93](https://github.com/10up/simple-page-ordering/pull/93).
+- Condition in REST page sorting logic in `rest_page_ordering` method (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#94](https://github.com/10up/simple-page-ordering/pull/94)).
+- PHP Coding standards (props [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu) via [#93](https://github.com/10up/simple-page-ordering/pull/93)).
 
 ### Changed
-- Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@jeffpaul](https://github.com/jeffpaul) via [#95](https://github.com/10up/simple-page-ordering/pull/95), [#98](https://github.com/10up/simple-page-ordering/pull/98).
+- Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@jeffpaul](https://github.com/jeffpaul) via [#95](https://github.com/10up/simple-page-ordering/pull/95), [#98](https://github.com/10up/simple-page-ordering/pull/98)).
 
 ### Security
-- Bump `grunt` from 1.5.2 to 1.5.3 (props [@dependabot](https://github.com/apps/dependabot) via [#99](https://github.com/10up/simple-page-ordering/pull/99).
+- Bump `grunt` from 1.5.2 to 1.5.3 (props [@dependabot](https://github.com/apps/dependabot) via [#99](https://github.com/10up/simple-page-ordering/pull/99)).
 
 ## [2.4.0] - 2022-04-28
 ### Added
