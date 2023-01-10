@@ -5,7 +5,7 @@
  * Description:       Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
  * Version:           2.4.3
  * Requires at least: 3.8
- * Author:            Jake Goldman, 10up
+ * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
