@@ -3,8 +3,8 @@ Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 3.8
-Tested up to:      6.0
-Stable tag:        2.4.3
+Tested up to:      6.1
+Stable tag:        2.4.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,14 +89,14 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 To include the `include_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
 
-```
+`
 add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
 	if ( 'include_post_type' === $post_type ) {
 		return true;
 	}
 	return $sortable;
 }, 10, 2 );
-```
+`
 
 = Can I use REST to order posts? =
 
@@ -108,6 +108,13 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 1. Processing indicator
 
 == Changelog ==
+
+= 2.4.4 - 2023-01-10 =
+* **Changed:** Update Support Level from `Active` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#123](https://github.com/10up/simple-page-ordering/pull/123).
+* **Changed:** Bump WordPress "tested up to" version to 6.1 props [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter) via [#118](https://github.com/10up/simple-page-ordering/pull/118)).
+* **Changed:** Update the "Build release zip" workflow to use 10up's `build-zip` action (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#119](https://github.com/10up/simple-page-ordering/pull/119).
+* **Security:** Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115).
+* **Security:** Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121).
 
 = 2.4.3 - 2022-11-08 =
 * **Changed:** Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108).
