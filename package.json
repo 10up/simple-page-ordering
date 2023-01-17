@@ -1,7 +1,7 @@
 {
   "name": "simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
-  "version": "2.4.2",
+  "version": "2.4.4",
   "author": "10up <opensource@10up.com>",
   "license": "GPLv2 ( or later )",
   "devDependencies": {
