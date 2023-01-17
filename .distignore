@@ -3,7 +3,6 @@
 /.github
 /.wordpress-org
 /assets
-/bin
 /node_modules
 /tests
 /vendor
@@ -28,3 +27,4 @@
 /package.json
 /README.md
 /webpack.config.js
+/.nvmrc
