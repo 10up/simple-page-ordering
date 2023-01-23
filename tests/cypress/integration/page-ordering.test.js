@@ -26,8 +26,8 @@ describe('Test Page Order Change', () => {
 	
 		const first = '.wp-list-table .level-0 + .level-1';
 		const second = '.wp-list-table .level-0 + .level-1 + .level-1';
-		const firstText = cy.get(`${first} .row-title`).invoke('text');
-		const secondText = cy.get(`${second} .row-title`).invoke('text');
+		const firstText = cy.get(`${first} .row-title`);
+		const secondText = cy.get(`${second} .row-title`);
 
 		cy.get(first).drag(second);
 		// wait for order update done.
