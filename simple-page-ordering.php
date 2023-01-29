@@ -164,12 +164,13 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Add page ordering help to the help tab
 		 */
 		public static function admin_head() {
-			$screen = get_current_screen();
+			$reset_order = sprintf( '<a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>', get_query_var('post_type'), __( 'Reset post order', 'simple-page-ordering' ) );
+			$screen      = get_current_screen();
 			$screen->add_help_tab(
 				array(
 					'id'      => 'simple_page_ordering_help_tab',
 					'title'   => 'Simple Page Ordering',
-					'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p>',
+					'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p></p>' . $reset_order . '</p>',
 				)
 			);
 		}
@@ -492,6 +493,23 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					],
 				]
 			);
+
+			register_rest_route(
+				'simple-page-ordering/v1',
+				'reset_page_ordering',
+				[
+					'methods'             => 'POST',
+					'callback'            => array( __CLASS__, 'rest_reset_page_ordering' ),
+					'permission_callback' => '__return_true',
+					'args'                => [
+						'post_type' => [
+							'description' => __( 'Post type.', 'simple-page-ordering' ),
+							'required'    => true,
+							'type'        => 'string',
+						],
+					],
+				]
+			);
 		}
 
 		/**
@@ -522,6 +540,32 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'status'        => 200,
 					'response'      => 'successs',
 					'body_response' => $page_ordering,
+				)
+			);
+		}
+
+		/**
+		 * Handle REST reset page sorting
+		 *
+		 * @param WP_REST_Request $request The REST request object.
+		 */
+		public static function rest_reset_page_ordering( WP_REST_Request $request ) {
+			global $wpdb;
+
+			$post_type = empty( $request->get_param( 'post_type' ) ) ? false : $request->get_param( 'post_type' );
+
+			// check we have a post type
+			if ( false === $post_type ) {
+				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
+			}
+
+			// reset the order of all posts of given post type
+			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ) );
+
+			return new WP_REST_Response(
+				array(
+					'status'   => 200,
+					'response' => 'success',
 				)
 			);
 		}

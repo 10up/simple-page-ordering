@@ -152,3 +152,14 @@ sortable_post_table.sortable({
 		}
 	}
 });
+
+jQuery( function() {
+	// set up click handler for order reset link
+	jQuery( '#simple-page-ordering-reset' ).on( 'click', function(e) {
+		e.preventDefault();
+		var post_type = jQuery( this ).data( 'posttype' );
+		if ( window.confirm( 'Are you sure you want to reset the ' + post_type + ' order?' ) ) {
+			jQuery.post( '/wp-json/simple-page-ordering/v1/reset_page_ordering/', { post_type: post_type }, function() { window.location.reload(); } );
+		}
+	} );
+});
