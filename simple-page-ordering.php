@@ -164,7 +164,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Add page ordering help to the help tab
 		 */
 		public static function admin_head() {
-			$reset_order = sprintf( '<a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>', get_query_var('post_type'), __( 'Reset post order', 'simple-page-ordering' ) );
+			$reset_order = sprintf( '<a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>', get_query_var( 'post_type' ), __( 'Reset post order', 'simple-page-ordering' ) );
 			$screen      = get_current_screen();
 			$screen->add_help_tab(
 				array(
