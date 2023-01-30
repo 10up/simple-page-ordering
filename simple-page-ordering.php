@@ -55,6 +55,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		public static function add_actions() {
 			add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
+			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
 		}
@@ -218,6 +219,39 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			die( wp_json_encode( $result ) );
+		}
+
+		/**
+		 * Page ordering reset ajax callback
+		 *
+		 * @return void
+		 */
+		public static function ajax_reset_simple_page_ordering() {
+			global $wpdb;
+
+			// check and make sure we have what we need
+			$post_type = $_POST['post_type'];
+			if ( empty( $post_type ) ) {
+				die( -1 );
+			}
+
+			// do we have a nonce that verifies?
+			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
+				// no nonce to verify...
+				die( -1 );
+			}
+
+			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
+
+			// does user have the right to manage these post objects?
+			if ( ! self::check_edit_others_caps( $post_type ) ) {
+				die( -1 );
+			}
+
+			// reset the order of all posts of given post type
+			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ) );
+
+			die( 0 );
 		}
 
 		/**
@@ -493,23 +527,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					],
 				]
 			);
-
-			register_rest_route(
-				'simple-page-ordering/v1',
-				'reset_page_ordering',
-				[
-					'methods'             => 'POST',
-					'callback'            => array( __CLASS__, 'rest_reset_page_ordering' ),
-					'permission_callback' => '__return_true',
-					'args'                => [
-						'post_type' => [
-							'description' => __( 'Post type.', 'simple-page-ordering' ),
-							'required'    => true,
-							'type'        => 'string',
-						],
-					],
-				]
-			);
 		}
 
 		/**
@@ -540,32 +557,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'status'        => 200,
 					'response'      => 'successs',
 					'body_response' => $page_ordering,
-				)
-			);
-		}
-
-		/**
-		 * Handle REST reset page sorting
-		 *
-		 * @param WP_REST_Request $request The REST request object.
-		 */
-		public static function rest_reset_page_ordering( WP_REST_Request $request ) {
-			global $wpdb;
-
-			$post_type = empty( $request->get_param( 'post_type' ) ) ? false : $request->get_param( 'post_type' );
-
-			// check we have a post type
-			if ( false === $post_type ) {
-				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
-			}
-
-			// reset the order of all posts of given post type
-			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ) );
-
-			return new WP_REST_Response(
-				array(
-					'status'   => 200,
-					'response' => 'success',
 				)
 			);
 		}
