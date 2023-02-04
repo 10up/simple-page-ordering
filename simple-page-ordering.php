@@ -140,8 +140,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'simple-page-ordering',
 						'simple_page_ordering_localized_data',
 						array(
-							'_wpnonce'  => wp_create_nonce( 'simple-page-ordering_' . $screen->id ),
-							'screen_id' => (string) $screen->id,
+							'_wpnonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
 						)
 					);
 
@@ -170,8 +169,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$screen->add_help_tab(
 				array(
 					'id'      => 'simple_page_ordering_help_tab',
-					'title'   => 'Simple Page Ordering',
-					'content' => '<p>' . __( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ) . '</p></p>' . $reset_order . '</p>',
+					'title'   => esc_html__( 'Simple Page Ordering', 'simple-page-ordering' ),
+					'content' => sprintf(
+						'<p>%s</p><a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>',
+						esc_html__( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ),
+						get_query_var( 'post_type' ), esc_html__( 'Reset post order', 'simple-page-ordering' )
+					),
 				)
 			);
 		}
@@ -187,13 +190,11 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( - 1 );
 			}
 
-			// do we have a nonce that verifies?
-			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
-				// no nonce to verify...
+			$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+			if ( ! wp_verify_nonce( $nonce, 'simple-page-ordering-nonce' ) ) {
 				die( -1 );
 			}
-
-			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
 
 			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
 			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
@@ -229,19 +230,18 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		public static function ajax_reset_simple_page_ordering() {
 			global $wpdb;
 
+			$nonce = isset( $_POST['_wpnonce'] ) ? sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ) : '';
+
+			if ( ! wp_verify_nonce( $nonce, 'simple-page-ordering-nonce' ) ) {
+				die( -1 );
+			}
+
 			// check and make sure we have what we need
-			$post_type = $_POST['post_type'];
+			$post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) : '';
+
 			if ( empty( $post_type ) ) {
 				die( -1 );
 			}
-
-			// do we have a nonce that verifies?
-			if ( empty( $_POST['_wpnonce'] ) || empty( $_POST['screen_id'] ) ) {
-				// no nonce to verify...
-				die( -1 );
-			}
-
-			check_admin_referer( 'simple-page-ordering_' . sanitize_key( $_POST['screen_id'] ) );
 
 			// does user have the right to manage these post objects?
 			if ( ! self::check_edit_others_caps( $post_type ) ) {
