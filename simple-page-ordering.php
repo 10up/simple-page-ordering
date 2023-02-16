@@ -250,7 +250,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			// reset the order of all posts of given post type
-			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ) );
+			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ), array( '%d' ), array( '%s' ) );
 
 			die( 0 );
 		}
