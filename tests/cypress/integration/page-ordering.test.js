@@ -40,4 +40,15 @@ describe('Test Page Order Change', () => {
 			firstText.should('have.text', $el.text());
 		});
 	});
+
+	// Reset page ordering state.
+	after( () => {
+		cy.login();
+		cy.visit('/wp-admin/edit.php?post_type=page');
+
+		const firstRow = '.wp-list-table tbody tr:nth-child(1)';
+		const secondRow = '.wp-list-table tbody tr:nth-child(2)';
+
+		cy.get( firstRow ).drag( secondRow );
+	} );
 });
