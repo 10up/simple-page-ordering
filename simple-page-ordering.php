@@ -556,7 +556,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			return new WP_REST_Response(
 				array(
 					'status'        => 200,
-					'response'      => 'successs',
+					'response'      => 'success',
 					'body_response' => $page_ordering,
 				)
 			);
