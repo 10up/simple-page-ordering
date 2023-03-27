@@ -46,7 +46,7 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: Set the core version and plugins config 
-      run: ./tests/bin/set-wp-config.js --core=${{ matrix.core.version }} --plugins=./${{ github.event.repository.name }}
+      run: ./tests/bin/set-wp-config.js --core=${{ matrix.core.version }} --plugins=./${{ github.event.repository.name }},./tests/test-plugins
     - name: Set up WP environment
       run: npm run env:start
     - name: Test
