@@ -2,7 +2,7 @@
 
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md)
 
 Order your pages and other custom post types that support "page-attributes" with simple drag and drop right from the built in page list.
 
@@ -36,6 +36,8 @@ Yep. When you register the post type, include the `page-attributes` feature in t
 
 `'supports' => array( 'title', 'editor', 'page-attributes' ),`
 
+Alternatively, when you register the post type, set `hierarchical` to `true` - hierarchical post types natively order by menu order.
+
 You can also take advantage of the `simple_page_ordering_is_sortable` filter, which passes the result of the default check and the post type name, to override default behavior.
 
 ### I want my non-hierarchical post type to be sortable. Help!
@@ -60,11 +62,11 @@ Where 5 is the number of items to batch on each request (the default is 50). Not
 
 This feature is already built into WordPress natively, but a bit tucked away. If you pull down the "Screen Options" tab up top (on the list of post objects) there's a field where you can specify the number of items to show per page. I decided it was not a very good practice to duplicate this.
 
-### How can I exclude certain custom post types?
+### How can I modify sortable post types?
 
-Custom post types can be excluded by using the `simple_page_ordering_is_sortable` filter.
+Post types can be included or excluded by using the `simple_page_ordering_is_sortable` filter.
 
-For example, with `excluded_post_type` as the custom post type ID, add the following snippet in the theme function file or custom plugin:
+For example, to exclude the `excluded_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
 
 ```
 add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
@@ -72,6 +74,17 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 		return false;
 	}
 	return $sortable;
+}, 10, 2 );
+```
+
+To include the `include_post_type` custom post type, add the following snippet in the theme function file or custom plugin:
+
+```
+add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type ) {
+    if ( 'include_post_type' === $post_type ) {
+        return true;
+    }
+    return $sortable;
 }, 10, 2 );
 ```
 
@@ -96,7 +109,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 ## Support Level
 
-**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+**Stable:** 10up is not planning to develop any new features for this, but will still respond to bug reports and security concerns. We welcome PRs, but any that include new features should be small and easy to integrate and should not include breaking changes. We otherwise intend to keep this tested up to the most recent version of WordPress.
 
 ## Changelog
 
