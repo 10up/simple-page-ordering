@@ -10,7 +10,7 @@ on:
       - develop
 jobs:
   build:
-      uses: 10up/simple-page-ordering/.github/workflows/build-release-zip.yml@update/122 # TODO: Update this to develop branch before merge.
+      uses: 10up/simple-page-ordering/.github/workflows/build-release-zip.yml@develop
   cypress:
     needs: build
     name: ${{ matrix.core.name }}
