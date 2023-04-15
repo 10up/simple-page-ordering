@@ -3,14 +3,14 @@ import '../../css/scss/simple-page-ordering.scss';
 // eslint-disable-next-line import/no-unresolved
 import 'jquery-ui-sortable';
 
-const sortable_post_table = window.jQuery('.wp-list-table tbody');
+const sortable_post_table = jQuery('.wp-list-table tbody');
 function update_simple_ordering_callback(response) {
 	if (response === 'children') {
 		window.location.reload();
 		return;
 	}
 
-	const changes = window.jQuery.parseJSON(response);
+	const changes = jQuery.parseJSON(response);
 
 	const { new_pos } = changes;
 	// eslint-disable-next-line no-restricted-syntax
@@ -60,7 +60,7 @@ function update_simple_ordering_callback(response) {
 	}
 
 	if (changes.next) {
-		window.jQuery.post(
+		jQuery.post(
 			window.ajaxurl,
 			{
 				action: 'simple_page_ordering',
@@ -75,8 +75,7 @@ function update_simple_ordering_callback(response) {
 			update_simple_ordering_callback,
 		);
 	} else {
-		window
-			.jQuery('.spo-updating-row')
+		jQuery('.spo-updating-row')
 			.removeClass('spo-updating-row')
 			.find('.check-column')
 			.removeClass('spinner is-active');
@@ -94,7 +93,7 @@ sortable_post_table.sortable({
 	opacity: 0.8,
 	tolerance: 'pointer',
 	create() {
-		window.jQuery(document).keydown(function (e) {
+		jQuery(document).keydown(function (e) {
 			const key = e.key || e.keyCode;
 			if (key === 'Escape' || key === 'Esc' || key === 27) {
 				sortable_post_table.sortable('option', 'preventUpdate', true);
@@ -113,7 +112,7 @@ sortable_post_table.sortable({
 	helper(e, ui) {
 		const children = ui.children();
 		for (let i = 0; i < children.length; i++) {
-			const selector = window.jQuery(children[i]);
+			const selector = jQuery(children[i]);
 			selector.width(selector.width());
 		}
 		return ui;
@@ -151,7 +150,7 @@ sortable_post_table.sortable({
 		}
 
 		// go do the sorting stuff via ajax
-		window.jQuery.post(
+		jQuery.post(
 			window.ajaxurl,
 			{
 				action: 'simple_page_ordering',
@@ -169,22 +168,22 @@ sortable_post_table.sortable({
 		let table_row_count = table_rows.length;
 		while (table_row_count--) {
 			if (table_row_count % 2 === 0) {
-				window.jQuery(table_rows[table_row_count]).addClass('alternate');
+				jQuery(table_rows[table_row_count]).addClass('alternate');
 			} else {
-				window.jQuery(table_rows[table_row_count]).removeClass('alternate');
+				jQuery(table_rows[table_row_count]).removeClass('alternate');
 			}
 		}
 	},
 });
 
-window.jQuery(function () {
+jQuery(function () {
 	// set up click handler for order reset link
-	window.jQuery('#simple-page-ordering-reset').on('click', function (e) {
+	jQuery('#simple-page-ordering-reset').on('click', function (e) {
 		e.preventDefault();
-		const post_type = window.jQuery(this).data('posttype');
+		const post_type = jQuery(this).data('posttype');
 		// eslint-disable-next-line no-alert
 		if (window.confirm(`Are you sure you want to reset the ${post_type} order?`)) {
-			window.jQuery.post(
+			jQuery.post(
 				window.ajaxurl,
 				{
 					action: 'reset_simple_page_ordering',
