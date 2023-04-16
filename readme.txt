@@ -112,6 +112,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 = 2.5.0 - TBD =
 * **Added** Feature to reset page order (props [@pattonwebz](https://github.com/pattonwebz), [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#129](https://github.com/10up/simple-page-ordering/pull/129).
+* **Added** JS linting GitHub Action (props [@Sidsector9](https://github.com/Sidsector9), [@kmgalanakis](https://github.com/kmgalanakis), [@peterwilsoncc](https://github.com/peterwilsoncc)) via [#136](https://github.com/10up/simple-page-ordering/pull/136).
 * **Fixed** emoved a typo in a REST response message (props [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9)) via [#133](https://github.com/10up/simple-page-ordering/pull/133).
 * **Changed** Bump minimum PHP version to 7.4 (props [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@ravinderk](https://github.com/ravinderk), [@cadic](https://github.com/cadic)) via [#111](https://github.com/10up/simple-page-ordering/pull/111).
 * **Changed** Bump minimum required WordPress version from 3.8 to 5.7 (props [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@ravinderk](https://github.com/ravinderk), [@cadic](https://github.com/cadic)) via [#111](https://github.com/10up/simple-page-ordering/pull/111).
