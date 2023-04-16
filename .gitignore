@@ -6,3 +6,4 @@ vendor
 dist/
 tests/cypress/screenshots
 tests/cypress/videos
+eslint-report.json
