@@ -110,7 +110,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
-= 2.5.0 - TBD =
+= 2.5.0 - 2023-04-18 =
 **Note that this release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.**
 
 * **Added:** Feature to reset page order (props [@pattonwebz](https://github.com/pattonwebz), [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#129](https://github.com/10up/simple-page-ordering/pull/129).

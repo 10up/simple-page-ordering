@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.5.0] - TBD
+## [2.5.0] - 2023-04-18
 **Note that this release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.**
 
 ### Added
