@@ -1,121 +1,133 @@
 import '../../css/scss/simple-page-ordering.scss';
-import 'jquery-ui-sortable';
-import 'jquery';
 
+// eslint-disable-next-line import/no-unresolved
+import 'jquery-ui-sortable';
+
+const sortable_post_table = jQuery('.wp-list-table tbody');
 function update_simple_ordering_callback(response) {
-	if ( 'children' === response ) {
+	if (response === 'children') {
 		window.location.reload();
 		return;
 	}
 
-	var changes = jQuery.parseJSON( response );
+	const changes = jQuery.parseJSON(response);
 
-	var new_pos = changes.new_pos;
-	for ( var key in new_pos ) {
-		if ( 'next' === key ) {
+	const { new_pos } = changes;
+	// eslint-disable-next-line no-restricted-syntax
+	for (const key in new_pos) {
+		if (key === 'next') {
+			// eslint-disable-next-line no-continue
 			continue;
 		}
 
-		var inline_key = document.getElementById('inline_' + key);
-		if ( null !== inline_key && new_pos.hasOwnProperty(key) ) {
-			var dom_menu_order = inline_key.querySelector('.menu_order');
+		const inline_key = document.getElementById(`inline_${key}`);
+		// eslint-disable-next-line no-prototype-builtins
+		if (inline_key !== null && new_pos.hasOwnProperty(key)) {
+			const dom_menu_order = inline_key.querySelector('.menu_order');
 
-			if ( undefined !== new_pos[key]['menu_order'] ) {
-				if ( null !== dom_menu_order ) {
-					dom_menu_order.textContent = new_pos[key]['menu_order'];
+			if (undefined !== new_pos[key].menu_order) {
+				if (dom_menu_order !== null) {
+					dom_menu_order.textContent = new_pos[key].menu_order;
 				}
 
-				var dom_post_parent = inline_key.querySelector('.post_parent');
-				if ( null !== dom_post_parent ) {
-					dom_post_parent.textContent = new_pos[key]['post_parent'];
+				const dom_post_parent = inline_key.querySelector('.post_parent');
+				if (dom_post_parent !== null) {
+					dom_post_parent.textContent = new_pos[key].post_parent;
 				}
 
-				var post_title = null;
-				var dom_post_title = inline_key.querySelector('.post_title');
-				if ( null !== dom_post_title ) {
+				let post_title = null;
+				const dom_post_title = inline_key.querySelector('.post_title');
+				if (dom_post_title !== null) {
 					post_title = dom_post_title.innerHTML;
 				}
 
-				var dashes = 0;
-				while ( dashes < new_pos[key]['depth'] ) {
-					post_title = '&mdash; ' + post_title;
+				let dashes = 0;
+				while (dashes < new_pos[key].depth) {
+					post_title = `&mdash; ${post_title}`;
 					dashes++;
 				}
-				var dom_row_title = inline_key.parentNode.querySelector('.row-title');
-				if ( null !== dom_row_title && null !== post_title ) {
+				const dom_row_title = inline_key.parentNode.querySelector('.row-title');
+				if (dom_row_title !== null && post_title !== null) {
 					// Decode mdash character before rendering the title.
-					var textArea = document.createElement('textarea');
+					const textArea = document.createElement('textarea');
 					textArea.innerHTML = post_title;
 					dom_row_title.textContent = textArea.value;
 				}
-			} else if ( null !== dom_menu_order ) {
+			} else if (dom_menu_order !== null) {
 				dom_menu_order.textContent = new_pos[key];
 			}
 		}
 	}
 
-	if ( changes.next ) {
-		jQuery.post( ajaxurl, {
-			action: 'simple_page_ordering',
-			id: changes.next['id'],
-			previd: changes.next['previd'],
-			nextid: changes.next['nextid'],
-			start: changes.next['start'],
-			_wpnonce: simple_page_ordering_localized_data._wpnonce,
-			screen_id: simple_page_ordering_localized_data.screen_id,
-			excluded: JSON.stringify( changes.next['excluded'] )
-		}, update_simple_ordering_callback );
+	if (changes.next) {
+		jQuery.post(
+			window.ajaxurl,
+			{
+				action: 'simple_page_ordering',
+				id: changes.next.id,
+				previd: changes.next.previd,
+				nextid: changes.next.nextid,
+				start: changes.next.start,
+				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
+				screen_id: window.simple_page_ordering_localized_data.screen_id,
+				excluded: JSON.stringify(changes.next.excluded),
+			},
+			update_simple_ordering_callback,
+		);
 	} else {
-		jQuery('.spo-updating-row').removeClass('spo-updating-row').find('.check-column').removeClass('spinner is-active');
+		jQuery('.spo-updating-row')
+			.removeClass('spo-updating-row')
+			.find('.check-column')
+			.removeClass('spinner is-active');
 		sortable_post_table.removeClass('spo-updating').sortable('enable');
 	}
 }
 
-var sortable_post_table = jQuery(".wp-list-table tbody");
 sortable_post_table.sortable({
 	items: '> tr',
 	cursor: 'move',
 	axis: 'y',
 	containment: 'table.widefat',
-	cancel:	'input, textarea, button, select, option, .inline-edit-row',
+	cancel: 'input, textarea, button, select, option, .inline-edit-row',
 	distance: 2,
-	opacity: .8,
+	opacity: 0.8,
 	tolerance: 'pointer',
-	create: function() {
-		jQuery( document ).keydown(function(e) {
-			var key = e.key || e.keyCode;
-			if ( 'Escape' === key || 'Esc' === key || 27 === key ) {
-				sortable_post_table.sortable( 'option', 'preventUpdate', true );
-				sortable_post_table.sortable( 'cancel' );
+	create() {
+		jQuery(document).keydown(function (e) {
+			const key = e.key || e.keyCode;
+			if (key === 'Escape' || key === 'Esc' || key === 27) {
+				sortable_post_table.sortable('option', 'preventUpdate', true);
+				sortable_post_table.sortable('cancel');
 			}
 		});
 	},
-	start: function(e, ui){
-		if ( typeof(inlineEditPost) !== 'undefined' ) {
+	start(e, ui) {
+		if (typeof inlineEditPost !== 'undefined') {
+			// eslint-disable-next-line no-undef
 			inlineEditPost.revert();
 		}
 		ui.placeholder.height(ui.item.height());
 		ui.placeholder.empty();
 	},
-	helper: function(e, ui) {
-		var children = ui.children();
-		for ( var i=0; i<children.length; i++ ) {
-			var selector = jQuery(children[i]);
-			selector.width( selector.width() );
-		};
+	helper(e, ui) {
+		const children = ui.children();
+		for (let i = 0; i < children.length; i++) {
+			const selector = jQuery(children[i]);
+			selector.width(selector.width());
+		}
 		return ui;
 	},
-	stop: function(e, ui) {
-		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
-			sortable_post_table.sortable( 'option', 'preventUpdate', false );
+	stop(e, ui) {
+		if (sortable_post_table.sortable('option', 'preventUpdate')) {
+			sortable_post_table.sortable('option', 'preventUpdate', false);
 		}
 
 		// remove fixed widths
-		ui.item.children().css('width','');
+		ui.item.children().css('width', '');
 	},
-	update: function(e, ui) {
-		if ( sortable_post_table.sortable( 'option', 'preventUpdate') ) {
-			sortable_post_table.sortable( 'option', 'preventUpdate', false );
+	update(e, ui) {
+		if (sortable_post_table.sortable('option', 'preventUpdate')) {
+			sortable_post_table.sortable('option', 'preventUpdate', false);
 			return;
 		}
 
@@ -123,32 +135,66 @@ sortable_post_table.sortable({
 		ui.item.addClass('spo-updating-row');
 		ui.item.find('.check-column').addClass('spinner is-active');
 
-		var postid = ui.item[0].id.substr(5); // post id
+		const postid = ui.item[0].id.substr(5); // post id
 
-		var prevpostid = false;
-		var prevpost = ui.item.prev();
-		if ( prevpost.length > 0 ) {
+		let prevpostid = false;
+		const prevpost = ui.item.prev();
+		if (prevpost.length > 0) {
 			prevpostid = prevpost.attr('id').substr(5);
 		}
 
-		var nextpostid = false;
-		var nextpost = ui.item.next();
-		if ( nextpost.length > 0 ) {
+		let nextpostid = false;
+		const nextpost = ui.item.next();
+		if (nextpost.length > 0) {
 			nextpostid = nextpost.attr('id').substr(5);
 		}
 
 		// go do the sorting stuff via ajax
-		jQuery.post( ajaxurl, { action: 'simple_page_ordering', id: postid, previd: prevpostid, nextid: nextpostid, _wpnonce: simple_page_ordering_localized_data._wpnonce, screen_id: simple_page_ordering_localized_data.screen_id, }, update_simple_ordering_callback );
+		jQuery.post(
+			window.ajaxurl,
+			{
+				action: 'simple_page_ordering',
+				id: postid,
+				previd: prevpostid,
+				nextid: nextpostid,
+				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
+				screen_id: window.simple_page_ordering_localized_data.screen_id,
+			},
+			update_simple_ordering_callback,
+		);
 
 		// fix cell colors
-		var table_rows = document.querySelectorAll('tr.iedit'),
-			table_row_count = table_rows.length;
-		while( table_row_count-- ) {
-			if ( 0 === table_row_count%2 ) {
+		const table_rows = document.querySelectorAll('tr.iedit');
+		let table_row_count = table_rows.length;
+		while (table_row_count--) {
+			if (table_row_count % 2 === 0) {
 				jQuery(table_rows[table_row_count]).addClass('alternate');
 			} else {
 				jQuery(table_rows[table_row_count]).removeClass('alternate');
 			}
 		}
-	}
+	},
+});
+
+jQuery(function () {
+	// set up click handler for order reset link
+	jQuery('#simple-page-ordering-reset').on('click', function (e) {
+		e.preventDefault();
+		const post_type = jQuery(this).data('posttype');
+		// eslint-disable-next-line no-alert
+		if (window.confirm(`Are you sure you want to reset the ${post_type} order?`)) {
+			jQuery.post(
+				window.ajaxurl,
+				{
+					action: 'reset_simple_page_ordering',
+					post_type,
+					_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
+					screen_id: window.simple_page_ordering_localized_data.screen_id,
+				},
+				function () {
+					window.location.reload();
+				},
+			);
+		}
+	});
 });

@@ -26,8 +26,8 @@ describe('Test Page Order Change', () => {
 	
 		const first = '.wp-list-table .level-0 + .level-1';
 		const second = '.wp-list-table .level-0 + .level-1 + .level-1';
-		const firstText = cy.get(`${first} .row-title`).invoke('text');
-		const secondText = cy.get(`${second} .row-title`).invoke('text');
+		const firstText = cy.get(`${first} .row-title`);
+		const secondText = cy.get(`${second} .row-title`);
 
 		cy.get(first).drag(second);
 		// wait for order update done.
@@ -40,4 +40,15 @@ describe('Test Page Order Change', () => {
 			firstText.should('have.text', $el.text());
 		});
 	});
+
+	// Reset page ordering state.
+	after( () => {
+		cy.login();
+		cy.visit('/wp-admin/edit.php?post_type=page');
+
+		const firstRow = '.wp-list-table tbody tr:nth-child(1)';
+		const secondRow = '.wp-list-table tbody tr:nth-child(2)';
+
+		cy.get( firstRow ).drag( secondRow );
+	} );
 });

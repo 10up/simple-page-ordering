@@ -4,3 +4,6 @@ node_modules
 vendor
 .wp-env.override.json
 dist/
+tests/cypress/screenshots
+tests/cypress/videos
+eslint-report.json
