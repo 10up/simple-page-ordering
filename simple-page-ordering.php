@@ -270,7 +270,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
 			if ( ! $post ) {
-				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
+				return new WP_Error( 'invalid', __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
 			// Badly written plug-in hooks for save post can break things.
@@ -496,7 +496,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				[
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
-					'permission_callback' => '__return_true',
+					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
 					'args'                => [
 						'id'      => [
 							'description'       => __( 'ID of item we want to sort', 'simple-page-ordering' ),
@@ -542,6 +542,40 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		}
 
 		/**
+		 * Check if a given request has access to reorder content.
+		 *
+		 * This check ensures the current user making the request has
+		 * proper permissions to edit the item, that the post type
+		 * is allowed in REST requests and the post type is sortable.
+		 *
+		 * @param WP_REST_Request $request Full data about the request.
+		 * @return bool|WP_Error
+		 */
+		public static function rest_page_ordering_permissions_check( WP_REST_Request $request ) {
+			$post_id = $request->get_param( 'id' );
+
+			// Ensure we have a logged in user that can edit the item.
+			if ( empty( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+				return false;
+			}
+
+			$post_type     = get_post_type( $post_id );
+			$post_type_obj = get_post_type_object( $post_type );
+
+			// Ensure the post type is allowed in REST endpoints.
+			if ( ! $post_type || empty( $post_type_obj ) || empty( $post_type_obj->show_in_rest ) ) {
+				return false;
+			}
+
+			// Ensure this post type is sortable.
+			if ( ! self::is_post_type_sortable( $post_type ) ) {
+				return new WP_Error( 'not_enabled', esc_html__( 'This post type is not sortable.', 'simple-page-ordering' ) );
+			}
+
+			return true;
+		}
+
+		/**
 		 * Handle REST page sorting
 		 *
 		 * @param WP_REST_Request $request The REST request object.
@@ -555,7 +589,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Check and make sure we have what we need.
 			if ( false === $post_id || ( false === $previd && false === $nextid ) ) {
-				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
+				return new WP_Error( 'invalid', __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
 			$page_ordering = self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
