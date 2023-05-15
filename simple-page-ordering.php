@@ -499,33 +499,26 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
 					'args'                => [
 						'id'      => [
-							'description'       => __( 'ID of item we want to sort', 'simple-page-ordering' ),
-							'required'          => true,
-							'type'              => 'integer',
-							'sanitize_callback' => 'absint',
-							'validate_callback' => 'rest_validate_request_arg',
+							'description' => __( 'ID of item we want to sort', 'simple-page-ordering' ),
+							'required'    => true,
+							'type'        => 'integer',
+							'minimum'     => 1,
 						],
 						'previd'  => [
-							'description'       => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
-							'required'          => true,
-							'type'              => [ 'boolean', 'integer' ],
-							'sanitize_callback' => 'absint',
-							'validate_callback' => 'rest_validate_request_arg',
+							'description' => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
+							'required'    => true,
+							'type'        => [ 'boolean', 'integer' ],
 						],
 						'nextid'  => [
-							'description'       => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
-							'required'          => true,
-							'type'              => [ 'boolean', 'integer' ],
-							'sanitize_callback' => 'absint',
-							'validate_callback' => 'rest_validate_request_arg',
+							'description' => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
+							'required'    => true,
+							'type'        => [ 'boolean', 'integer' ],
 						],
 						'start'   => [
-							'default'           => 1,
-							'description'       => __( 'Index we start with when sorting', 'simple-page-ordering' ),
-							'required'          => false,
-							'type'              => 'integer',
-							'sanitize_callback' => 'absint',
-							'validate_callback' => 'rest_validate_request_arg',
+							'default'     => 1,
+							'description' => __( 'Index we start with when sorting', 'simple-page-ordering' ),
+							'required'    => false,
+							'type'        => 'integer',
 						],
 						'exclude' => [
 							'default'     => [],
@@ -548,6 +541,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * proper permissions to edit the item, that the post type
 		 * is allowed in REST requests and the post type is sortable.
 		 *
+		 * @since 2.5.1
+		 *
 		 * @param WP_REST_Request $request Full data about the request.
 		 * @return bool|WP_Error
 		 */
@@ -555,7 +550,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$post_id = $request->get_param( 'id' );
 
 			// Ensure we have a logged in user that can edit the item.
-			if ( empty( $post_id ) || ! current_user_can( 'edit_post', $post_id ) ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				return false;
 			}
 
