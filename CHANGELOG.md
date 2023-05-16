@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.5.1] - 2023-05-16
+### Security
+- Ensure we check user permissions properly in our REST endpoint (props [@mikhail-net](https://github.com/mikhail-net), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc)).
+
 ## [2.5.0] - 2023-04-18
 **Note that this release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.**
 
@@ -248,6 +252,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.5.1]: https://github.com/10up/simple-page-ordering/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/10up/simple-page-ordering/compare/2.4.4...2.5.0
 [2.4.4]: https://github.com/10up/simple-page-ordering/compare/2.4.3...2.4.4
 [2.4.3]: https://github.com/10up/simple-page-ordering/compare/2.4.2...2.4.3

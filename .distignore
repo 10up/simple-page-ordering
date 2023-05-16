@@ -10,6 +10,8 @@
 # Files to ignore
 /.distignore
 /.editorconfig
+/.eslintignore
+/.eslintrc.js
 /.gitattributes
 /.gitignore
 /.phpcs.xml.dist
