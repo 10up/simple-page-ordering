@@ -1,3 +1,4 @@
+.DS_Store
 .eslintcache
 localization
 node_modules
@@ -6,4 +7,6 @@ vendor
 dist/
 tests/cypress/screenshots
 tests/cypress/videos
+tests/cypress/downloads
+tests/cypress/reports
 eslint-report.json
