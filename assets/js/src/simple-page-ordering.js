@@ -181,8 +181,15 @@ jQuery(function () {
 	jQuery('#simple-page-ordering-reset').on('click', function (e) {
 		e.preventDefault();
 		const post_type = jQuery(this).data('posttype');
-		// eslint-disable-next-line no-alert
-		if (window.confirm(`Are you sure you want to reset the ${post_type} order?`)) {
+		if (
+			// eslint-disable-next-line no-alert
+			window.confirm(
+				window.simple_page_ordering_localized_data.confirmation_msg.replace(
+					`{post_type}`,
+					post_type,
+				),
+			)
+		) {
 			jQuery.post(
 				window.ajaxurl,
 				{
