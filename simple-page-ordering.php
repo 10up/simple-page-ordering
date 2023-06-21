@@ -140,7 +140,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'simple-page-ordering',
 						'simple_page_ordering_localized_data',
 						array(
-							'_wpnonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+							'_wpnonce'         => wp_create_nonce( 'simple-page-ordering-nonce' ),
+							'confirmation_msg' => __( 'Are you sure you want to reset the {post_type} order?', 'simple-page-ordering' )
 						)
 					);
 
