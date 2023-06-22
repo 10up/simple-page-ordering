@@ -69,7 +69,6 @@ function update_simple_ordering_callback(response) {
 				nextid: changes.next.nextid,
 				start: changes.next.start,
 				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-				screen_id: window.simple_page_ordering_localized_data.screen_id,
 				excluded: JSON.stringify(changes.next.excluded),
 			},
 			update_simple_ordering_callback,
@@ -158,7 +157,6 @@ sortable_post_table.sortable({
 				previd: prevpostid,
 				nextid: nextpostid,
 				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-				screen_id: window.simple_page_ordering_localized_data.screen_id,
 			},
 			update_simple_ordering_callback,
 		);
@@ -183,12 +181,7 @@ jQuery(function () {
 		const post_type = jQuery(this).data('posttype');
 		if (
 			// eslint-disable-next-line no-alert
-			window.confirm(
-				window.simple_page_ordering_localized_data.confirmation_msg.replace(
-					`{post_type}`,
-					post_type,
-				),
-			)
+			window.confirm(window.simple_page_ordering_localized_data.confirmation_msg)
 		) {
 			jQuery.post(
 				window.ajaxurl,
@@ -196,7 +189,6 @@ jQuery(function () {
 					action: 'reset_simple_page_ordering',
 					post_type,
 					_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-					screen_id: window.simple_page_ordering_localized_data.screen_id,
 				},
 				function () {
 					window.location.reload();

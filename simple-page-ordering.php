@@ -122,8 +122,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * when we load up our posts query, if we're actually sorting by menu order, initialize sorting scripts
 		 */
 		public static function wp() {
-			$orderby = get_query_var( 'orderby' );
-			$screen  = get_current_screen();
+			$orderby   = get_query_var( 'orderby' );
+			$screen    = get_current_screen();
+			$post_type = $screen->post_type ?? 'post';
+
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 
 				$script_name       = 'dist/js/simple-page-ordering.js';
@@ -141,7 +143,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'simple_page_ordering_localized_data',
 						array(
 							'_wpnonce'         => wp_create_nonce( 'simple-page-ordering-nonce' ),
-							'confirmation_msg' => __( 'Are you sure you want to reset the ordering of the "{post_type}" post type?', 'simple-page-ordering' ),
+							/* translators: %1$s is replaced with the post type name */
+							'confirmation_msg' => sprintf( esc_html__( 'Are you sure you want to reset the ordering of the "%1$s" post type?', 'simple-page-ordering' ), $post_type ),
 						)
 					);
 
@@ -165,8 +168,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Add page ordering help to the help tab
 		 */
 		public static function admin_head() {
-			$reset_order = sprintf( '<a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>', get_query_var( 'post_type' ), __( 'Reset post order', 'simple-page-ordering' ) );
-			$screen      = get_current_screen();
+			$screen    = get_current_screen();
+			$post_type = $screen->post_type ?? 'post';
+
 			$screen->add_help_tab(
 				array(
 					'id'      => 'simple_page_ordering_help_tab',
@@ -174,8 +178,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'content' => sprintf(
 						'<p>%s</p><a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>',
 						esc_html__( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ),
-						get_query_var( 'post_type' ),
-						esc_html__( 'Reset post order', 'simple-page-ordering' )
+						esc_attr( get_query_var( 'post_type' ) ),
+						/* translators: %1$s is replaced with the post type name */
+						sprintf( esc_html__( 'Reset %1$s order', 'simple-page-ordering' ), $post_type )
 					),
 				)
 			);
