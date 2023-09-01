@@ -11,7 +11,7 @@
     "@wordpress/env": "^5.3.0",
     "@wordpress/eslint-plugin": "^12.9.0",
     "10up-toolkit": "^4.3.1",
-    "cypress": "^11.2.0",
+    "cypress": "^13.1.0",
     "cypress-mochawesome-reporter": "^3.4.0",
     "node-sass": "^9.0.0",
     "node-wp-i18n": "^1.2.6"
