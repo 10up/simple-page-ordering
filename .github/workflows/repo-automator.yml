@@ -27,7 +27,6 @@ jobs:
           conflict-label: needs:refresh
           sync-pr-branch: true
           reviewers: |
-            Sidsector9
             team:open-source-practice
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
