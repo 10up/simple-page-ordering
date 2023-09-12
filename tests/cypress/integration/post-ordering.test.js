@@ -1,22 +1,28 @@
 describe('Test Post Order Change', () => {
-	it('Can change posts order', () => {
+	const firstPost = '.wp-list-table tbody tr:nth-child(1)';
+	const secondPost = '.wp-list-table tbody tr:nth-child(2)';
+
+	beforeEach(() => {
 		cy.login();
 		cy.visit('/wp-admin/edit.php?orderby=menu_order+title&order=asc');
 
-		const first = '.wp-list-table tbody tr:nth-child(1)';
-		const second = '.wp-list-table tbody tr:nth-child(2)';
-		const firstText = cy.get(`${first} .row-title`);
-		const secondText = cy.get(`${second} .row-title`);
+		cy.get(`${firstPost} .row-title`).invoke('text').as('initialFirstPostTitle', { type: 'static' } );
+		cy.get(`${secondPost} .row-title`).invoke('text').as('initialSecondPostTitle', { type: 'static' } );
+	});
 
-		cy.get(first).drag(second);
+	it('Can change posts order', () => {
+		cy.get(firstPost).drag(secondPost);
 		// wait for order update done.
-		cy.get(`${second}  .check-column input`).should('exist');
+		cy.get(`${secondPost}  .check-column input`).should('exist');
 
-	  	cy.get(`${first} .row-title`).then($el => {
-			secondText.should('have.text', $el.text());
-		});
-		cy.get(`${second} .row-title`).then($el => {
-			firstText.should('have.text', $el.text());
-		});
+		cy.get( '@initialSecondPostTitle' ).then( initialSecondPostTitle => {
+			// Now that it has been reordered, the first row should have the initial second text.
+			cy.get( `${firstPost} .row-title` ).should('have.text', `${initialSecondPostTitle}` );
+		} );
+
+		cy.get( '@initialFirstPostTitle' ).then( initialFirstPostTitle => {
+			// Now that it has been reordered, the second row should have the initial first text.
+			cy.get( `${secondPost} .row-title` ).should('have.text', `${initialFirstPostTitle}` );
+		} );
 	});
 });
