@@ -17,6 +17,11 @@
 
 namespace SimplePageOrdering;
 
+use stdClass;
+use WP_Error;
+use WP_REST_Response;
+use WP_Query;
+
 /**
  * Get the minimum version of PHP required by this plugin.
  *
