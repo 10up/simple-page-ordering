@@ -4,8 +4,8 @@ Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
 Requires at least: 5.7
 Requires PHP:      7.4
-Tested up to:      6.2
-Stable tag:        2.5.0
+Tested up to:      6.3
+Stable tag:        2.5.1
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,7 +110,10 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
-= 2.5.0 - TBD =
+= 2.5.1 - 2023-05-16 =
+* **Security:** Ensure we check user permissions properly in our REST endpoint (props [@mikhail-net](https://github.com/mikhail-net), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc)).
+
+= 2.5.0 - 2023-04-18 =
 **Note that this release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.**
 
 * **Added:** Feature to reset page order (props [@pattonwebz](https://github.com/pattonwebz), [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#129](https://github.com/10up/simple-page-ordering/pull/129).
@@ -269,7 +272,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 * **Changed:** Simplified code - consolidated hooks.
 * **Changed:** Updated version requirements.
 
-== Upgrade Notice == 
+== Upgrade Notice ==
 
 = 2.5.0 =
 This release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.

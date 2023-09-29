@@ -3,7 +3,7 @@
  * Plugin Name:       Simple Page Ordering
  * Plugin URI:        http://10up.com/plugins/simple-page-ordering-wordpress/
  * Description:       Order your pages and hierarchical post types using drag and drop on the built in page list. For further instructions, open the "Help" tab on the Pages screen.
- * Version:           2.5.0
+ * Version:           2.5.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
@@ -15,8 +15,62 @@
  * @package simple-page-ordering
  */
 
+namespace SimplePageOrdering;
+
+use stdClass;
+use WP_Error;
+use WP_REST_Response;
+use WP_Query;
+
+/**
+ * Get the minimum version of PHP required by this plugin.
+ *
+ * @since 2.5.2
+ *
+ * @return string Minimum version required.
+ */
+function minimum_php_requirement(): string {
+	return '7.4';
+}
+
+/**
+ * Whether PHP installation meets the minimum requirements
+ *
+ * @since 2.5.2
+ *
+ * @return bool True if meets minimum requirements, false otherwise.
+ */
+function site_meets_php_requirements(): bool {
+	return version_compare( phpversion(), minimum_php_requirement(), '>=' );
+}
+
+// Try to load the plugin files, ensuring our PHP version is met first.
+if ( ! site_meets_php_requirements() ) {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+						/* translators: %s: Minimum required PHP version */
+							__( 'Simple Page Ordering requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'simple-page-ordering' ),
+							esc_html( minimum_php_requirement() )
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+}
+
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.5.0' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.5.1' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -122,8 +176,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * when we load up our posts query, if we're actually sorting by menu order, initialize sorting scripts
 		 */
 		public static function wp() {
-			$orderby = get_query_var( 'orderby' );
-			$screen  = get_current_screen();
+			$orderby   = get_query_var( 'orderby' );
+			$screen    = get_current_screen();
+			$post_type = $screen->post_type ?? 'post';
+
 			if ( ( is_string( $orderby ) && 0 === strpos( $orderby, 'menu_order' ) ) || ( isset( $orderby['menu_order'] ) && 'ASC' === $orderby['menu_order'] ) ) {
 
 				$script_name       = 'dist/js/simple-page-ordering.js';
@@ -140,7 +196,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'simple-page-ordering',
 						'simple_page_ordering_localized_data',
 						array(
-							'_wpnonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+							'_wpnonce'         => wp_create_nonce( 'simple-page-ordering-nonce' ),
+							/* translators: %1$s is replaced with the post type name */
+							'confirmation_msg' => sprintf( esc_html__( 'Are you sure you want to reset the ordering of the "%1$s" post type?', 'simple-page-ordering' ), $post_type ),
 						)
 					);
 
@@ -164,8 +222,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Add page ordering help to the help tab
 		 */
 		public static function admin_head() {
-			$reset_order = sprintf( '<a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>', get_query_var( 'post_type' ), __( 'Reset post order', 'simple-page-ordering' ) );
-			$screen      = get_current_screen();
+			$screen    = get_current_screen();
+			$post_type = $screen->post_type ?? 'post';
+
 			$screen->add_help_tab(
 				array(
 					'id'      => 'simple_page_ordering_help_tab',
@@ -173,8 +232,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'content' => sprintf(
 						'<p>%s</p><a href="#" id="simple-page-ordering-reset" data-posttype="%s">%s</a>',
 						esc_html__( 'To reposition an item, simply drag and drop the row by "clicking and holding" it anywhere (outside of the links and form controls) and moving it to its new position.', 'simple-page-ordering' ),
-						get_query_var( 'post_type' ),
-						esc_html__( 'Reset post order', 'simple-page-ordering' )
+						esc_attr( get_query_var( 'post_type' ) ),
+						/* translators: %1$s is replaced with the post type name */
+						sprintf( esc_html__( 'Reset %1$s order', 'simple-page-ordering' ), $post_type )
 					),
 				)
 			);
@@ -270,7 +330,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
 			if ( ! $post ) {
-				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
+				return new WP_Error( 'invalid', __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
 			// Badly written plug-in hooks for save post can break things.
@@ -496,38 +556,78 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				[
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
-					'permission_callback' => '__return_true',
+					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
 					'args'                => [
 						'id'      => [
-							'description' => __( 'Post ID.', 'simple-page-ordering' ),
+							'description' => __( 'ID of item we want to sort', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => 'numeric',
+							'type'        => 'integer',
+							'minimum'     => 1,
 						],
 						'previd'  => [
-							'description' => __( 'Previous post ID', 'simple-page-ordering' ),
+							'description' => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => 'numeric',
+							'type'        => [ 'boolean', 'integer' ],
 						],
 						'nextid'  => [
-							'description' => __( 'Next post ID', 'simple-page-ordering' ),
+							'description' => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => 'numeric',
+							'type'        => [ 'boolean', 'integer' ],
 						],
 						'start'   => [
 							'default'     => 1,
-							'description' => __( 'Start index', 'simple-page-ordering' ),
+							'description' => __( 'Index we start with when sorting', 'simple-page-ordering' ),
 							'required'    => false,
-							'type'        => 'numeric',
+							'type'        => 'integer',
 						],
 						'exclude' => [
 							'default'     => [],
-							'description' => __( 'Array of excluded post IDs', 'simple-page-ordering' ),
+							'description' => __( 'Array of IDs we want to exclude', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
+							'items'       => [
+								'type' => 'integer',
+							],
 						],
 					],
 				]
 			);
+		}
+
+		/**
+		 * Check if a given request has access to reorder content.
+		 *
+		 * This check ensures the current user making the request has
+		 * proper permissions to edit the item, that the post type
+		 * is allowed in REST requests and the post type is sortable.
+		 *
+		 * @since 2.5.1
+		 *
+		 * @param WP_REST_Request $request Full data about the request.
+		 * @return bool|WP_Error
+		 */
+		public static function rest_page_ordering_permissions_check( WP_REST_Request $request ) {
+			$post_id = $request->get_param( 'id' );
+
+			// Ensure we have a logged in user that can edit the item.
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return false;
+			}
+
+			$post_type     = get_post_type( $post_id );
+			$post_type_obj = get_post_type_object( $post_type );
+
+			// Ensure the post type is allowed in REST endpoints.
+			if ( ! $post_type || empty( $post_type_obj ) || empty( $post_type_obj->show_in_rest ) ) {
+				return false;
+			}
+
+			// Ensure this post type is sortable.
+			if ( ! self::is_post_type_sortable( $post_type ) ) {
+				return new WP_Error( 'not_enabled', esc_html__( 'This post type is not sortable.', 'simple-page-ordering' ) );
+			}
+
+			return true;
 		}
 
 		/**
@@ -544,7 +644,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Check and make sure we have what we need.
 			if ( false === $post_id || ( false === $previd && false === $nextid ) ) {
-				return new WP_Error( __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
+				return new WP_Error( 'invalid', __( 'Missing mandatory parameters.', 'simple-page-ordering' ) );
 			}
 
 			$page_ordering = self::page_ordering( $post_id, $previd, $nextid, $start, $excluded );
