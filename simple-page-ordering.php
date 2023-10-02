@@ -168,8 +168,24 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'sort_by_order_link',
 				)
 			);
+			add_action( 'pre_get_posts', array( __CLASS__, 'filter_query' ) );
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
+		}
+
+		/**
+		 * This is to enable pagination.
+		 *
+		 * @param WP_Query $query The WP_Query instance (passed by reference).
+		 */
+		public static function filter_query( $query ) {
+			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === sanitize_text_field( wp_unslash( $_GET['id'] ) ) : false;
+
+			if ( ! $is_simple_page_ordering ) {
+				return;
+			}
+
+			$query->set( 'posts_per_page', -1 );
 		}
 
 		/**
@@ -524,8 +540,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$class        = ( get_query_var( 'orderby' ) === 'menu_order title' ) ? 'current' : '';
 			$query_string = remove_query_arg( array( 'orderby', 'order' ) );
 			if ( ! is_post_type_hierarchical( get_post_type() ) ) {
-				$query_string = add_query_arg( 'orderby', 'menu_order post_title', $query_string );
+				$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
 				$query_string = add_query_arg( 'order', 'asc', $query_string );
+				$query_string = add_query_arg( 'id', 'simple-page-ordering', $query_string );
 			}
 			$views['byorder'] = sprintf( '<a href="%s" class="%s">%s</a>', esc_url( $query_string ), $class, __( 'Sort by Order', 'simple-page-ordering' ) );
 
