@@ -179,7 +179,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @param WP_Query $query The WP_Query instance (passed by reference).
 		 */
 		public static function filter_query( $query ) {
-			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === sanitize_text_field( wp_unslash( $_GET['id'] ) ) : false;
+			if ( ! $query->is_main_query() ) {
+				return;
+			}
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === $_GET['id'] : false;
 
 			if ( ! $is_simple_page_ordering ) {
 				return;
