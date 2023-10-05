@@ -6,7 +6,6 @@
 /bin export-ignore
 /node_modules export-ignore
 /tests export-ignore
-/vendor export-ignore
 
 # Files to ignore
 /.editorconfig export-ignore
