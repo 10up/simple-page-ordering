@@ -10,7 +10,7 @@ on:
       - develop
 jobs:
   build:
-      uses: 10up/simple-page-ordering/.github/workflows/build-release-zip.yml@develop
+      uses: 10up/simple-page-ordering/.github/workflows/build-release-zip.yml
   cypress:
     needs: build
     name: ${{ matrix.core.name }}
