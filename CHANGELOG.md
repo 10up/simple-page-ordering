@@ -3,7 +3,31 @@
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/), and will adhere to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] - TBD
+## [2.6.0] - TBD
 
+### Added
+- Mochawesome reporter added for Cypress test report (props [@iamdharmesh](https://github.com/iamdharmesh), [@jayedul](https://github.com/jayedul), [@faisal-alvi](https://github.com/faisal-alvi) via [#146](https://github.com/10up/simple-page-ordering/pull/146)).
+- A check for minimum required PHP version before loading the plugin (props [@vikrampm1](https://github.com/vikrampm1), [@kmgalanakis](https://github.com/kmgalanakis), [@Sidsector9](https://github.com/Sidsector9) via [#153](https://github.com/10up/simple-page-ordering/pull/153)).
+- Repo Automator GitHub Action (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#158](https://github.com/10up/simple-page-ordering/pull/158)).
+
+### Changed
+- Updates the Dependency Review GitHub Action to check for GPL-compatible licenses (props [@jeffpaul](https://github.com/jeffpaul), [@Sidsector9](https://github.com/Sidsector9) via [#147](https://github.com/10up/simple-page-ordering/pull/147)).
+- Slightly change how some of our text is translated, passing in the post type (props [@dkotter](https://github.com/dkotter), [@ravinderk](https://github.com/ravinderk) via [#149](https://github.com/10up/simple-page-ordering/pull/149)).
+- Bump WordPress "tested up to" version 6.3 (props [@jeffpaul](https://github.com/jeffpaul), [@QAharshalkadu](https://github.com/QAharshalkadu)).
+- Updated 10up Cypress Utilities to 0.2.0 (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#160](https://github.com/10up/simple-page-ordering/pull/160)).
+
+### Fixed
+- The "Are you sure..." popup text to be translatable (props [@kebbet](https://github.com/kebbet), [@bmarshall511](https://github.com/bmarshall511), [@dkotter](https://github.com/dkotter) via [#148](https://github.com/10up/simple-page-ordering/pull/148)).
+- Remove code that was no longer needed (props [@dkotter](https://github.com/dkotter), [@ravinderk](https://github.com/ravinderk) via [#149](https://github.com/10up/simple-page-ordering/pull/149)).
+- Add missing escaping (props [@dkotter](https://github.com/dkotter), [@ravinderk](https://github.com/ravinderk) via [#149](https://github.com/10up/simple-page-ordering/pull/149)).
+- Fatal error following the introduction of a namespace. (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@iamdharmesh](https://github.com/iamdharmesh), [@dkotter](https://github.com/dkotter) via [#162](https://github.com/10up/simple-page-ordering/pull/162)).
+- Hidden pagination in admin screen when Sort by Order is clicked (props [@tlovett1](https://github.com/tlovett1), [@dkotter](https://github.com/dkotter), [@Sidsector9](https://github.com/Sidsector9) via [#165](https://github.com/10up/simple-page-ordering/pull/165)).
+
+### Security
+- Bump `tough-cookie`, from `4.1.2` to `4.1.3` (props [@faisal-alvi](https://github.com/faisal-alvi) via [#152](https://github.com/10up/simple-page-ordering/pull/152)).
+- Bump `node-sass` from `7.0.3` to `9.0.0` (props [@faisal-alvi](https://github.com/faisal-alvi) via [#152](https://github.com/10up/simple-page-ordering/pull/152)).
+- Bump `@cypress/request` from `2.88.11` to `2.88.12` (props [@faisal-alvi](https://github.com/faisal-alvi) via [#152](https://github.com/10up/simple-page-ordering/pull/152)).
+- Bump `@cypress/request` from `2.88.12` to `3.0.0` to resolve SSRF issue (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#160](https://github.com/10up/simple-page-ordering/pull/160)).
 ## [2.5.1] - 2023-05-16
 ### Security
 - Ensure we check user permissions properly in our REST endpoint (props [@mikhail-net](https://github.com/mikhail-net), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc)).
@@ -252,6 +276,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.6.0]: https://github.com/10up/simple-page-ordering/compare/2.5.1...2.6.0
 [2.5.1]: https://github.com/10up/simple-page-ordering/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/10up/simple-page-ordering/compare/2.4.4...2.5.0
 [2.4.4]: https://github.com/10up/simple-page-ordering/compare/2.4.3...2.4.4
