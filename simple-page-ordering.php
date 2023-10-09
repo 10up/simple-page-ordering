@@ -15,11 +15,11 @@
  * @package simple-page-ordering
  */
 
-if ( ! is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator.php' ) ) {
 	return;
 }
 
-require_once 'vendor/autoload.php';
+require_once '10up-lib/wp-compat-validation-tool/src/Validator.php';
 
 $compat_checker = new \Simple_Page_Ordering_Validator\Validator();
 $compat_checker

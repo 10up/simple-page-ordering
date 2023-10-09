@@ -27,8 +27,10 @@
   },
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
+    },
+    "platform-check": false
   },
   "repositories": [
     {
@@ -38,12 +40,15 @@
   ],
   "scripts": {
       "post-install-cmd": [
-          "./vendor/10up/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator",
-          "composer dump-autoload"
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
       ],
       "post-update-cmd": [
-          "./vendor/10up/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator",
-          "composer dump-autoload"
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
       ]
+  },
+  "extra": {
+    "installer-paths": {
+      "./{$name}/": ["10up/wp-compat-validation-tool"]
+    }
   }
 }
