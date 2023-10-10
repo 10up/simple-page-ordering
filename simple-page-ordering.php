@@ -20,7 +20,6 @@ if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator
 }
 
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.6.0' );
 require_once '10up-lib/wp-compat-validation-tool/src/Validator.php';
 
 $compat_checker = new \Simple_Page_Ordering_Validator\Validator();
