@@ -69,7 +69,6 @@ function update_simple_ordering_callback(response) {
 				nextid: changes.next.nextid,
 				start: changes.next.start,
 				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-				screen_id: window.simple_page_ordering_localized_data.screen_id,
 				excluded: JSON.stringify(changes.next.excluded),
 			},
 			update_simple_ordering_callback,
@@ -158,7 +157,6 @@ sortable_post_table.sortable({
 				previd: prevpostid,
 				nextid: nextpostid,
 				_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-				screen_id: window.simple_page_ordering_localized_data.screen_id,
 			},
 			update_simple_ordering_callback,
 		);
@@ -181,15 +179,16 @@ jQuery(function () {
 	jQuery('#simple-page-ordering-reset').on('click', function (e) {
 		e.preventDefault();
 		const post_type = jQuery(this).data('posttype');
-		// eslint-disable-next-line no-alert
-		if (window.confirm(`Are you sure you want to reset the ${post_type} order?`)) {
+		if (
+			// eslint-disable-next-line no-alert
+			window.confirm(window.simple_page_ordering_localized_data.confirmation_msg)
+		) {
 			jQuery.post(
 				window.ajaxurl,
 				{
 					action: 'reset_simple_page_ordering',
 					post_type,
 					_wpnonce: window.simple_page_ordering_localized_data._wpnonce,
-					screen_id: window.simple_page_ordering_localized_data.screen_id,
 				},
 				function () {
 					window.location.reload();
