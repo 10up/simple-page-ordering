@@ -5,6 +5,7 @@ node_modules
 vendor
 .wp-env.override.json
 dist/
+10up-lib/
 tests/cypress/screenshots
 tests/cypress/videos
 tests/cypress/downloads
