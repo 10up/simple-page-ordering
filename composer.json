@@ -19,12 +19,36 @@
     "source": "https://github.com/10up/simple-page-ordering"
   },
   "minimum-stability": "dev",
+  "require": {
+    "10up/wp-compat-validation-tool": "dev-trunk"
+  },
   "require-dev": {
     "10up/phpcs-composer": "dev-master"
   },
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
+    },
+    "platform-check": false
+  },
+  "repositories": [
+    {
+        "type": "git",
+        "url": "https://github.com/10up/wp-compat-validation-tool.git"
+    }
+  ],
+  "scripts": {
+      "post-install-cmd": [
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
+      ],
+      "post-update-cmd": [
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
+      ]
+  },
+  "extra": {
+    "installer-paths": {
+      "./{$name}/": ["10up/wp-compat-validation-tool"]
     }
   }
 }
