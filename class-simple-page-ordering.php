@@ -109,6 +109,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'pre_get_posts', array( __CLASS__, 'filter_query' ) );
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
+			add_action( 'page_row_actions', array( __CLASS__, 'page_row_actions' ), 10, 2 );
 		}
 
 		/**
@@ -197,6 +198,53 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					),
 				)
 			);
+		}
+
+		/**
+		 * Modify the row actions for hierarchical post types.
+		 *
+		 * This adds the actions to change the parent/child relationships.
+		 *
+		 * @param array   $actions An array of row action links.
+		 * @param WP_Post $post    The post object.
+		 */
+		public static function page_row_actions( $actions, $post ) {
+			$title         = _draft_or_post_title( $post );
+			$edit_link     = get_edit_post_link( $post->ID, 'raw' );
+			$move_in_link  = add_query_arg(
+				array(
+					'action'    => 'spo-move-in',
+					'spo_nonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+					'post_type' => $post->post_type,
+				),
+				$edit_link
+			);
+			$move_out_link = add_query_arg(
+				array(
+					'action'    => 'spo-move-out',
+					'spo_nonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+					'post_type' => $post->post_type,
+				),
+				$edit_link
+			);
+
+			$actions['spo-move-in'] = sprintf(
+				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
+				esc_url( $move_in_link ),
+				/* translators: %s: Post title. */
+				esc_attr( sprintf( __( 'Move &#8220;%s&#8221; in', 'simple-page-ordering' ), $title ) ),
+				__( '< Move in', 'simple-page-ordering' )
+			);
+
+			$actions['spo-move-out'] = sprintf(
+				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
+				esc_url( $move_out_link ),
+				/* translators: %s: Post title. */
+				esc_attr( sprintf( __( 'Move &#8220;%s&#8221; out', 'simple-page-ordering' ), $title ) ),
+				__( 'Move out >', 'simple-page-ordering' )
+			);
+
+			return $actions;
 		}
 
 		/**
