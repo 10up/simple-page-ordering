@@ -27,14 +27,14 @@ describe('Admin can login and make sure plugin is activated', () => {
 		cy.login();
 		cy.visit( '/wp-admin/edit.php?post_type=page' );
 		cy.get( '#show-settings-link' ).click();
-		cy.get( '#edit_page_per_page' ).clear().type( '2' );
+		cy.get( '#edit_page_per_page' ).type( '{selectAll}{del}2' );
 		cy.get( '#screen-options-apply' ).click();
 		cy.get( '.byorder' ).click();
 		cy.get( '.pagination-links' ).should( 'be.visible' );
 
 		// Restore default pagination.
 		cy.get( '#show-settings-link' ).click();
-		cy.get( '#edit_page_per_page' ).clear().type( '10' );
+		cy.get( '#edit_page_per_page' ).type( '{selectAll}{del}10' );
 		cy.get( '#screen-options-apply' ).click();
 	});
 });
