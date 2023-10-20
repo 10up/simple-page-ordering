@@ -95,6 +95,76 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		}
 
 		public static function handle_move_out( $post_id ) {
+			global $wpdb;
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				self::handle_move_send_back();
+			}
+
+			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
+			}
+
+			$pages = get_pages( array( 'sort_column' => 'menu_order' ) );
+
+			$top_level_pages = array();
+			$children_pages  = array();
+			$bad_parents     = array();
+
+			foreach ( $pages as $page ) {
+				// Catch and repair bad pages.
+				if ( $page->post_parent === $page->ID ) {
+					$page->post_parent = 0;
+					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
+					clean_post_cache( $page );
+					$bad_parents[] = $page->ID;
+				}
+
+				if ( $page->post_parent > 0 ) {
+					$children_pages[ $page->post_parent ][] = $page;
+				} else {
+					$top_level_pages[] = $page;
+				}
+			}
+			// Reprime post cache for bad parents.
+			_prime_post_caches( $bad_parents, false, false );
+			unset( $bad_parents );
+
+			// Get the relevant siblings.
+			if ( 0 === $post->post_parent ) {
+				$siblings = $top_level_pages;
+			} else {
+				$siblings = $children_pages[ $post->post_parent ];
+			}
+
+			// Check if the post being moved is a top level page.
+			$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
+			if ( empty( $filtered_siblings ) ) {
+				// Something went wrong. Do nothing.
+				self::handle_move_send_back();
+			}
+
+			// Find the previous page in the sibling tree
+			$key = array_key_first( $filtered_siblings );
+			if ( 0 === $key ) {
+				// It's the first page. Do nothing.
+				self::handle_move_send_back();
+			}
+
+			$previous_page    = $siblings[ $key - 1 ];
+			$previous_page_id = $previous_page->ID;
+
+			// Update the post with the previous page as the parent.
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'post_parent' => $previous_page_id,
+				)
+			);
+
+			self::handle_move_send_back();
 		}
 
 		public static function handle_move_send_back() {
@@ -282,7 +352,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$move_in_link  = add_query_arg(
 				array(
 					'action'    => 'spo-move-in',
-					'spo_nonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
 					'post_type' => $post->post_type,
 				),
 				$edit_link
@@ -290,7 +360,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$move_out_link = add_query_arg(
 				array(
 					'action'    => 'spo-move-out',
-					'spo_nonce' => wp_create_nonce( 'simple-page-ordering-nonce' ),
+					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
 					'post_type' => $post->post_type,
 				),
 				$edit_link
