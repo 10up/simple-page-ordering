@@ -50,6 +50,74 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
+
+			// Custom edit page actions.
+			add_action( 'post_action_spo-move-in', array( __CLASS__, 'handle_move_in' ) );
+			add_action( 'post_action_spo-move-out', array( __CLASS__, 'handle_move_out' ) );
+		}
+
+		public static function handle_move_in( $post_id ) {
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				self::handle_move_send_back();
+			}
+
+			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
+			}
+
+			if ( 0 === $post->post_parent ) {
+				// Top level. Politely continue without doing anything.
+				self::handle_move_send_back();
+			}
+
+			$ancestors = get_post_ancestors( $post );
+
+			// If only one ancestor, set to top level page.
+			if ( 1 === count( $ancestors ) ) {
+				$parent_id = 0;
+			} else {
+				$parent_id = $ancestors[1];
+			}
+
+			// Update the post.
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'post_parent' => $parent_id,
+				)
+			);
+
+			self::handle_move_send_back();
+			var_dump( $ancestors, $parent_id, 'handle_move_in' ); exit;
+		}
+
+		public static function handle_move_out( $post_id ) {
+		}
+
+		public static function handle_move_send_back() {
+			global $post_type;
+
+			$send_back = wp_get_referer();
+			if ( ! $send_back ||
+				str_contains( $send_back, 'post.php' ) ||
+				str_contains( $send_back, 'post-new.php' ) ) {
+				if ( 'attachment' === $post_type ) {
+					$send_back = admin_url( 'upload.php' );
+				} else {
+					$send_back = admin_url( 'edit.php' );
+					if ( ! empty( $post_type ) ) {
+						$send_back = add_query_arg( 'post_type', $post_type, $send_back );
+					}
+				}
+			} else {
+				$send_back = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'ids' ), $send_back );
+			}
+
+			wp_safe_redirect( $send_back );
+			exit;
 		}
 
 		/**
