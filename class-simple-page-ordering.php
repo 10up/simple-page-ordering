@@ -91,7 +91,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			);
 
 			self::handle_move_send_back();
-			var_dump( $ancestors, $parent_id, 'handle_move_in' ); exit;
 		}
 
 		public static function handle_move_out( $post_id ) {
