@@ -367,6 +367,15 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @param WP_Post $post    The post object.
 		 */
 		public static function page_row_actions( $actions, $post ) {
+			$post = get_post( $post );
+			if ( ! $post ) {
+				return $actions;
+			}
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				return $actions;
+			}
+
 			$title         = _draft_or_post_title( $post );
 			$edit_link     = get_edit_post_link( $post->ID, 'raw' );
 			$move_in_link  = add_query_arg(
