@@ -46,6 +46,11 @@
 			@extend %spo-move-out;
 		}
 	}
+
+	// Hide move out action on the first page in the list.
+	> tbody > :first-child .row-actions .spo-move-out {
+		@extend %spo-move-out;
+	}
 }
 
 .spo-updating-row {
