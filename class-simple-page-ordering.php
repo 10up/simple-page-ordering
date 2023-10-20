@@ -56,6 +56,15 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'post_action_spo-move-out', array( __CLASS__, 'handle_move_out' ) );
 		}
 
+		/**
+		 * Move a post in/up the post parent tree.
+		 *
+		 * This is a custom action on the edit page to modify the post parent
+		 * to be the child it's current grandparent post. If no grandparent
+		 * exists, the post becomes a top level page.
+		 *
+		 * @param int $post_id The post ID.
+		 */
 		public static function handle_move_in( $post_id ) {
 			$post = get_post( $post_id );
 			if ( ! $post ) {
@@ -93,6 +102,15 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			self::handle_move_send_back();
 		}
 
+		/**
+		 * Move a post out/down the post parent tree.
+		 *
+		 * This is a custom action on the edit page to modify the post parent
+		 * to be the child of it's previous sibling post on the current post
+		 * tree.
+		 *
+		 * @param int $post_id The post ID.
+		 */
 		public static function handle_move_out( $post_id ) {
 			global $wpdb;
 			$post = get_post( $post_id );
@@ -166,6 +184,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			self::handle_move_send_back();
 		}
 
+		/**
+		 * Redirect the user after modifying the post parent.
+		 */
 		public static function handle_move_send_back() {
 			global $post_type;
 
