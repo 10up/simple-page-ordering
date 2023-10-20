@@ -124,7 +124,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
 			}
 
-			$pages = get_pages( array( 'sort_column' => 'menu_order' ) );
+			$pages = get_pages( array( 'sort_column' => 'menu_order title' ) );
 
 			$top_level_pages = array();
 			$children_pages  = array();
