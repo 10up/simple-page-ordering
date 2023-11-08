@@ -2,8 +2,8 @@
   "name": "simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
   "version": "2.6.1",
-  "author": "10up <opensource@10up.com>",
-  "license": "GPLv2 ( or later )",
+  "author": "10up <opensource@10up.com> (https://10up.com)",
+  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@10up/babel-preset-default": "^2.0.4",
     "@10up/cypress-wp-utils": "^0.2.0",
