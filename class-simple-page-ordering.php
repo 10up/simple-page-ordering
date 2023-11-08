@@ -8,7 +8,7 @@ use WP_REST_Response;
 use WP_Query;
 
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.5.1' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.6.1' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
