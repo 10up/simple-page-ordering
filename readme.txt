@@ -5,7 +5,7 @@ Tags:              order, re-order, ordering, pages, page, manage, menu_order, h
 Requires at least: 5.7
 Requires PHP:      7.4
 Tested up to:      6.4
-Stable tag:        2.6.0
+Stable tag:        2.6.1
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,7 +110,12 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
-= 2.6.0 - TBD =
+= 2.6.1 - 2023-11-08 =
+* **Changed:** Bump WordPress "tested up to" version 6.4 (props [@jeffpaul](https://github.com/jeffpaul), [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@faisal-alvi](https://github.com/faisal-alvi) via [#177](https://github.com/10up/simple-page-ordering/pull/177)).
+* **Changed:** Remove the .git directory from the `10up-lib` directory (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#175](https://github.com/10up/simple-page-ordering/pull/175)).
+* **Security:** Bumps `@babel/traverse` from `7.20.12` to `7.23.2` (props [@peterwilsoncc](https://github.com/peterwilsoncc) via [#170](https://github.com/10up/simple-page-ordering/pull/170)).
+
+= 2.6.0 - 2023-10-25 =
 * **Added:** A check for minimum required PHP version before loading the plugin (props [@vikrampm1](https://github.com/vikrampm1), [@kmgalanakis](https://github.com/kmgalanakis), [@Sidsector9](https://github.com/Sidsector9) via [#153](https://github.com/10up/simple-page-ordering/pull/153)).
 * **Added:** Mochawesome reporter added for Cypress test report (props [@iamdharmesh](https://github.com/iamdharmesh), [@jayedul](https://github.com/jayedul), [@faisal-alvi](https://github.com/faisal-alvi) via [#146](https://github.com/10up/simple-page-ordering/pull/146)).
 * **Added:** Repo Automator GitHub Action (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#158](https://github.com/10up/simple-page-ordering/pull/158)).
