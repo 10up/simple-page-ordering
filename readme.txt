@@ -111,11 +111,9 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 == Changelog ==
 
 = 2.6.3 - 2023-11-09 =
-
 * **Fix:** Deployment issue with version 2.6.2 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#181](https://github.com/10up/simple-page-ordering/pull/181))
 
 = 2.6.2 - 2023-11-09 =
-
 * **Changed:** Update the `wp-compat-validation-tool` composer package to version `0.3.1` which properly removes the `.git` directory (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#180](https://github.com/10up/simple-page-ordering/pull/180)).
 
 = 2.6.1 - 2023-11-08 =
