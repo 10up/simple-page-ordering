@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.6.2] - 2023-11-10
 ### Changed
-- Update the `wp-compat-validation-tool` composer package to version `0.3.1` which removes the `.git` directory.
+- Update the `wp-compat-validation-tool` composer package to version `0.3.1` which properly removes the `.git` directory (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#180](https://github.com/10up/simple-page-ordering/pull/180)).
 
 ## [2.6.1] - 2023-11-08
 ### Changed
