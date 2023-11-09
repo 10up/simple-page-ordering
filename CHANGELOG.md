@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.6.3] - 2023-11-10
 ### Fixed
-- Deployment issue with version 2.6.2
+- Deployment issue with version 2.6.2 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#181](https://github.com/10up/simple-page-ordering/pull/181))
 
 ## [2.6.2] - 2023-11-10
 ### Changed
