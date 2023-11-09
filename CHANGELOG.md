@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.6.2] - 2023-11-10
+## [2.6.3] - 2023-11-09
+### Fixed
+- Deployment issue with version 2.6.2 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#181](https://github.com/10up/simple-page-ordering/pull/181))
+
+## [2.6.2] - 2023-11-09
 ### Changed
 - Update the `wp-compat-validation-tool` composer package to version `0.3.1` which properly removes the `.git` directory (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#180](https://github.com/10up/simple-page-ordering/pull/180)).
 
@@ -290,6 +294,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.6.3]: https://github.com/10up/simple-page-ordering/compare/2.6.2...2.6.3
 [2.6.2]: https://github.com/10up/simple-page-ordering/compare/2.6.1...2.6.2
 [2.6.1]: https://github.com/10up/simple-page-ordering/compare/2.6.0...2.6.1
 [2.6.0]: https://github.com/10up/simple-page-ordering/compare/2.5.1...2.6.0
