@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.6.2] - 2023-11-10
+### Changed
+- Update the `wp-compat-validation-tool` composer package to version `0.3.1` which removes the `.git` directory.
+
 ## [2.6.1] - 2023-11-08
 ### Changed
 - Bump WordPress "tested up to" version 6.4 (props [@jeffpaul](https://github.com/jeffpaul), [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@faisal-alvi](https://github.com/faisal-alvi) via [#177](https://github.com/10up/simple-page-ordering/pull/177)).
@@ -286,6 +290,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.6.2]: https://github.com/10up/simple-page-ordering/compare/2.6.1...2.6.2
 [2.6.1]: https://github.com/10up/simple-page-ordering/compare/2.6.0...2.6.1
 [2.6.0]: https://github.com/10up/simple-page-ordering/compare/2.5.1...2.6.0
 [2.5.1]: https://github.com/10up/simple-page-ordering/compare/2.5.0...2.5.1
