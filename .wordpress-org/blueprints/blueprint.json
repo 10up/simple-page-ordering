@@ -16,7 +16,7 @@
 			"step": "importFile",
 			"file": {
 				"resource": "url",
-				"url": "https:\/\/raw.githubusercontent.com\/WordPress\/theme-test-data\/2dfb8208a09a4e29ee507fc2ad9acea3f5e5d794\/themeunittestdata.wordpress.xml"
+				"url": "https:\/\/raw.githubusercontent.com\/10up\/simple-page-ordering\/02d35c792a11be5f863c44308485e85505c48f17\/.wordpress-org\/blueprints\/demo-data.xml"
 			}
 		},
 		{
