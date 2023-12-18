@@ -23,6 +23,7 @@ jobs:
         run: |
           npm install
           npm run build
+          composer install --no-dev
 
       - name: WordPress.org plugin asset/readme update
         uses: 10up/action-wordpress-plugin-asset-update@stable
