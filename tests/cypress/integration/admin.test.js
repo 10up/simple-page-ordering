@@ -34,7 +34,7 @@ describe('Admin can login and make sure plugin is activated', () => {
 
 		// Restore default pagination.
 		cy.get( '#show-settings-link' ).click();
-		cy.get( '#edit_page_per_page' ).type( '{selectAll}{del}10' );
+		cy.get( '#edit_page_per_page' ).type( '{selectAll}{del}60' );
 		cy.get( '#screen-options-apply' ).click();
 	});
 });
