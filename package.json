@@ -13,6 +13,7 @@
     "cypress": "^13.0.0",
     "cypress-mochawesome-reporter": "^3.6.0",
     "mochawesome-json-to-md": "^0.7.2",
+    "node-wp-i18n": "^1.2.7",
     "prettier": "^2.6.2"
   },
   "scripts": {
