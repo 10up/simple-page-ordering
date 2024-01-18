@@ -53,8 +53,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
 
 			// Custom edit page actions.
-			add_action( 'post_action_spo-move-in', array( __CLASS__, 'handle_move_in' ) );
-			add_action( 'post_action_spo-move-out', array( __CLASS__, 'handle_move_out' ) );
+			add_action( 'post_action_spo-move-under-grandparent', array( __CLASS__, 'handle_move_under_grandparent' ) );
+			add_action( 'post_action_spo-move-under-sibling', array( __CLASS__, 'handle_move_under_sibling' ) );
 		}
 
 		/**
@@ -66,10 +66,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 *
 		 * @param int $post_id The post ID.
 		 */
-		public static function handle_move_in( $post_id ) {
+		public static function handle_move_under_grandparent( $post_id ) {
 			$post = get_post( $post_id );
 			if ( ! $post ) {
-				self::handle_move_send_back();
+				self::redirect_to_referer();
 			}
 
 			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
@@ -80,7 +80,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			if ( 0 === $post->post_parent ) {
 				// Top level. Politely continue without doing anything.
-				self::handle_move_send_back();
+				self::redirect_to_referer();
 			}
 
 			$ancestors = get_post_ancestors( $post );
@@ -100,7 +100,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				)
 			);
 
-			self::handle_move_send_back();
+			self::redirect_to_referer();
 		}
 
 		/**
@@ -112,10 +112,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 *
 		 * @param int $post_id The post ID.
 		 */
-		public static function handle_move_out( $post_id ) {
+		public static function handle_move_under_sibling( $post_id ) {
 			$post = get_post( $post_id );
 			if ( ! $post ) {
-				self::handle_move_send_back();
+				self::redirect_to_referer();
 			}
 
 			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
@@ -137,14 +137,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
 			if ( empty( $filtered_siblings ) ) {
 				// Something went wrong. Do nothing.
-				self::handle_move_send_back();
+				self::redirect_to_referer();
 			}
 
 			// Find the previous page in the sibling tree
 			$key = array_key_first( $filtered_siblings );
 			if ( 0 === $key ) {
 				// It's the first page. Do nothing.
-				self::handle_move_send_back();
+				self::redirect_to_referer();
 			}
 
 			$previous_page    = $siblings[ $key - 1 ];
@@ -158,13 +158,13 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				)
 			);
 
-			self::handle_move_send_back();
+			self::redirect_to_referer();
 		}
 
 		/**
 		 * Redirect the user after modifying the post parent.
 		 */
-		public static function handle_move_send_back() {
+		public static function redirect_to_referer() {
 			global $post_type;
 
 			$send_back = wp_get_referer();
@@ -397,17 +397,17 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			$title         = _draft_or_post_title( $post );
 			$edit_link     = get_edit_post_link( $post->ID, 'raw' );
-			$move_in_link  = add_query_arg(
+			$move_under_grandparent_link  = add_query_arg(
 				array(
-					'action'    => 'spo-move-in',
+					'action'    => 'spo-move-under-grandparent',
 					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
 					'post_type' => $post->post_type,
 				),
 				$edit_link
 			);
-			$move_out_link = add_query_arg(
+			$move_under_sibling_link = add_query_arg(
 				array(
-					'action'    => 'spo-move-out',
+					'action'    => 'spo-move-under-sibling',
 					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
 					'post_type' => $post->post_type,
 				),
@@ -416,9 +416,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			$parent_id = $post->post_parent;
 			if ( $parent_id ) {
-				$actions['spo-move-in'] = sprintf(
+				$actions['spo-move-under-grandparent'] = sprintf(
 					'<a href="%s">%s</a>',
-					esc_url( $move_in_link ),
+					esc_url( $move_under_grandparent_link ),
 					sprintf(
 						__( 'Move out from under %s' ),
 						get_the_title( $parent_id )
@@ -450,9 +450,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			if ( $sibling ) {
-				$actions['spo-move-out'] = sprintf(
+				$actions['spo-move-under-sibling'] = sprintf(
 					'<a href="%s">%s</a>',
-					esc_url( $move_out_link ),
+					esc_url( $move_under_sibling_link ),
 					sprintf(
 						__( 'Move under %s' ),
 						get_the_title( $sibling )
