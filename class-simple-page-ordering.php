@@ -395,9 +395,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages();
 
-			$title         = _draft_or_post_title( $post );
-			$edit_link     = get_edit_post_link( $post->ID, 'raw' );
-			$move_under_grandparent_link  = add_query_arg(
+			$edit_link                   = get_edit_post_link( $post->ID, 'raw' );
+			$move_under_grandparent_link = add_query_arg(
 				array(
 					'action'    => 'spo-move-under-grandparent',
 					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
@@ -405,7 +404,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				),
 				$edit_link
 			);
-			$move_under_sibling_link = add_query_arg(
+			$move_under_sibling_link     = add_query_arg(
 				array(
 					'action'    => 'spo-move-under-sibling',
 					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
@@ -420,6 +419,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'<a href="%s">%s</a>',
 					esc_url( $move_under_grandparent_link ),
 					sprintf(
+						/* translators: %s: parent page/post title */
 						__( 'Move out from under %s' ),
 						get_the_title( $parent_id )
 					)
@@ -454,6 +454,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					'<a href="%s">%s</a>',
 					esc_url( $move_under_sibling_link ),
 					sprintf(
+						/* translators: %s: sibling page/post title */
 						__( 'Move under %s' ),
 						get_the_title( $sibling )
 					)
