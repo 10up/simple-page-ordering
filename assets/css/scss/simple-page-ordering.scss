@@ -24,33 +24,6 @@
 		background-color: #fff;
 		outline: 1px solid #e1e1e1;
 	}
-
-	// Hide move in action for top level pages.
-	.level-0 .row-actions .spo-move-in {
-		display: none;
-	}
-
-	%spo-move-out {
-		display: none;
-	}
-
-	/*
-	 * Hide move out action for pages that are the child of the page above.
-	 *
-	 * This generates a truly wild selector using the private class. It may
-	 * be better to calculate whether the item should be hidden in either PHP
-	 * or JavaScript add a class to the item accordingly.
-	 */
-	@for $i from 0 through 30 {
-		.level-#{$i} + .level-#{$i + 1} .row-actions .spo-move-out {
-			@extend %spo-move-out;
-		}
-	}
-
-	// Hide move out action on the first page in the list.
-	> tbody > :first-child .row-actions .spo-move-out {
-		@extend %spo-move-out;
-	}
 }
 
 .spo-updating-row {

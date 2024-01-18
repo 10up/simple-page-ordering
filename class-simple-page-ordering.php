@@ -4,6 +4,7 @@ namespace SimplePageOrdering;
 
 use stdClass;
 use WP_Error;
+use WP_Post;
 use WP_REST_Response;
 use WP_Query;
 
@@ -112,7 +113,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @param int $post_id The post ID.
 		 */
 		public static function handle_move_out( $post_id ) {
-			global $wpdb;
 			$post = get_post( $post_id );
 			if ( ! $post ) {
 				self::handle_move_send_back();
@@ -124,30 +124,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
 			}
 
-			$pages = get_pages( array( 'sort_column' => 'menu_order title' ) );
-
-			$top_level_pages = array();
-			$children_pages  = array();
-			$bad_parents     = array();
-
-			foreach ( $pages as $page ) {
-				// Catch and repair bad pages.
-				if ( $page->post_parent === $page->ID ) {
-					$page->post_parent = 0;
-					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
-					clean_post_cache( $page );
-					$bad_parents[] = $page->ID;
-				}
-
-				if ( $page->post_parent > 0 ) {
-					$children_pages[ $page->post_parent ][] = $page;
-				} else {
-					$top_level_pages[] = $page;
-				}
-			}
-			// Reprime post cache for bad parents.
-			_prime_post_caches( $bad_parents, false, false );
-			unset( $bad_parents );
+			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages();
 
 			// Get the relevant siblings.
 			if ( 0 === $post->post_parent ) {
@@ -208,6 +185,46 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			wp_safe_redirect( $send_back );
 			exit;
+		}
+
+		/**
+		 * Walk the pages and return top level and children pages.
+		 *
+		 * @return array {
+		 *    @type WP_Post[] $top_level_pages Top level pages.
+		 *    @type WP_Post[] $children_pages  Children pages.
+		 * }
+		 */
+		public static function get_walked_pages() {
+			global $wpdb;
+			$pages = get_pages( array( 'sort_column' => 'menu_order title' ) );
+
+			$top_level_pages = array();
+			$children_pages  = array();
+			$bad_parents     = array();
+
+			foreach ( $pages as $page ) {
+				// Catch and repair bad pages.
+				if ( $page->post_parent === $page->ID ) {
+					$page->post_parent = 0;
+					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
+					clean_post_cache( $page );
+					$bad_parents[] = $page->ID;
+				}
+
+				if ( $page->post_parent > 0 ) {
+					$children_pages[ $page->post_parent ][] = $page;
+				} else {
+					$top_level_pages[] = $page;
+				}
+			}
+			// Reprime post cache for bad parents.
+			_prime_post_caches( $bad_parents, false, false );
+
+			return array(
+				'top_level_pages' => $top_level_pages,
+				'children_pages'  => $children_pages,
+			);
 		}
 
 		/**
@@ -376,6 +393,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return $actions;
 			}
 
+			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages();
+
 			$title         = _draft_or_post_title( $post );
 			$edit_link     = get_edit_post_link( $post->ID, 'raw' );
 			$move_in_link  = add_query_arg(
@@ -395,21 +414,51 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$edit_link
 			);
 
-			$actions['spo-move-in'] = sprintf(
-				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
-				esc_url( $move_in_link ),
-				/* translators: %s: Post title. */
-				esc_attr( sprintf( __( 'Move &#8220;%s&#8221; in', 'simple-page-ordering' ), $title ) ),
-				__( '< Move in', 'simple-page-ordering' )
-			);
+			$parent_id = $post->post_parent;
+			if ( $parent_id ) {
+				$actions['spo-move-in'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $move_in_link ),
+					sprintf(
+						__( 'Move out from under %s' ),
+						get_the_title( $parent_id )
+					)
+				);
+			}
 
-			$actions['spo-move-out'] = sprintf(
-				'<a href="%s" rel="bookmark" aria-label="%s">%s</a>',
-				esc_url( $move_out_link ),
-				/* translators: %s: Post title. */
-				esc_attr( sprintf( __( 'Move &#8220;%s&#8221; out', 'simple-page-ordering' ), $title ) ),
-				__( 'Move out >', 'simple-page-ordering' )
-			);
+			// Get the relevant siblings.
+			if ( 0 === $post->post_parent ) {
+				$siblings = $top_level_pages;
+			} else {
+				$siblings = $children_pages[ $post->post_parent ];
+			}
+
+			// Assume no sibling.
+			$sibling = 0;
+			// Check if the post being moved is a top level page.
+			$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
+			if ( ! empty( $filtered_siblings ) ) {
+				// Find the previous page in the sibling tree
+				$key = array_key_first( $filtered_siblings );
+				if ( 0 === $key ) {
+					// It's the first page, can't do anything.
+					$sibling = 0;
+				} else {
+					$previous_page = $siblings[ $key - 1 ];
+					$sibling       = $previous_page->ID;
+				}
+			}
+
+			if ( $sibling ) {
+				$actions['spo-move-out'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $move_out_link ),
+					sprintf(
+						__( 'Move under %s' ),
+						get_the_title( $sibling )
+					)
+				);
+			}
 
 			return $actions;
 		}
