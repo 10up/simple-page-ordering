@@ -4,6 +4,7 @@ namespace SimplePageOrdering;
 
 use stdClass;
 use WP_Error;
+use WP_Post;
 use WP_REST_Response;
 use WP_Query;
 
@@ -50,6 +51,180 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
 			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
+
+			// Custom edit page actions.
+			add_action( 'post_action_spo-move-under-grandparent', array( __CLASS__, 'handle_move_under_grandparent' ) );
+			add_action( 'post_action_spo-move-under-sibling', array( __CLASS__, 'handle_move_under_sibling' ) );
+		}
+
+		/**
+		 * Move a post in/up the post parent tree.
+		 *
+		 * This is a custom action on the edit page to modify the post parent
+		 * to be the child it's current grandparent post. If no grandparent
+		 * exists, the post becomes a top level page.
+		 *
+		 * @param int $post_id The post ID.
+		 */
+		public static function handle_move_under_grandparent( $post_id ) {
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				self::redirect_to_referer();
+			}
+
+			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
+			}
+
+			if ( 0 === $post->post_parent ) {
+				// Top level. Politely continue without doing anything.
+				self::redirect_to_referer();
+			}
+
+			$ancestors = get_post_ancestors( $post );
+
+			// If only one ancestor, set to top level page.
+			if ( 1 === count( $ancestors ) ) {
+				$parent_id = 0;
+			} else {
+				$parent_id = $ancestors[1];
+			}
+
+			// Update the post.
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'post_parent' => $parent_id,
+				)
+			);
+
+			self::redirect_to_referer();
+		}
+
+		/**
+		 * Move a post out/down the post parent tree.
+		 *
+		 * This is a custom action on the edit page to modify the post parent
+		 * to be the child of it's previous sibling post on the current post
+		 * tree.
+		 *
+		 * @param int $post_id The post ID.
+		 */
+		public static function handle_move_under_sibling( $post_id ) {
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				self::redirect_to_referer();
+			}
+
+			check_admin_referer( "simple-page-ordering-nonce-move-{$post->ID}", 'spo_nonce' );
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				wp_die( esc_html__( 'You are not allowed to edit this item.', 'simple-page-ordering' ) );
+			}
+
+			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages();
+
+			// Get the relevant siblings.
+			if ( 0 === $post->post_parent ) {
+				$siblings = $top_level_pages;
+			} else {
+				$siblings = $children_pages[ $post->post_parent ];
+			}
+
+			// Check if the post being moved is a top level page.
+			$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
+			if ( empty( $filtered_siblings ) ) {
+				// Something went wrong. Do nothing.
+				self::redirect_to_referer();
+			}
+
+			// Find the previous page in the sibling tree
+			$key = array_key_first( $filtered_siblings );
+			if ( 0 === $key ) {
+				// It's the first page. Do nothing.
+				self::redirect_to_referer();
+			}
+
+			$previous_page    = $siblings[ $key - 1 ];
+			$previous_page_id = $previous_page->ID;
+
+			// Update the post with the previous page as the parent.
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'post_parent' => $previous_page_id,
+				)
+			);
+
+			self::redirect_to_referer();
+		}
+
+		/**
+		 * Redirect the user after modifying the post parent.
+		 */
+		public static function redirect_to_referer() {
+			global $post_type;
+
+			$send_back = wp_get_referer();
+			if ( ! $send_back ||
+				str_contains( $send_back, 'post.php' ) ||
+				str_contains( $send_back, 'post-new.php' ) ) {
+				if ( 'attachment' === $post_type ) {
+					$send_back = admin_url( 'upload.php' );
+				} else {
+					$send_back = admin_url( 'edit.php' );
+					if ( ! empty( $post_type ) ) {
+						$send_back = add_query_arg( 'post_type', $post_type, $send_back );
+					}
+				}
+			} else {
+				$send_back = remove_query_arg( array( 'trashed', 'untrashed', 'deleted', 'ids' ), $send_back );
+			}
+
+			wp_safe_redirect( $send_back );
+			exit;
+		}
+
+		/**
+		 * Walk the pages and return top level and children pages.
+		 *
+		 * @return array {
+		 *    @type WP_Post[] $top_level_pages Top level pages.
+		 *    @type WP_Post[] $children_pages  Children pages.
+		 * }
+		 */
+		public static function get_walked_pages() {
+			global $wpdb;
+			$pages = get_pages( array( 'sort_column' => 'menu_order title' ) );
+
+			$top_level_pages = array();
+			$children_pages  = array();
+			$bad_parents     = array();
+
+			foreach ( $pages as $page ) {
+				// Catch and repair bad pages.
+				if ( $page->post_parent === $page->ID ) {
+					$page->post_parent = 0;
+					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
+					clean_post_cache( $page );
+					$bad_parents[] = $page->ID;
+				}
+
+				if ( $page->post_parent > 0 ) {
+					$children_pages[ $page->post_parent ][] = $page;
+				} else {
+					$top_level_pages[] = $page;
+				}
+			}
+			// Reprime post cache for bad parents.
+			_prime_post_caches( $bad_parents, false, false );
+
+			return array(
+				'top_level_pages' => $top_level_pages,
+				'children_pages'  => $children_pages,
+			);
 		}
 
 		/**
@@ -109,6 +284,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'pre_get_posts', array( __CLASS__, 'filter_query' ) );
 			add_action( 'wp', array( __CLASS__, 'wp' ) );
 			add_action( 'admin_head', array( __CLASS__, 'admin_head' ) );
+			add_action( 'page_row_actions', array( __CLASS__, 'page_row_actions' ), 10, 2 );
 		}
 
 		/**
@@ -197,6 +373,95 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					),
 				)
 			);
+		}
+
+		/**
+		 * Modify the row actions for hierarchical post types.
+		 *
+		 * This adds the actions to change the parent/child relationships.
+		 *
+		 * @param array   $actions An array of row action links.
+		 * @param WP_Post $post    The post object.
+		 */
+		public static function page_row_actions( $actions, $post ) {
+			$post = get_post( $post );
+			if ( ! $post ) {
+				return $actions;
+			}
+
+			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				return $actions;
+			}
+
+			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages();
+
+			$edit_link                   = get_edit_post_link( $post->ID, 'raw' );
+			$move_under_grandparent_link = add_query_arg(
+				array(
+					'action'    => 'spo-move-under-grandparent',
+					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
+					'post_type' => $post->post_type,
+				),
+				$edit_link
+			);
+			$move_under_sibling_link     = add_query_arg(
+				array(
+					'action'    => 'spo-move-under-sibling',
+					'spo_nonce' => wp_create_nonce( "simple-page-ordering-nonce-move-{$post->ID}" ),
+					'post_type' => $post->post_type,
+				),
+				$edit_link
+			);
+
+			$parent_id = $post->post_parent;
+			if ( $parent_id ) {
+				$actions['spo-move-under-grandparent'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $move_under_grandparent_link ),
+					sprintf(
+						/* translators: %s: parent page/post title */
+						__( 'Move out from under %s' ),
+						get_the_title( $parent_id )
+					)
+				);
+			}
+
+			// Get the relevant siblings.
+			if ( 0 === $post->post_parent ) {
+				$siblings = $top_level_pages;
+			} else {
+				$siblings = $children_pages[ $post->post_parent ];
+			}
+
+			// Assume no sibling.
+			$sibling = 0;
+			// Check if the post being moved is a top level page.
+			$filtered_siblings = wp_list_filter( $siblings, array( 'ID' => $post->ID ) );
+			if ( ! empty( $filtered_siblings ) ) {
+				// Find the previous page in the sibling tree
+				$key = array_key_first( $filtered_siblings );
+				if ( 0 === $key ) {
+					// It's the first page, can't do anything.
+					$sibling = 0;
+				} else {
+					$previous_page = $siblings[ $key - 1 ];
+					$sibling       = $previous_page->ID;
+				}
+			}
+
+			if ( $sibling ) {
+				$actions['spo-move-under-sibling'] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( $move_under_sibling_link ),
+					sprintf(
+						/* translators: %s: sibling page/post title */
+						__( 'Move under %s' ),
+						get_the_title( $sibling )
+					)
+				);
+			}
+
+			return $actions;
 		}
 
 		/**
