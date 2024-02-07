@@ -50,7 +50,7 @@ function update_simple_ordering_callback(response) {
 				}
 				const dom_row_title = inline_key.parentNode.querySelector('.row-title');
 				if (dom_row_title !== null && post_title !== null) {
-					dom_row_title.textContent = decodeEntities( post_title );
+					dom_row_title.textContent = decodeEntities(post_title);
 				}
 			} else if (dom_menu_order !== null) {
 				dom_menu_order.textContent = new_pos[key];
