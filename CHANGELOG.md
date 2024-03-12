@@ -6,16 +6,18 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [2.7.0] - 2024-03-13
 ### Added
-- Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul)) via [#183](https://github.com/10up/simple-page-ordering/pull/183).
 - Ability to modify the page hierarchy (props [@amityweb](https://github.com/amityweb), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@shannonmfisher](https://github.com/shannonmfisher), [@ankitguptaindia](https://github.com/ankitguptaindia), [@faisal-alvi](https://github.com/faisal-alvi)) via [#172](https://github.com/10up/simple-page-ordering/pull/172).
+- Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul)) via [#183](https://github.com/10up/simple-page-ordering/pull/183).
 
 ### Changed
+- Replaced custom HTML entity decoding code in favor of the `@wordpress/html-entities` package (props [@helen](https://github.com/helen), [@jeffpaul](https://github.com/jeffpaul), [@psorensen](https://github.com/psorensen), [@peterwilsoncc](https://github.com/peterwilsoncc)) via [#189](https://github.com/10up/simple-page-ordering/pull/189).
+- Bump minimum `node` version from `16` to `20` and clean up NPM dependencies (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#188](https://github.com/10up/simple-page-ordering/pull/188).
+- Updated CODEOWNERS (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter)) via [#186](https://github.com/10up/simple-page-ordering/pull/186).
+
+### Security
 - Bump `@babel/traverse` from `7.20.12` to `7.23.6` (props [@dependabot](https://github.com/apps/dependabot), [@ravinderk](https://github.com/ravinderk)) via [#184](https://github.com/10up/simple-page-ordering/pull/184).
 - Bump `sharp` from `0.30.7` to `0.32.1` (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9)) via [#182](https://github.com/10up/simple-page-ordering/pull/184).
 - Bump `10up-toolkit` from `4.3.1` to `5.2.2` (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9)) via [#182](https://github.com/10up/simple-page-ordering/pull/182).
-- Updated CODEOWNERS (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter)) via [#186](https://github.com/10up/simple-page-ordering/pull/186).
-- Bump minimum `node` version from `16` to `20` and clean up NPM dependencies (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#188](https://github.com/10up/simple-page-ordering/pull/188).
-- Replaced custom HTML entity decoding code in favor of the `@wordpress/html-entities` package (props [@helen](https://github.com/helen), [@jeffpaul](https://github.com/jeffpaul), [@psorensen](https://github.com/psorensen), [@peterwilsoncc](https://github.com/peterwilsoncc)) via [#189](https://github.com/10up/simple-page-ordering/pull/189).
 
 ## [2.6.3] - 2023-11-09
 ### Fixed
