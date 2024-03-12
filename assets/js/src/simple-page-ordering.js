@@ -1,5 +1,7 @@
 import '../../css/scss/simple-page-ordering.scss';
 
+import { decodeEntities } from '@wordpress/html-entities';
+
 // eslint-disable-next-line import/no-unresolved
 import 'jquery-ui-sortable';
 
@@ -48,10 +50,7 @@ function update_simple_ordering_callback(response) {
 				}
 				const dom_row_title = inline_key.parentNode.querySelector('.row-title');
 				if (dom_row_title !== null && post_title !== null) {
-					// Decode mdash character before rendering the title.
-					const textArea = document.createElement('textarea');
-					textArea.innerHTML = post_title;
-					dom_row_title.textContent = textArea.value;
+					dom_row_title.textContent = decodeEntities(post_title);
 				}
 			} else if (dom_menu_order !== null) {
 				dom_menu_order.textContent = new_pos[key];
