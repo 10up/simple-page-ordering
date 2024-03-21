@@ -64,7 +64,7 @@ Head to the Pages list table and drag and drop pages to change the order. Refres
 ### Release instructions
 
 1. Branch: Starting from `develop`, cut a release branch named `release/X.Y.Z` for your changes.
-2. Version bump: Bump the version number in `class-simple-page-ordering.php`, `package.json`, `package-lock.json`, `readme.txt`, and `simple-page-ordering.php` if it does not already reflect the version being released. In `simple-page-ordering.php` update both the plugin "Version:" property and the plugin `SIMPLE_PAGE_ORDERING_VERSION` constant.
+2. Version bump: Bump the version number in `package.json`, `package-lock.json`, `readme.txt`, and `simple-page-ordering.php` if it does not already reflect the version being released. In `class-simple-page-ordering.php` update the plugin `SIMPLE_PAGE_ORDERING_VERSION` constant.
 3. Changelog: Add/update the changelog in `readme.txt` and `CHANGELOG.md`.
 4. Props: update `CREDITS.md` file with any new contributors, confirm maintainers are accurate.
 5. New files: Check to be sure any new files/paths that are unnecessary in the production version are included in `.distignore`.
