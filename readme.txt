@@ -2,10 +2,8 @@
 Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
-Requires at least: 5.7
-Requires PHP:      7.4
-Tested up to:      6.4
-Stable tag:        2.7.0
+Tested up to:      6.5
+Stable tag:        2.7.1
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +108,13 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
+= 2.7.1 - 2024-06-03 =
+* **Added:** The missing Text Domain (props [@alexclassroom](https://github.com/alexclassroom), [@dkotter](https://github.com/dkotter) via [#199](https://github.com/10up/simple-page-ordering/pull/199)).
+* **Added:** The "Testing" section in the `CONTRIBUTING.md` file (props [@kmgalanakis](https://github.com/kmgalanakis), [@jeffpaul](https://github.com/jeffpaul) via [#202](https://github.com/10up/simple-page-ordering/pull/202)).
+* **Changed:** Bump WordPress "tested up to" version 6.5 (props [@jeffpaul](https://github.com/jeffpaul), [@sudip-md](https://github.com/sudip-md), [@dkotter](https://github.com/dkotter) via [#201](https://github.com/10up/simple-page-ordering/pull/201)).
+* **Changed:** Bump WordPress minimum from 5.7 to 6.3 (props [@jeffpaul](https://github.com/jeffpaul), [@sudip-md](https://github.com/sudip-md), [@dkotter](https://github.com/dkotter) via [#201](https://github.com/10up/simple-page-ordering/pull/201)).
+* **Fixed:** Fixed error in call to `get_walked_pages` for custom post types (props [@sissibieber](https://github.com/sissibieber), [@zachgibb](https://github.com/zachgibb), [@peterwilsoncc](https://github.com/peterwilsoncc), [@mjot](https://github.com/mjot), [@jeffpaul](https://github.com/jeffpaul) via [#200](https://github.com/10up/simple-page-ordering/pull/200)).
+
 = 2.7.0 - 2024-04-03 =
 * **Added:** Ability to modify the page hierarchy (props [@amityweb](https://github.com/amityweb), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@shannonmfisher](https://github.com/shannonmfisher), [@ankitguptaindia](https://github.com/ankitguptaindia), [@faisal-alvi](https://github.com/faisal-alvi) via [#172](https://github.com/10up/simple-page-ordering/pull/172)).
 * **Added:** Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#183](https://github.com/10up/simple-page-ordering/pull/183)).
@@ -178,142 +183,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 * **Security:** Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115)).
 * **Security:** Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121)).
 
-= 2.4.3 - 2022-11-08 =
-* **Changed:** Allow hierarchical post types that don't have `page-attributes` set to be sorted properly (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#108](https://github.com/10up/simple-page-ordering/pull/108)).
-* **Security:** Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106)).
-* **Security:** Bump `@wordpress/env` from 4.9.0 to 5.3.0 (props [@dependabot](https://github.com/apps/dependabot) via [#106](https://github.com/10up/simple-page-ordering/pull/106)).
-* **Security:** Bump `scss-tokenizer` from 0.3.0 to 0.4.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107)).
-* **Security:** Bump `node-sass` from 7.0.1 to 7.0.3 (props [@dependabot](https://github.com/apps/dependabot) via [#107](https://github.com/10up/simple-page-ordering/pull/107)).
-
-= 2.4.2 - 2022-09-28 =
-* **Changed:** Replaced our Grunt build process with `10up-toolkit` (props [@cadic](https://github.com/cadic), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dinhtungdu](https://github.com/dinhtungdu) via [#97](https://github.com/10up/simple-page-ordering/pull/97)).
-* **Fixed:** Disable reordering for CPTs that don't support `page-attributes` (props [@dhanendran](https://github.com/dhanendran), [@dinhtungdu](https://github.com/dinhtungdu), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#103](https://github.com/10up/simple-page-ordering/pull/103)).
-
-= 2.4.1 - 2022-06-21 =
-* **Added:** Missing text domain to strings (props [@kebbet](https://github.com/kebbet), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#92](https://github.com/10up/simple-page-ordering/pull/92)).
-* **Fixed:** Condition in REST page sorting logic in `rest_page_ordering` method (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#94](https://github.com/10up/simple-page-ordering/pull/94)).
-* **Fixed:** PHP Coding standards (props [@szepeviktor](https://github.com/szepeviktor), [@dinhtungdu](https://github.com/dinhtungdu) via [#93](https://github.com/10up/simple-page-ordering/pull/93)).
-* **Changed:** Bump WordPress "tested up to" version to 6.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@jeffpaul](https://github.com/jeffpaul) via [#95](https://github.com/10up/simple-page-ordering/pull/95), [#98](https://github.com/10up/simple-page-ordering/pull/98)).
-* **Security:** Bump `grunt` from 1.5.2 to 1.5.3 (props [@dependabot](https://github.com/apps/dependabot) via [#99](https://github.com/10up/simple-page-ordering/pull/99)).
-
-= 2.4.0 - 2022-04-28 =
-* **Added:** REST API for reordering posts: `/wp-json/simplepageordering/v1/` (props [@rmccue](https://profiles.wordpress.org/rmccue/), [@ciprianimike](https://github.com/ciprianimike), [@cadic](https://profiles.wordpress.org/cadic/), [@lkraav](https://github.com/lkraav), [@dinhtungdu](https://github.com/dinhtungdu)).
-* **Added:** [REST Endpoint Documentation](https://github.com/10up/simple-page-ordering/blob/develop/README.md).
-* **Added:** Documentation to exclude post types (props [@dzulfriday](https://wordpress.org/support/users/dzulfriday/) [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@jeffpaul](https://profiles.wordpress.org/jeffpaul/)).
-* **Added:** PHP8 compatibility testing GitHub Action (props [@nomnom99](https://profiles.wordpress.org/nomnom99/), [@dharm1025](https://profiles.wordpress.org/dharm1025/)).
-* **Added:** Cypress E2E tests (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dharm1025](https://profiles.wordpress.org/dharm1025/), [@faisal03](https://profiles.wordpress.org/faisal03/)).
-* **Added:** Dependency security scanning GitHub Action (props [@jeffpaul](https://profiles.wordpress.org/jeffpaul/), [@nomnom99](https://profiles.wordpress.org/nomnom99/)).
-* **Changed:** `PLUGIN_VERSION` to `SIMPLE_PAGE_ORDERING_VERSION` (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@dkotter](https://profiles.wordpress.org/dkotter/)).
-* **Changed:** Bump WordPress "tested up to" version to 5.9 (props [@ankitguptaindia](https://github.com/ankitguptaindia), [@phpbits](https://github.com/phpbits), [@sudip-10up](https://github.com/sudip-10up)).
-* **Security:** Bump rmccue/requests from 1.7.0 to 1.8.0 (props [@dependabot](https://github.com/apps/dependabot)).
-* **Security:** Bump async from 2.6.3 to 2.6.4 (props [@dependabot](https://github.com/apps/dependabot)).
-
-= 2.3.4 - 2020-04-07 =
-* **Changed:** Avoid failed reordering introduced in v2.3.3 when handling a large number of non-hierarchical items (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/)).
-* **Changed:** Bump WordPress version support to 5.4 (props [@tmoorewp](https://profiles.wordpress.org/tmoorewp/)).
-* **Fixed:** Ensure titles of reordered items appear in a human-readable way (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/)).
-
-= 2.3.3 - 2020-03-04 =
-* **Added:** Nonce verify for AJAX requests (props [@williampatton](https://profiles.wordpress.org/williampatton/), [@dtbaker](https://profiles.wordpress.org/dtbaker/)).
-* **Changed:** Disable Post Revisions now using the correct action of `post_updated` (props [@blue-liquid-designs](https://profiles.wordpress.org/blue-liquid-designs/)).
-* **Changed:** Bump WordPress version "tested up to" 5.3 (props [@adamsilverstein](https://profiles.wordpress.org/adamsilverstein/), [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/)).
-* **Changed:** Documentation updates (props [@jeffpaul](https://profiles.wordpress.org/jeffpaul/)).
-* **Fixed:** Mismatched localized data variable name (props [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/)).
-* **Fixed:** VIP Go coding standards (props [@mrasharirfan](https://profiles.wordpress.org/mrasharirfan/), [@dinhtungdu](https://profiles.wordpress.org/dinhtungdu/), [@pereirinha](https://profiles.wordpress.org/pereirinha/), [@brentvr](https://profiles.wordpress.org/brentvr/)).
-
-= 2.3.2 - 2018-05-08 =
-* **Added:** Allow cancellation of drag operation by pressing escape key.
-* **Fixed:** Allow form input elements added to a row by plugins to be interacted with.
-
-= 2.3.1 - 2018-04-13 =
-* **Fixed:** Prevent rows with hidden columns from jumping around while dragging.
-
-= 2.3.0 - 2018-03-05 =
-* **Added:** Use WordPress core's spinner class.
-* **Added:** Grunt-based build process with Sass.
-* **Changed:** Use `WP_Query` instead of `get_posts()` for better performance.
-* **Changed:** Remove bundled translations in favor of WordPress.org language packs.
-* **Fixed:** Avoid exceeding PHP's max input variables, which could cause incorrectly assigned page order.
-* **Fixed:** Malformed URL that would take you to posts instead of pages.
-* **Fixed:** PHPDoc and coding standards to align with 10up's Engineering Best Practices.
-
-= 2.2.4 - 2015-02-08 =
-* **Fixed:** Redundant URL encoding when sorting in admin page list.
-
-= 2.2.3 - 2014-09-27 =
-* **Fixed:** Ordering in WordPress 4.0 following core changes to `ORDER BY` in `WP_Query`.
-
-= 2.2.2 - 2014-08-19 =
-* **Added:** German localization (props [@glueckpress](https://profiles.wordpress.org/glueckpress/)).
-* **Fixed:** Column widths no longer change when dragging a row (partial props [@griffinjt](https://profiles.wordpress.org/griffinjt/)).
-* **Security:** Closed obscure XSS vulnerability related to Sort by Order link (props [@simon-waters](https://profiles.wordpress.org/simon-waters/)).
-
-= 2.2.1 - 2014-05-31 =
-* **Added:** Brazilian translation (props [@felds](https://profiles.wordpress.org/felds/)).
-* **Fixed:** Bring back translations / text domain (yikes!).
-
-= 2.2.0 - 2014-04-06 =
-* **Changed:** Look and feel to better match WordPress 3.8 admin redesign.
-* **Changed:** Improved awareness of and compatibility with Quick Edit (inline editor).
-* **Fixed:** Prevent collisions with themes and plugins bundling Simple Page Ordering.
-
-= 2.1.2 - 2013-05-30 =
-* **Fixed:** Hierarchical custom post types without page-attributes was still broken - doh!
-* **Fixed:** Extreme edge case where post columns did not include the post title now supported.
-
-= 2.1.1 - 2013-05-27 =
-* **Fixed:** custom post types with page-attributes or hierarchical properties, but not both, breaking ordering.
-
-= 2.1.0 - 2013-05-19 =
-* **Added:** Awareness of custom user capabilities for post types, in addition to a filter (`simple_page_ordering_edit_rights`) for overriding reordering rights (previously used `edit_others_pages` globally).
-* **Added:** Awareness of custom post statuses (so they are not skipped during backend ordering operation).
-* **Changed:** UI refinements: Better "spinner" positioning (and HiDPI), translucent row when moving, improved appearance of "drop" placeholder, wait till row dragged by at least 5px to start sorting.
-* **Changed:** Major JavaScript refactoring and simplification (combined with new stylesheet) for better performance.
-
-= 2.0.0 - 2012-11-12 =
-* **Added:** Drag pages into any part of the page hierarchy! No longer limited to same branch of tree!
-* **Added:** Big performance improvements under the hood: leaner queries, batched requests, less processing.
-* **Added:** New filters and hooks to extend / override default functionality.
-* **Changed:** Scales much more reliably in situations with very high page counts due to batching of requests.
-* **Changed:** Order of the first page is now set to "1" instead of "0", so pages added after ordering are added at the top (instead of second).
-* **Changed:** Removed "number of pages" drop down, which is repetitive of a field accessible under Screen Options.
-* **Changed:** Improved compatibility with newer versions of WordPress.
-
-= 1.0.0 - 2011-07-04 =
-* **Added:** Support for ordering non-hierarchical post types that have "page-attributes" support.
-* **Added:** New filter link for "Sort by Order" to restore (hierarchical) or set (non-hierarchical, page attributes support) post list sort to menu order.
-* **Changed:** Users are now forced to wait for current sort operation to finish before they can sort another item.
-* **Changed:** Smarter about "not sortable" view states.
-* **Changed:** Localization ready! Rough Spanish translation included.
-* **Changed:** Assorted other performance and code improvements.
-* **Fixed:** Unexpected page ordering results when pages have not been explictly ordered yet (sorts by menu_order, then title, not just menu_order).
-* **Fixed:** "Per page" drop down filter selection not saving between page loads (was broken in 3.1).
-* **Fixed:** Items are always ordered with positive integers (potential negative sort orders had some performance benefits in last version, but sometimes caused issues).
-
-= 0.9.6 - 2011-04-04 =
-* **Fixed:** for broken inline editing (quick edit) fields in Firefox.
-
-= 0.9.5 - 2011-03-27 =
-* **Changed:** Smarter awareness of "sorted" modes in WordPress 3.1 (can only use when sorted by menu order).
-* **Changed:** Smarter awareness of "quick edit" mode (can't drag).
-* **Changed:** Generally simplified / better organized code.
-
-= 0.9.0 - 2010-12-29 =
-* **Added:** Further directions in the plug-in description (some users were confused about how to use it).
-* **Added:** Basic compatibility with 3.1 RC (prevent clashes with post list sorting).
-* **Changed:** "Move" cursor only set if JavaScript enabled.
-* **Fixed:** Page count display always showing "0" on non-hierarchical post types (Showing 1-X of X).
-* **Fixed:** Hidden menu order not updating after sort (causing Quick Edit to reset order when used right after sorting).
-
-= 0.8.4 - 2010-08-24 =
-* **Changed:** Loosened constraints on drag and drop to ease dropping into top and bottom position.
-* **Changed:** Improved some terminology (with custom post types in mind).
-* **Fixed:** Row background staying "white" after dropping into a new position.
-* **Fixed:** Double border on the bottom of the row while dragging.
-
-= 0.8.2 - 2010-08-21 =
-* **Changed:** Simplified code - consolidated hooks.
-* **Changed:** Updated version requirements.
+[View historical changelog details here](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
 

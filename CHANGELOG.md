@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.7.1] - 2024-06-03
+### Added
+- The missing Text Domain (props [@alexclassroom](https://github.com/alexclassroom), [@dkotter](https://github.com/dkotter) via [#199](https://github.com/10up/simple-page-ordering/pull/199)).
+- The "Testing" section in the `CONTRIBUTING.md` file (props [@kmgalanakis](https://github.com/kmgalanakis), [@jeffpaul](https://github.com/jeffpaul) via [#202](https://github.com/10up/simple-page-ordering/pull/202)).
+
+### Changed
+- Bump WordPress "tested up to" version 6.5 (props [@jeffpaul](https://github.com/jeffpaul), [@sudip-md](https://github.com/sudip-md), [@dkotter](https://github.com/dkotter) via [#201](https://github.com/10up/simple-page-ordering/pull/201)).
+- Bump WordPress minimum from 5.7 to 6.3 (props [@jeffpaul](https://github.com/jeffpaul), [@sudip-md](https://github.com/sudip-md), [@dkotter](https://github.com/dkotter) via [#201](https://github.com/10up/simple-page-ordering/pull/201)).
+
+### Fixed
+- Fixed error in call to `get_walked_pages` for custom post types (props [@sissibieber](https://github.com/sissibieber), [@zachgibb](https://github.com/zachgibb), [@peterwilsoncc](https://github.com/peterwilsoncc), [@mjot](https://github.com/mjot), [@jeffpaul](https://github.com/jeffpaul) via [#200](https://github.com/10up/simple-page-ordering/pull/200)).
+
 ## [2.7.0] - 2024-04-03
 ### Added
 - Ability to modify the page hierarchy (props [@amityweb](https://github.com/amityweb), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@shannonmfisher](https://github.com/shannonmfisher), [@ankitguptaindia](https://github.com/ankitguptaindia), [@faisal-alvi](https://github.com/faisal-alvi) via [#172](https://github.com/10up/simple-page-ordering/pull/172)).
@@ -312,6 +324,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.7.1]: https://github.com/10up/simple-page-ordering/compare/2.7.0...2.7.1
 [2.7.0]: https://github.com/10up/simple-page-ordering/compare/2.6.3...2.7.0
 [2.6.3]: https://github.com/10up/simple-page-ordering/compare/2.6.2...2.6.3
 [2.6.2]: https://github.com/10up/simple-page-ordering/compare/2.6.1...2.6.2
