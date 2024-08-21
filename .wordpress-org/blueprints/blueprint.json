@@ -13,7 +13,7 @@
 			"password": "password"
 		},
 		{
-			"step": "importFile",
+			"step": "importWxr",
 			"file": {
 				"resource": "url",
 				"url": "https:\/\/raw.githubusercontent.com\/10up\/simple-page-ordering\/02d35c792a11be5f863c44308485e85505c48f17\/.wordpress-org\/blueprints\/demo-data.xml"

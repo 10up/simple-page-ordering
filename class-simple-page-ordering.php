@@ -9,7 +9,7 @@ use WP_REST_Response;
 use WP_Query;
 
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.7.1' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.7.2' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -437,7 +437,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( 0 === $post->post_parent ) {
 				$siblings = $top_level_pages;
 			} else {
-				$siblings = $children_pages[ $post->post_parent ];
+				$siblings = $children_pages[ $post->post_parent ] ?? [];
 			}
 
 			// Assume no sibling.

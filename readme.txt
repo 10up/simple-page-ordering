@@ -1,9 +1,9 @@
 === Simple Page Ordering ===
 Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
-Tags:              order, re-order, ordering, pages, page, manage, menu_order, hierarchical, ajax, drag-and-drop, admin
+Tags:              order, re-order, ordering, page, menu order
 Tested up to:      6.6
-Stable tag:        2.7.1
+Stable tag:        2.7.2
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,13 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
+= 2.7.2 - 2024-08-21 =
+* **Changed:** Bump WordPress "tested up to" version 6.6 (props [@sudip-md](https://github.com/sudip-md), [@ankitguptaindia](https://github.com/ankitguptaindia), [@jeffpaul](https://github.com/jeffpaul) via [#216](https://github.com/10up/simple-page-ordering/pull/216), [#217](https://github.com/10up/simple-page-ordering/pull/217)).
+* **Changed:** Bump WordPress minimum from 6.3 to 6.4 (props [@sudip-md](https://github.com/sudip-md), [@ankitguptaindia](https://github.com/ankitguptaindia), [@jeffpaul](https://github.com/jeffpaul) via [#216](https://github.com/10up/simple-page-ordering/pull/216)).
+* **Fixed:** Issue where an `Undefined array key` error occurs when a post parent ID does not exist in the `$children_pages` array (props [@xDehy](https://github.com/xDehy), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#219](https://github.com/10up/simple-page-ordering/pull/219)).
+* **Security:** Bump `express` from 4.18.2 to 4.19.2, `follow-redirects` from 1.15.5 to 1.15.6, `postcss` from 7.0.39 to 8.4.33, `10up-toolkit` from 5.2.3 to 6.1.0 and `webpack-dev-middleware` from 5.3.3 to 5.3.4 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#208](https://github.com/10up/simple-page-ordering/pull/208)).
+* **Security:** Bump `braces` from 3.0.2 to 3.0.3 and `ws` from 7.5.9 to 7.5.10 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#214](https://github.com/10up/simple-page-ordering/pull/214)).
+
 = 2.7.1 - 2024-06-03 =
 * **Added:** The missing Text Domain (props [@alexclassroom](https://github.com/alexclassroom), [@dkotter](https://github.com/dkotter) via [#199](https://github.com/10up/simple-page-ordering/pull/199)).
 * **Added:** The "Testing" section in the `CONTRIBUTING.md` file (props [@kmgalanakis](https://github.com/kmgalanakis), [@jeffpaul](https://github.com/jeffpaul) via [#202](https://github.com/10up/simple-page-ordering/pull/202)).
@@ -186,6 +193,9 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 [View historical changelog details here](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.7.2 =
+This release bumps the minimum required version of WordPress from 6.3 to 6.4.
 
 = 2.5.0 =
 This release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.

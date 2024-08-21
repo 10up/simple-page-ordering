@@ -1,19 +1,20 @@
 {
   "name": "simple-page-ordering",
   "description": "Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "author": "10up <opensource@10up.com> (https://10up.com)",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.2.0",
     "@wordpress/dependency-extraction-webpack-plugin": "^5.1.0",
     "@wordpress/env": "^9.2.0",
-    "10up-toolkit": "^5.2.2",
+    "@wordpress/eslint-plugin": "^17.5.0",
+    "10up-toolkit": "^6.1.0",
     "cypress": "^13.0.0",
     "cypress-mochawesome-reporter": "^3.6.0",
     "mochawesome-json-to-md": "^0.7.2",
     "node-wp-i18n": "^1.2.7",
-    "prettier": "^2.8.8"
+    "prettier": "^3.3.2"
   },
   "scripts": {
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
