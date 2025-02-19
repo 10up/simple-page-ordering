@@ -108,6 +108,14 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
+= 2.7.3 - 2025-02-20 =
+* **Changed:** Bump WordPress "tested up to" version 6.7 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
+* **Changed:** Bump WordPress minimum from 6.4 to 6.5 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
+* **Security:** Bump `webpack` from 5.90.0 to 5.94.0 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#224](https://github.com/10up/simple-page-ordering/pull/224)).
+* **Security:** Bump `serve-static` from 1.15.0 to 1.16.2 and `express` from 4.19.2 to 4.21.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#226](https://github.com/10up/simple-page-ordering/pull/226)).
+* **Security:** Bump `cookie` from 0.6.0 to 0.7.1 and `express` from 4.21.0 to 4.21.1 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#228](https://github.com/10up/simple-page-ordering/pull/228)).
+* **Security:** Bump `serialize-javascript` from 6.0.0 to 6.0.2 and `mocha` from 10.2.0 to 11.1.0 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#232](https://github.com/10up/simple-page-ordering/pull/232)).
+
 = 2.7.2 - 2024-08-21 =
 * **Changed:** Bump WordPress "tested up to" version 6.6 (props [@sudip-md](https://github.com/sudip-md), [@ankitguptaindia](https://github.com/ankitguptaindia), [@jeffpaul](https://github.com/jeffpaul) via [#216](https://github.com/10up/simple-page-ordering/pull/216), [#217](https://github.com/10up/simple-page-ordering/pull/217)).
 * **Changed:** Bump WordPress minimum from 6.3 to 6.4 (props [@sudip-md](https://github.com/sudip-md), [@ankitguptaindia](https://github.com/ankitguptaindia), [@jeffpaul](https://github.com/jeffpaul) via [#216](https://github.com/10up/simple-page-ordering/pull/216)).
@@ -193,6 +201,9 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 [View historical changelog details here](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.7.3 =
+This release bumps the minimum required version of WordPress from 6.4 to 6.5.
 
 = 2.7.2 =
 This release bumps the minimum required version of WordPress from 6.3 to 6.4.
