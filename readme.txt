@@ -108,7 +108,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
-= 2.7.3 - 2025-02-20 =
+= 2.7.3 - 2025-03-11 =
 * **Changed:** Bump WordPress "tested up to" version 6.7 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
 * **Changed:** Bump WordPress minimum from 6.4 to 6.5 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
 * **Security:** Bump `webpack` from 5.90.0 to 5.94.0 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#224](https://github.com/10up/simple-page-ordering/pull/224)).
