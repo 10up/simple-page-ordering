@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.7.3] - 2025-02-20
+## [2.7.3] - 2025-03-11
 **Note that this release bumps the WordPress minimum version from 6.4 to 6.5.**
 
 ### Changed
