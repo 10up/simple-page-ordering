@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.7.3] - 2025-03-11
+**Note that this release bumps the WordPress minimum version from 6.4 to 6.5.**
+
+### Changed
+- Bump WordPress "tested up to" version 6.7 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
+- Bump WordPress minimum from 6.4 to 6.5 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
+
+### Security
+- Bump `webpack` from 5.90.0 to 5.94.0 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#224](https://github.com/10up/simple-page-ordering/pull/224)).
+- Bump `serve-static` from 1.15.0 to 1.16.2 and `express` from 4.19.2 to 4.21.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#226](https://github.com/10up/simple-page-ordering/pull/226)).
+- Bump `cookie` from 0.6.0 to 0.7.1 and `express` from 4.21.0 to 4.21.1 (props [@dependabot](https://github.com/apps/dependabot), [@Sidsector9](https://github.com/Sidsector9) via [#228](https://github.com/10up/simple-page-ordering/pull/228)).
+- Bump `serialize-javascript` from 6.0.0 to 6.0.2 and `mocha` from 10.2.0 to 11.1.0 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#232](https://github.com/10up/simple-page-ordering/pull/232)).
+
+### Developer
+- Update the README file to include a banner image and update badges shown (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#225](https://github.com/10up/simple-page-ordering/pull/225), [#227](https://github.com/10up/simple-page-ordering/pull/227)).
+
 ## [2.7.2] - 2024-08-21
 **Note that this release bumps the WordPress minimum version from 6.3 to 6.4.**
 
@@ -342,6 +358,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.7.3]: https://github.com/10up/simple-page-ordering/compare/2.7.2...2.7.3
 [2.7.2]: https://github.com/10up/simple-page-ordering/compare/2.7.1...2.7.2
 [2.7.1]: https://github.com/10up/simple-page-ordering/compare/2.7.0...2.7.1
 [2.7.0]: https://github.com/10up/simple-page-ordering/compare/2.6.3...2.7.0
