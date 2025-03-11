@@ -1,18 +1,20 @@
 # Simple Page Ordering
 
+![Simple Page Ordering](https://github.com/10up/simple-page-ordering/blob/develop/.wordpress-org/banner-1544x500.png)
+
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) ![Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/simple-page-ordering?label=Requires%20PHP) ![Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/simple-page-ordering?label=Requires%20WordPress) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md) [![Dependency Review](https://github.com/10up/simple-page-ordering/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/dependency-review.yml) [![E2E test](https://github.com/10up/simple-page-ordering/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/cypress.yml) [![PHP Compatibility](https://github.com/10up/simple-page-ordering/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/php-compatibility.yml) [![PHPCS](https://github.com/10up/simple-page-ordering/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/phpcs.yml) [![JS Lint](https://github.com/10up/simple-page-ordering/actions/workflows/jslint.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/jslint.yml) [![CodeQL](https://github.com/10up/simple-page-ordering/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/github-code-scanning/codeql) [![WordPress Playground Demo](https://img.shields.io/wordpress/plugin/v/simple-page-ordering?logo=wordpress&logoColor=FFFFFF&label=Playground%20Demo&labelColor=3858E9&color=3858E9)](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/10up/simple-page-ordering/add/badges/.wordpress-org/blueprints/blueprint.json)
+
 > Order your pages and other hierarchical post types with simple drag and drop right from the standard page list.
 
-[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/simple-page-ordering?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/simple-page-ordering.svg)](https://github.com/10up/simple-page-ordering/blob/develop/LICENSE.md) [![WordPress Playground Demo](https://img.shields.io/wordpress/plugin/v/simple-page-ordering?logo=wordpress&logoColor=FFFFFF&label=Playground%20Demo&labelColor=3858E9&color=3858E9)](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/10up/simple-page-ordering/add/badges/.wordpress-org/blueprints/blueprint.json)
+## Overview
 
-[![E2E test](https://github.com/10up/simple-page-ordering/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/cypress.yml) [![PHP Compatibility](https://github.com/10up/simple-page-ordering/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/php-compatibility.yml) [![PHPCS](https://github.com/10up/simple-page-ordering/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/phpcs.yml) [![JS Lint](https://github.com/10up/simple-page-ordering/actions/workflows/jslint.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/jslint.yml) [![Dependency Review](https://github.com/10up/simple-page-ordering/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/simple-page-ordering/actions/workflows/dependency-review.yml)
+Order your pages and other custom post types that support "page-attributes" with drag and drop right from the built in page list.
 
-Order your pages and other custom post types that support "page-attributes" with simple drag and drop right from the built in page list.
-
-Simply drag and drop the page into the desired position. It's that simple. No new admin menus pages, no clunky, bolted on user interfaces. Just drag and drop on the page or post-type screen.
+Drag and drop the page into the desired position. No new admin menus pages, no clunky, bolted on user interfaces. Drag and drop on the page or post-type screen.
 
 The plug-in is "capabilities aware" - only users with the ability to edit others' pages (editors and administrators) will be able to reorder content.
 
-Integrated help is included: just click the "help" tab at the top right of the screen.
+Integrated help is included: click the "help" tab at the top right of the screen.
 
 Please note that the plug-in is not compatible with Internet Explorer 7 and earlier, due to limitations within those browsers.
 
@@ -95,6 +97,7 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
 
 #### Input parameters
+
 | Name    | Type    |Description                                                  | Mandatory |  Default value |
 |--------:|--------:|------------------------------------------------------------:|----------:|---------------:|
 | id      | integer | The ID of the post you are positioning                      | yes       |                |
@@ -104,6 +107,7 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 | exclude | array   | Array of post IDs to be excluded                            | no        | empty array    |
 
 #### Example request
+
 | Type    | URL                                                                                  |
 |--------:|-------------------------------------------------------------------------------------:|
 | post    | /wp-json/simple-page-ordering/v1/page_ordering/?id=2&previd=13&nextid=14&excluded=[] |
