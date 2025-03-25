@@ -15,23 +15,29 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
       - name: Use desired version of NodeJS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
           node-version-file: '.nvmrc'
+
       - name: Install dependencies
         run: npm install
+
       - name: Build
         run: npm run build
+
       - name: Generate linting report
         run: npm run lint-js -- --output-file eslint-report.json --format json
         continue-on-error: true
+
       - name: Annotate code linting results
-        uses: ataylorme/eslint-annotate-action@1.2.0
+        uses: ataylorme/eslint-annotate-action@5f4dc2e3af8d3c21b727edb597e5503510b1dc9c # v2.2.0
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           report-json: 'eslint-report.json'
+
       - name: Update summary
         run: |
           npm_config_yes=true npx github:10up/eslint-json-to-md --path ./eslint-report.json --output ./eslint-report.md
