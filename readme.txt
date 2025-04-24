@@ -1,11 +1,12 @@
 === Simple Page Ordering ===
-Contributors: 10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
-Donate link:  http://10up.com/plugins/simple-page-ordering-wordpress/
-Tags:         order, re-order, ordering, page, menu order
-Tested up to: 6.7
-Stable tag:   2.7.3
-License:      GPLv2 or later
-License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
+Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
+Tags:              order, re-order, ordering, page, menu order
+Requires at least: 6.6
+Tested up to:      6.8
+Stable tag:        2.7.3
+License:           GPLv2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
 Order your pages and other custom post types that support "page-attributes" with drag and drop right from the standard page list.
 
