@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.7.4] - 2025-05-19
+**Note that this release bumps the WordPress minimum version from 6.5 to 6.6.**
+
+### Changed
+- Bump WordPress "tested up to" version 6.8 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239), [#240](https://github.com/10up/simple-page-ordering/pull/240)).
+- Bump WordPress minimum from 6.5 to 6.6 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239)).
+
+### Security
+- Bump `tar-fs` from 2.1.1 to 3.0.8 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#238](https://github.com/10up/simple-page-ordering/pull/238)).
+- Bump `@babel/runtime` from 7.23.9 to 7.27.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#237](https://github.com/10up/simple-page-ordering/pull/237)).
+
+### Developer
+- Adjust `makepot` to only happen during deploy instead of during every build (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#241](https://github.com/10up/simple-page-ordering/pull/241)).
+- Update all third-party actions our workflows rely on to use versions based on specific commit hashes (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#235](https://github.com/10up/simple-page-ordering/pull/235)).
+
 ## [2.7.3] - 2025-03-11
 **Note that this release bumps the WordPress minimum version from 6.4 to 6.5.**
 
@@ -358,6 +373,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.7.4]: https://github.com/10up/simple-page-ordering/compare/2.7.3...2.7.4
 [2.7.3]: https://github.com/10up/simple-page-ordering/compare/2.7.2...2.7.3
 [2.7.2]: https://github.com/10up/simple-page-ordering/compare/2.7.1...2.7.2
 [2.7.1]: https://github.com/10up/simple-page-ordering/compare/2.7.0...2.7.1
