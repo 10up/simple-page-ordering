@@ -3,7 +3,7 @@ Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, page, menu order
 Tested up to:      6.8
-Stable tag:        2.7.3
+Stable tag:        2.7.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,12 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 
 == Changelog ==
 
+= 2.7.4 - 2025-05-19 =
+* **Changed:** Bump WordPress "tested up to" version 6.8 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239), [#240](https://github.com/10up/simple-page-ordering/pull/240)).
+* **Changed:** Bump WordPress minimum from 6.5 to 6.6 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239)).
+* **Security:** Bump `tar-fs` from 2.1.1 to 3.0.8 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#238](https://github.com/10up/simple-page-ordering/pull/238)).
+* **Security:** Bump `@babel/runtime` from 7.23.9 to 7.27.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#237](https://github.com/10up/simple-page-ordering/pull/237)).
+
 = 2.7.3 - 2025-03-11 =
 * **Changed:** Bump WordPress "tested up to" version 6.7 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
 * **Changed:** Bump WordPress minimum from 6.4 to 6.5 (props [@sudip-md](https://github.com/sudip-md), [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul) via [#230](https://github.com/10up/simple-page-ordering/pull/230), [#231](https://github.com/10up/simple-page-ordering/pull/231)).
@@ -201,6 +207,9 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 [View historical changelog details here](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.7.4 =
+This release bumps the minimum required version of WordPress from 6.5 to 6.6.
 
 = 2.7.3 =
 This release bumps the minimum required version of WordPress from 6.4 to 6.5.
