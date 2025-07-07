@@ -10,6 +10,7 @@ on:
       - develop
 
 permissions:
+  checks: write
   contents: read
   pull-requests: write
 
