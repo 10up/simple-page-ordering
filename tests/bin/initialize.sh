@@ -11,6 +11,7 @@ wp-env run tests-cli wp post create --post_status=publish --post_title='Post 3'
 wp-env run tests-cli wp post create --post_status=publish --post_type=page  --post_title='Page 1' --menu_order=10
 wp-env run tests-cli wp post create --post_status=publish --post_type=page  --post_title='Page 2' --menu_order=20
 wp-env run tests-cli wp post create --post_status=publish --post_type=page  --post_title='Page 3' --menu_order=30
+wp-env run tests-cli wp post create --post_status=publish --post_type=page  --post_title='Hey there! 👋' --menu_order=15
 wp-env run tests-cli wp post create --post_status=publish --post_type=page --post_parent=6 --post_title='Child Page 1' --menu_order=10
 wp-env run tests-cli wp post create --post_status=publish --post_type=page --post_parent=6 --post_title='Child Page 2' --menu_order=20
 wp-env run tests-cli wp post create --post_status=publish --post_type=page --post_parent=6 --post_title='Child Page 3' --menu_order=30
