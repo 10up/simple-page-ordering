@@ -400,6 +400,20 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return $actions;
 			}
 
+			/**
+			 * Allow or disallow new row actions.
+			 *
+			 * @since 2.7.5
+			 *
+			 * @param boolean $should_add_actions Whether to add the new row actions.
+			 * @param array   $actions            An array of row action links.
+			 * @param WP_Post $post               The post object.
+			 */
+			$should_add_actions = apply_filters( 'simple_page_ordering_allow_row_actions', true, $actions, $post );
+			if ( ! $should_add_actions ) {
+				return $actions;
+			}
+
 			list( 'top_level_pages' => $top_level_pages, 'children_pages' => $children_pages ) = self::get_walked_pages( $post->post_type );
 
 			$edit_link                   = get_edit_post_link( $post->ID, 'raw' );
