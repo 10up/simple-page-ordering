@@ -7,7 +7,7 @@
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.2.0",
     "@wordpress/dependency-extraction-webpack-plugin": "^5.1.0",
-    "@wordpress/env": "^9.2.0",
+    "@wordpress/env": "^10.28.0",
     "@wordpress/eslint-plugin": "^17.5.0",
     "10up-toolkit": "^6.5.0",
     "cypress": "^13.0.0",
