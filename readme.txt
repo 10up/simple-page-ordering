@@ -101,6 +101,10 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
 
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Simple Page Ordering plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fbbad-6488-4bba-851e-b300dabc33a2).  The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Screenshots ==
 
 1. Dragging the page to its new position
@@ -219,3 +223,4 @@ This release bumps the minimum required version of WordPress from 6.3 to 6.4.
 
 = 2.5.0 =
 This release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.
+
