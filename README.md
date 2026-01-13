@@ -112,6 +112,9 @@ Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_orderi
 |--------:|-------------------------------------------------------------------------------------:|
 | post    | /wp-json/simple-page-ordering/v1/page_ordering/?id=2&previd=13&nextid=14&excluded=[] |
 
+### Where do I report security bugs found in this plugin?
+
+Please report security bugs found in the source code of the Simple Page Ordering plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fbbad-6488-4bba-851e-b300dabc33a2).  The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 ## Support Level
 
