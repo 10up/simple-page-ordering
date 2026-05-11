@@ -24,7 +24,6 @@
     "postenv:start": "./tests/bin/initialize.sh",
     "build": "10up-toolkit build",
     "dev": "10up-toolkit build --watch",
-    "makepot": "wpi18n makepot --domain-path localization --pot-file simple-page-ordering.pot --type plugin --main-file simple-page-ordering.php --exclude bin,dist,node_modules,tests,vendor",
     "format-js": "10up-toolkit format-js",
     "lint-js": "10up-toolkit lint-js"
   },
