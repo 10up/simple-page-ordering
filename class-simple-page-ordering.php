@@ -49,7 +49,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
 			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
-			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
 
 			// Custom edit page actions.
@@ -238,7 +237,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Loads the plugin textdomain
 		 */
 		public static function load_textdomain() {
-			load_plugin_textdomain( 'simple-page-ordering', false, dirname( plugin_basename( __FILE__ ) ) . '/localization/' );
+			_deprecated_function( __METHOD__, '2.8.0' );
 		}
 
 		/**
