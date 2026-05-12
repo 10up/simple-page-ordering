@@ -112,6 +112,31 @@ Please report security bugs found in the source code of the Simple Page Ordering
 
 == Changelog ==
 
+= 2.8.0 - 2026-05-TBA =
+* **Added:** Add filter to disable page row actions (props [@sanketio](https://github.com/sanketio), [@faisal-alvi](https://github.com/faisal-alvi) via [#249](https://github.com/10up/simple-page-ordering/pull/249)).
+* **Fixed:** Resolved issue with emoji in page titles (props [@jamesmorrison](https://github.com/jamesmorrison), [@dkotter](https://github.com/dkotter) via [#248](https://github.com/10up/simple-page-ordering/pull/248)).
+* **Changed:** Indicate WordPress 7.0 compatibility (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jasperfrontend](https://github.com/jasperfrontend), [@jeffpaul](https://github.com/jeffpaul) via [#254](https://github.com/10up/simple-page-ordering/pull/254), [#271](https://github.com/10up/simple-page-ordering/pull/271)).
+* **Changed:** Remove bundled translation file in favour of wp.org distributed file (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#279](https://github.com/10up/simple-page-ordering/pull/279)).
+* **Changed:** Bump WordPress minimum supported version to 6.8 (props [@jeffpaul](https://github.com/jeffpaul), [@jasperfrontend](https://github.com/jasperfrontend) via [#271](https://github.com/10up/simple-page-ordering/pull/271)).
+* **Security:** Bump 10up-toolkit to 6.5.0 (props [@jamesmorrison](https://github.com/jamesmorrison), [@dkotter](https://github.com/dkotter) via [#247](https://github.com/10up/simple-page-ordering/pull/247)).
+* **Security:** Bump `http-proxy-middleware` from 2.0.6 to 2.0.9 and `tar-fs` from 2.1.2 to 3.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#244](https://github.com/10up/simple-page-ordering/pull/244)).
+* **Security:** Bump `bytes` from 3.0.0 to 3.1.2 and `compression` from 1.7.4 to 1.8.1 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#246](https://github.com/10up/simple-page-ordering/pull/246)).
+* **Security:** Bump `tmp` from 0.2.1 to 0.2.5, `@wordpress/env` from 9.2.0 to 10.28.0, `inquirer` from 8.2.6 to 8.2.7, `form-data` from 2.3.3 to 4.0.4, and `@cypress/request` from 3.0.1 to 3.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#250](https://github.com/10up/simple-page-ordering/pull/250)).
+* **Security:** Bump `@babel/plugin-transform-modules-systemjs` from 7.23.9 to 7.29.4, `postcss` from 8.4.33 to 8.5.14, and `simple-git` from 3.33.0 to 3.36.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#277](https://github.com/10up/simple-page-ordering/pull/277)).
+* **Security:** Updates the NPM dependencies throwing security alerts via NPM audit (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#256](https://github.com/10up/simple-page-ordering/pull/256)).
+* **Security:** Bump `lodash` from 4.17.21 to 4.18.1 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#258](https://github.com/10up/simple-page-ordering/pull/258), [#269](https://github.com/10up/simple-page-ordering/pull/269)).
+* **Security:** Bump `webpack` from 5.94.0 to 5.105.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/apps/dependabot) via [#259](https://github.com/10up/simple-page-ordering/pull/259)).
+* **Security:** Bump `qs` from 6.14.1 to 6.14.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#260](https://github.com/10up/simple-page-ordering/pull/260)).
+* **Security:** Bump `immutable` from 4.3.5 to 4.3.8 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#261](https://github.com/10up/simple-page-ordering/pull/261)).
+* **Security:** Bump `svgo` from 3.2.0 to 3.3.3 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#262](https://github.com/10up/simple-page-ordering/pull/262)).
+* **Security:** Bump `simple-git` from 3.22.0 to 3.33.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#263](https://github.com/10up/simple-page-ordering/pull/263)).
+* **Security:** Bump `flatted` from 3.2.9 to 3.4.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#264](https://github.com/10up/simple-page-ordering/pull/264)).
+* **Security:** Bump `picomatch` from 2.3.1 to 2.3.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#266](https://github.com/10up/simple-page-ordering/pull/266)).
+* **Security:** Bump `node-forge` from 1.3.3 to 1.4.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#268](https://github.com/10up/simple-page-ordering/pull/268)).
+* **Security:** Bump `follow-redirects` from 1.15.11 to 1.16.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#270](https://github.com/10up/simple-page-ordering/pull/270)).
+* **Security:** Bump `fast-uri` from 3.1.0 to 3.1.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#274](https://github.com/10up/simple-page-ordering/pull/274)).
+* **Developer:** Add Patchstack security-reporting FAQ (props [@jeffpaul](https://github.com/jeffpaul) via [#257](https://github.com/10up/simple-page-ordering/pull/257)).
+
 = 2.7.4 - 2025-05-19 =
 * **Changed:** Bump WordPress "tested up to" version 6.8 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239), [#240](https://github.com/10up/simple-page-ordering/pull/240)).
 * **Changed:** Bump WordPress minimum from 6.5 to 6.6 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239)).
@@ -183,34 +208,12 @@ Please report security bugs found in the source code of the Simple Page Ordering
 * **Security:** Bump `node-sass` from 7.0.3 to 9.0.0 (props [@faisal-alvi](https://github.com/faisal-alvi) via [#152](https://github.com/10up/simple-page-ordering/pull/152)).
 * **Security:** Bump `@cypress/request` from 2.88.11 to 3.0.0 to resolve SSRF issue (props [@faisal-alvi](https://github.com/faisal-alvi), [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#152](https://github.com/10up/simple-page-ordering/pull/152), [#160](https://github.com/10up/simple-page-ordering/pull/160)).
 
-= 2.5.1 - 2023-05-16 =
-* **Security:** Ensure we check user permissions properly in our REST endpoint (props [@mikhail-net](https://github.com/mikhail-net), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc)).
-
-= 2.5.0 - 2023-04-18 =
-**Note that this release bumps the minimum required versions of PHP from 5.6 to 7.4 and WordPress from 3.8 to 5.7.**
-
-* **Added:** Feature to reset page order (props [@pattonwebz](https://github.com/pattonwebz), [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter)) via [#129](https://github.com/10up/simple-page-ordering/pull/129).
-* **Added** JS linting GitHub Action (props [@Sidsector9](https://github.com/Sidsector9), [@kmgalanakis](https://github.com/kmgalanakis), [@peterwilsoncc](https://github.com/peterwilsoncc)) via [#136](https://github.com/10up/simple-page-ordering/pull/136).
-* **Changed:** Bump minimum PHP version to 7.4 (props [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@ravinderk](https://github.com/ravinderk), [@cadic](https://github.com/cadic)) via [#111](https://github.com/10up/simple-page-ordering/pull/111).
-* **Changed:** Bump minimum required WordPress version from 3.8 to 5.7 (props [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@ravinderk](https://github.com/ravinderk), [@cadic](https://github.com/cadic)) via [#111](https://github.com/10up/simple-page-ordering/pull/111).
-* **Changed:** Bump WordPress "tested up to" version 6.2 (props [@av3nger](https://github.com/av3nger) via [#138](https://github.com/10up/simple-page-ordering/pull/138)).
-* **Changed:** Run E2E tests on the zip generated by "Build release zip" action (props [@iamdharmesh](https://github.com/iamdharmesh), [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter)) via [#135](https://github.com/10up/simple-page-ordering/pull/135).
-* **Fixed:** Removed a typo in a REST response message (props [@ruscoe](https://github.com/ruscoe), [@Sidsector9](https://github.com/Sidsector9)) via [#133](https://github.com/10up/simple-page-ordering/pull/133).
-* **Security:** Removed vulnerable NPM dependencies (props [@vikrampm1](https://github.com/vikrampm1), [@Sidsector9](https://github.com/Sidsector9), [@ravinderk](https://github.com/ravinderk), [@cadic](https://github.com/cadic)) via [#111](https://github.com/10up/simple-page-ordering/pull/111).
-* **Security:** Bump `cypress` from `9.5.2` to `11.2.0` (props [@iamdharmesh](https://github.com/iamdharmesh), [@jayedul](https://github.com/jayedul), [@Sidsector9](https://github.com/Sidsector9)) via [#120](https://github.com/10up/simple-page-ordering/pull/120).
-* **Security:** Bump `http-cache-semantics` from 4.1.0 to 4.1.1 (props [@peterwilsoncc](https://github.com/peterwilsoncc) via [#131](https://github.com/10up/simple-page-ordering/pull/131)).
-* **Security:** Bump `webpack` from `5.75.0` to `5.76.1` (props [@Sidsector9](https://github.com/Sidsector9)) via [#134](https://github.com/10up/simple-page-ordering/pull/134).
-
-= 2.4.4 - 2023-01-10 =
-* **Changed:** Update Support Level from `Active` to `Stable` (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#123](https://github.com/10up/simple-page-ordering/pull/123)).
-* **Changed:** Bump WordPress "tested up to" version to 6.1 (props [@jayedul](https://github.com/jayedul), [@dkotter](https://github.com/dkotter) via [#118](https://github.com/10up/simple-page-ordering/pull/118)).
-* **Changed:** Update the "Build release zip" workflow to use 10up's `build-zip` action (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#119](https://github.com/10up/simple-page-ordering/pull/119)).
-* **Security:** Bump `loader-utils` from 2.0.3 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#115](https://github.com/10up/simple-page-ordering/pull/115)).
-* **Security:** Bump `simple-git` from 3.12.0 to 3.15.1 (props [@dependabot](https://github.com/apps/dependabot) via [#121](https://github.com/10up/simple-page-ordering/pull/121)).
-
 [View historical changelog details here](https://github.com/10up/simple-page-ordering/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.8.0 =
+This release bumps the minimum required version of WordPress from 6.6 to 6.8.
 
 = 2.7.4 =
 This release bumps the minimum required version of WordPress from 6.5 to 6.6.
