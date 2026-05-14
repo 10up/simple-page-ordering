@@ -213,6 +213,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				// Catch and repair bad pages.
 				if ( $page->post_parent === $page->ID ) {
 					$page->post_parent = 0;
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Intentionally using query for speed, cache is cleared afterwards.
 					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
 					clean_post_cache( $page );
 					$bad_parents[] = $page->ID;
