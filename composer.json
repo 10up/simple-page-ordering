@@ -22,9 +22,6 @@
   "require": {
     "10up/wp-compat-validation-tool": "dev-trunk"
   },
-  "require-dev": {
-    "10up/phpcs-composer": "dev-master"
-  },
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,
@@ -50,5 +47,10 @@
     "installer-paths": {
       "./{$name}/": ["10up/wp-compat-validation-tool"]
     }
+  },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpcompatibility/phpcompatibility-wp": "^3.0@dev",
+    "automattic/vipwpcs": "^3.0"
   }
 }
