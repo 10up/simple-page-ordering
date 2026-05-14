@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.8.0] - 2026-05-TBA
+**Note that this release bumps the WordPress minimum version from 6.6 to 6.8.**
+
+### Added
+- Add filter to disable page row actions (props [@sanketio](https://github.com/sanketio), [@faisal-alvi][https://github.com/faisal-alvi] via [#249](https://github.com/10up/simple-page-ordering/pull/249)).
+
+### Fixed
+- Resolved issue with emoji in page titles (props [@jamesmorrison](https://github.com/jamesmorrison),[@dkotter](https://github.com/dkotter) via [#248](https://github.com/10up/simple-page-ordering/pull/248)).
+
+### Changed
+- Indicate WordPress 7.0 compatibility (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jasperfrontend](https://github.com/jasperfrontend), [@jeffpaul](https://github.com/jeffpaul) via [#254](https://github.com/10up/simple-page-ordering/pull/254), [#271](https://github.com/10up/simple-page-ordering/pull/271)).
+- Remove bundled translation file in favour of wp.org distributed file (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#279](https://github.com/10up/simple-page-ordering/pull/279)).
+- Bump WordPress minimum supported version to 6.8 (props [@jeffpaul](https://github.com/jeffpaul), [@jasperfrontend](https://github.com/jasperfrontend) via [#271](https://github.com/10up/simple-page-ordering/pull/271)).
+
+### Security
+- Bump 10up-toolkit to 6.5.0 (props [@jamesmorrison](https://github.com/jamesmorrison),[@dkotter](https://github.com/dkotter) via [#247](https://github.com/10up/simple-page-ordering/pull/247)).
+- Bump `http-proxy-middleware` from 2.0.6 to 2.0.9 and `tar-fs` from 2.1.2 to 3.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#244](https://github.com/10up/simple-page-ordering/pull/244)).
+- Bump `bytes` from 3.0.0 to 3.1.2 and `compression` from 1.7.4 to 1.8.1 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#246](https://github.com/10up/simple-page-ordering/pull/246)).
+- Bump `tmp` from 0.2.1 to 0.2.5, `@wordpress/env` from 9.2.0 to 10.28.0, `inquirer` from 8.2.6 to 8.2.7, `form-data` from 2.3.3 to 4.0.4, and `@cypress/request` from 3.0.1 to 3.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#250](https://github.com/10up/simple-page-ordering/pull/250)).
+- Bump `@babel/plugin-transform-modules-systemjs` from 7.23.9 to 7.29.4, `postcss` from 8.4.33 to 8.5.14, and `simple-git` from 3.33.0 to 3.36.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#277](https://github.com/10up/simple-page-ordering/pull/277)).
+- Updates the NPM dependencies throwing security alerts via NPM audit (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#256](https://github.com/10up/simple-page-ordering/pull/256)).
+- Bump `lodash` from 4.17.21 to 4.18.1 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#258](https://github.com/10up/simple-page-ordering/pull/258), [#269](https://github.com/10up/simple-page-ordering/pull/269)).
+- Bump `webpack` from 5.94.0 to 5.105.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/apps/dependabot) via [#259](https://github.com/10up/simple-page-ordering/pull/259)).
+- Bump `qs` from 6.14.1 to 6.14.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#260](https://github.com/10up/simple-page-ordering/pull/260)).
+- Bump `immutable` from 4.3.5 to 4.3.8 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#261](https://github.com/10up/simple-page-ordering/pull/261)).
+- Bump `svgo` from 3.2.0 to 3.3.3 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#262](https://github.com/10up/simple-page-ordering/pull/262)).
+- Bump `simple-git` from 3.22.0 to 3.33.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#263](https://github.com/10up/simple-page-ordering/pull/263)).
+- Bump `flatted` from 3.2.9 to 3.4.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#264](https://github.com/10up/simple-page-ordering/pull/264)).
+- Bump `picomatch` from 2.3.1 to 2.3.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#266](https://github.com/10up/simple-page-ordering/pull/266)).
+- Bump `node-forge` from 1.3.3 to 1.4.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#268](https://github.com/10up/simple-page-ordering/pull/268)).
+- Bump `follow-redirects` from 1.15.11 to 1.16.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#270](https://github.com/10up/simple-page-ordering/pull/270)).
+- Bump `fast-uri` from 3.1.0 to 3.1.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#274](https://github.com/10up/simple-page-ordering/pull/274)).
+
+### Developer
+- Add Patchstack security-reporting FAQ (props [@jeffpaul](https://github.com/jeffpaul) via [#257](https://github.com/10up/simple-page-ordering/pull/257)).
+
 ## [2.7.4] - 2025-05-19
 **Note that this release bumps the WordPress minimum version from 6.5 to 6.6.**
 
@@ -373,6 +409,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.8.0]: https://github.com/10up/simple-page-ordering/compare/2.7.4...2.8.0
 [2.7.4]: https://github.com/10up/simple-page-ordering/compare/2.7.3...2.7.4
 [2.7.3]: https://github.com/10up/simple-page-ordering/compare/2.7.2...2.7.3
 [2.7.2]: https://github.com/10up/simple-page-ordering/compare/2.7.1...2.7.2
