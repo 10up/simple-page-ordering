@@ -135,7 +135,6 @@ Please report security bugs found in the source code of the Simple Page Ordering
 * **Security:** Bump `node-forge` from 1.3.3 to 1.4.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#268](https://github.com/10up/simple-page-ordering/pull/268)).
 * **Security:** Bump `follow-redirects` from 1.15.11 to 1.16.0 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#270](https://github.com/10up/simple-page-ordering/pull/270)).
 * **Security:** Bump `fast-uri` from 3.1.0 to 3.1.2 (props [@dkotter](https://github.com/dkotter), [@dependabot](https://github.com/apps/dependabot) via [#274](https://github.com/10up/simple-page-ordering/pull/274)).
-* **Developer:** Add Patchstack security-reporting FAQ (props [@jeffpaul](https://github.com/jeffpaul) via [#257](https://github.com/10up/simple-page-ordering/pull/257)).
 
 = 2.7.4 - 2025-05-19 =
 * **Changed:** Bump WordPress "tested up to" version 6.8 (props [@jeffpaul](https://github.com/jeffpaul) via [#239](https://github.com/10up/simple-page-ordering/pull/239), [#240](https://github.com/10up/simple-page-ordering/pull/240)).
