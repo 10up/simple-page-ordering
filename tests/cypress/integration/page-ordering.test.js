@@ -47,6 +47,39 @@ describe('Test Page Order Change', () => {
 		} );
 	});
 
+	it('Can preserve emojis in page titles during reordering', () => {
+		// Find the emoji page that was created during setup
+		cy.contains('.row-title', 'Hey there! 👋').should('exist').as('emojiPage');
+		
+		// Get the parent row of our emoji page
+		cy.get('@emojiPage').parents('tr').as('emojiPageRow');
+		
+		// Store the initial emoji title text
+		cy.get('@emojiPage').invoke('text').as('initialEmojiTitle');
+		
+		// Get the ID of the emoji page row for debugging
+		cy.get('@emojiPageRow').invoke('attr', 'id').then(rowId => {
+			cy.log('Emoji page row ID:', rowId);
+		});
+		
+		// Perform the drag operation to trigger the callback
+		cy.get('@emojiPageRow').drag(secondTopLevelPage);
+		
+		// Wait for the ordering update to complete with a timeout
+		cy.get('.wp-list-table tbody tr .check-column input', { timeout: 10000 }).should('exist');
+		
+		// Add a small wait to ensure the callback has completed
+		cy.wait(1000);
+		
+		// Verify the emoji is still present and unchanged in the title
+		cy.get('@initialEmojiTitle').then(initialTitle => {
+			cy.log('Initial title was:', initialTitle);
+			cy.contains('.row-title', 'Hey there! 👋')
+				.should('exist')
+				.should('have.text', initialTitle);
+		});
+	});
+
 	// Reset page ordering state.
 	after( () => {
 		cy.login();

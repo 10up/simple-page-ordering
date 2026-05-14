@@ -9,7 +9,7 @@ use WP_REST_Response;
 use WP_Query;
 
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.7.4' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.0' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -49,7 +49,6 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'load-edit.php', array( __CLASS__, 'load_edit_screen' ) );
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
 			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
-			add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
 
 			// Custom edit page actions.
@@ -238,7 +237,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Loads the plugin textdomain
 		 */
 		public static function load_textdomain() {
-			load_plugin_textdomain( 'simple-page-ordering', false, dirname( plugin_basename( __FILE__ ) ) . '/localization/' );
+			_deprecated_function( __METHOD__, '2.8.0' );
 		}
 
 		/**
@@ -397,6 +396,20 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			if ( ! current_user_can( 'edit_post', $post->ID ) ) {
+				return $actions;
+			}
+
+			/**
+			 * Allow or disallow new row actions.
+			 *
+			 * @since 2.7.5
+			 *
+			 * @param boolean $should_add_actions Whether to add the new row actions.
+			 * @param array   $actions            An array of row action links.
+			 * @param WP_Post $post               The post object.
+			 */
+			$should_add_actions = apply_filters( 'simple_page_ordering_allow_row_actions', true, $actions, $post );
+			if ( ! $should_add_actions ) {
 				return $actions;
 			}
 

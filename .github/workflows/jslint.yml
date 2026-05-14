@@ -9,6 +9,11 @@ on:
     branches:
       - develop
 
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
 jobs:
   jslint:
     runs-on: ubuntu-latest

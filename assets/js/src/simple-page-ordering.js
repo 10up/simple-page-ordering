@@ -41,6 +41,13 @@ function update_simple_ordering_callback(response) {
 				const dom_post_title = inline_key.querySelector('.post_title');
 				if (dom_post_title !== null) {
 					post_title = dom_post_title.innerHTML;
+
+					// Convert emoji img tags back to Unicode emoji characters
+					// See: https://github.com/10up/simple-page-ordering/issues/205
+					post_title = post_title.replace(
+						/<img[^>]*class="emoji"[^>]*alt="([^"]*)"[^>]*>/g,
+						'$1',
+					);
 				}
 
 				let dashes = 0;
@@ -50,7 +57,7 @@ function update_simple_ordering_callback(response) {
 				}
 				const dom_row_title = inline_key.parentNode.querySelector('.row-title');
 				if (dom_row_title !== null && post_title !== null) {
-					dom_row_title.textContent = decodeEntities(post_title);
+					dom_row_title.innerHTML = decodeEntities(post_title);
 				}
 			} else if (dom_menu_order !== null) {
 				dom_menu_order.textContent = new_pos[key];
