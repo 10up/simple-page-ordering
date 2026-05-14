@@ -8,6 +8,10 @@ use WP_Post;
 use WP_REST_Response;
 use WP_Query;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Useful global constants.
 define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.0' );
 

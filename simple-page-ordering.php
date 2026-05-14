@@ -15,6 +15,10 @@
  * @package simple-page-ordering
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator.php' ) ) {
 	return;
 }
