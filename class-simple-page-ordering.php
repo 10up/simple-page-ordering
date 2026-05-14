@@ -213,6 +213,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				// Catch and repair bad pages.
 				if ( $page->post_parent === $page->ID ) {
 					$page->post_parent = 0;
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Intentionally using query for speed, cache is cleared afterwards.
 					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
 					clean_post_cache( $page );
 					$bad_parents[] = $page->ID;
@@ -303,7 +304,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return;
 			}
 
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Filtering of List Table does not require sanitization.
 			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === $_GET['id'] : false;
 
 			if ( ! $is_simple_page_ordering ) {
@@ -326,7 +327,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$script_name       = 'dist/js/simple-page-ordering.js';
 				$script_asset_path = plugin_dir_path( __FILE__ ) . 'dist/js/simple-page-ordering.asset.php';
 				$script_asset      = file_exists( $script_asset_path )
-					? require $script_asset_path
+					? require $script_asset_path // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable -- file exists check above.
 					: false;
 
 				if ( false !== $script_asset ) {
@@ -343,7 +344,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						)
 					);
 
-					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], $script_asset['version'] );
+					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), array(), $script_asset['version'] );
 				} else {
 					add_action(
 						'admin_notices',
@@ -450,7 +451,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( 0 === $post->post_parent ) {
 				$siblings = $top_level_pages;
 			} else {
-				$siblings = $children_pages[ $post->post_parent ] ?? [];
+				$siblings = $children_pages[ $post->post_parent ] ?? array();
 			}
 
 			// Assume no sibling.
@@ -501,11 +502,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
-			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
-			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
-			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
+			$post_id = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
+			$previd  = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
+			$nextid  = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
+			$start   = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized after json_decode.
+			$excluded = empty( $_POST['excluded'] ) ? array( $post_id ) : array_filter( json_decode( wp_unslash( $_POST['excluded'] ), true ), 'intval' );
 
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
@@ -553,8 +555,43 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			// reset the order of all posts of given post type
-			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ), array( '%d' ), array( '%s' ) );
+			/*
+			 * Reset the order of all posts of given post type.
+			 *
+			 * Doing this manually via a direct query for speed in order to bypass the overhead
+			 * of multiple calls to `wp_update_post()`.
+			 */
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$post_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->posts WHERE post_type = %s AND menu_order != 0",
+					$post_type
+				)
+			);
+			$post_ids = array_map( 'intval', $post_ids ); // Required for cache keys.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->query(
+				$wpdb->prepare(
+					sprintf(
+						"UPDATE $wpdb->posts SET menu_order = 0 WHERE ID IN (%s)",
+						implode( ',', array_fill( 0, count( $post_ids ), '%d' ) )
+					),
+					$post_ids
+				)
+			);
+
+			/*
+			 * Clear the post caches.
+			 *
+			 * `clean_post_cache()` is not used here as it will clear the post, post meta, terms and
+			 * other related caches. This is much more expensive than necessary for clearing the menu
+			 * order cache.
+			 */
+			if ( empty( $_wp_suspend_cache_invalidation ) ) {
+				// Clear the post caches.
+				wp_cache_delete_multiple( $post_ids, 'posts' );
+				wp_cache_set_posts_last_changed();
+			}
 
 			die( 0 );
 		}
@@ -579,7 +616,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				error_reporting( 0 ); // phpcs:ignore
+				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting -- Intentionally suppressing errors from third-party plugins during ordering.
+				error_reporting( 0 );
 			}
 
 			global $wp_version;
@@ -631,14 +669,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
-				'post__not_in'           => $excluded, // phpcs:ignore
+				'post__not_in'           => $excluded, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Likely faster via the DB than PHP.
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
 				),
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
-				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
+				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters
 				'ignore_sticky_posts'    => true,
 			);
 
@@ -675,7 +713,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'depth'       => count( $ancestors ),
 					);
 
-					$start ++;
+					++$start;
 				}
 
 				// if repositioned post has been set, and new items are already in the right order, we can stop
@@ -694,7 +732,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					);
 				}
 				$new_pos[ $sibling->ID ] = $start;
-				$start ++;
+				++$start;
 
 				if ( ! $nextid && $previd === $sibling->ID ) {
 					wp_update_post(
@@ -711,7 +749,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'post_parent' => $parent_id,
 						'depth'       => count( $ancestors ),
 					);
-					$start ++;
+					++$start;
 				}
 
 			endforeach;
@@ -798,44 +836,45 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			register_rest_route(
 				'simple-page-ordering/v1',
 				'page_ordering',
-				[
+				array(
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
-					'args'                => [
-						'id'      => [
+					'args'                => array(
+						'id'      => array(
 							'description' => __( 'ID of item we want to sort', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'integer',
 							'minimum'     => 1,
-						],
-						'previd'  => [
+						),
+						'previd'  => array(
 							'description' => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'nextid'  => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'nextid'  => array(
 							'description' => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'start'   => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'start'   => array(
 							'default'     => 1,
 							'description' => __( 'Index we start with when sorting', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'integer',
-						],
-						'exclude' => [
-							'default'     => [],
+						),
+						// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- false positive.
+						'exclude' => array(
+							'default'     => array(),
 							'description' => __( 'Array of IDs we want to exclude', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
-							'items'       => [
+							'items'       => array(
 								'type' => 'integer',
-							],
-						],
-					],
-				]
+							),
+						),
+					),
+				)
 			);
 		}
 
