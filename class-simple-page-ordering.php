@@ -303,7 +303,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return;
 			}
 
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Filtering of List Table does not require sanitization.
 			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === $_GET['id'] : false;
 
 			if ( ! $is_simple_page_ordering ) {
@@ -579,7 +579,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				error_reporting( 0 ); // phpcs:ignore
+				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting -- Intentionally suppressing errors from third-party plugins during ordering.
+				error_reporting( 0 );
 			}
 
 			global $wp_version;
@@ -631,7 +632,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
-				'post__not_in'           => $excluded, // phpcs:ignore
+				'post__not_in'           => $excluded, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Likely faster via the DB than PHP.
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
