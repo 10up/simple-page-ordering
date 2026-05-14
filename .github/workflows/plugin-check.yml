@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Install production composer dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
       - name: Run plugin check
         uses: wordpress/plugin-check-action@6f5a57e173c065a394b78688f75df543e4011902 # v1.1.5
         with:
