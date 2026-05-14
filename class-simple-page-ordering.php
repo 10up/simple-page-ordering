@@ -568,6 +568,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					$post_type
 				)
 			);
+			$post_ids = array_map( 'intval', $post_ids ); // Required for cache keys.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->query(
 				$wpdb->prepare(
