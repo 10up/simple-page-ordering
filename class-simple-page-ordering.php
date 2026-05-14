@@ -555,8 +555,42 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			// reset the order of all posts of given post type
-			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ), array( '%d' ), array( '%s' ) );
+			/*
+			 * Reset the order of all posts of given post type.
+			 *
+			 * Doing this manually via a direct query for speed in order to bypass the overhead
+			 * of multiple calls to `wp_update_post()`.
+			 */
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$post_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->posts WHERE post_type = %s AND menu_order != 0",
+					$post_type
+				)
+			);
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->query(
+				$wpdb->prepare(
+					sprintf(
+						"UPDATE $wpdb->posts SET menu_order = 0 WHERE ID IN (%s)",
+						implode( ',', array_fill( 0, count( $post_ids ), '%d' ) )
+					),
+					$post_ids
+				)
+			);
+
+			/*
+			 * Clear the post caches.
+			 *
+			 * `clean_post_cache()` is not used here as it will clear the post, post meta, terms and
+			 * other related caches. This is much more expensive than necessary for clearing the menu
+			 * order cache.
+			 */
+			if ( empty( $_wp_suspend_cache_invalidation ) ) {
+				// Clear the post caches.
+				wp_cache_delete_multiple( $post_ids, 'posts' );
+				wp_cache_set_posts_last_changed();
+			}
 
 			die( 0 );
 		}
