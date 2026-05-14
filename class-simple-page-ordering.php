@@ -343,7 +343,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						)
 					);
 
-					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], $script_asset['version'] );
+					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), array(), $script_asset['version'] );
 				} else {
 					add_action(
 						'admin_notices',
@@ -450,7 +450,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( 0 === $post->post_parent ) {
 				$siblings = $top_level_pages;
 			} else {
-				$siblings = $children_pages[ $post->post_parent ] ?? [];
+				$siblings = $children_pages[ $post->post_parent ] ?? array();
 			}
 
 			// Assume no sibling.
@@ -675,7 +675,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'depth'       => count( $ancestors ),
 					);
 
-					$start ++;
+					++$start;
 				}
 
 				// if repositioned post has been set, and new items are already in the right order, we can stop
@@ -694,7 +694,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 					);
 				}
 				$new_pos[ $sibling->ID ] = $start;
-				$start ++;
+				++$start;
 
 				if ( ! $nextid && $previd === $sibling->ID ) {
 					wp_update_post(
@@ -711,7 +711,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'post_parent' => $parent_id,
 						'depth'       => count( $ancestors ),
 					);
-					$start ++;
+					++$start;
 				}
 
 			endforeach;
@@ -798,44 +798,44 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			register_rest_route(
 				'simple-page-ordering/v1',
 				'page_ordering',
-				[
+				array(
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
-					'args'                => [
-						'id'      => [
+					'args'                => array(
+						'id'      => array(
 							'description' => __( 'ID of item we want to sort', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'integer',
 							'minimum'     => 1,
-						],
-						'previd'  => [
+						),
+						'previd'  => array(
 							'description' => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'nextid'  => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'nextid'  => array(
 							'description' => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'start'   => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'start'   => array(
 							'default'     => 1,
 							'description' => __( 'Index we start with when sorting', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'integer',
-						],
-						'exclude' => [
-							'default'     => [],
+						),
+						'exclude' => array(
+							'default'     => array(),
 							'description' => __( 'Array of IDs we want to exclude', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
-							'items'       => [
+							'items'       => array(
 								'type' => 'integer',
-							],
-						],
-					],
-				]
+							),
+						),
+					),
+				)
 			);
 		}
 
