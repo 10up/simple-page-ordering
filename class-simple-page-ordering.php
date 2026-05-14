@@ -327,7 +327,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$script_name       = 'dist/js/simple-page-ordering.js';
 				$script_asset_path = plugin_dir_path( __FILE__ ) . 'dist/js/simple-page-ordering.asset.php';
 				$script_asset      = file_exists( $script_asset_path )
-					? require $script_asset_path
+					? require $script_asset_path // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable -- file exists check above.
 					: false;
 
 				if ( false !== $script_asset ) {
