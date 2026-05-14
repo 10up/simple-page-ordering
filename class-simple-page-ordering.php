@@ -640,7 +640,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				),
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
-				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
+				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters
 				'ignore_sticky_posts'    => true,
 			);
 
