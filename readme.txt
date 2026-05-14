@@ -112,7 +112,7 @@ Please report security bugs found in the source code of the Simple Page Ordering
 
 == Changelog ==
 
-= 2.8.0 - 2026-05-TBA =
+= 2.8.0 - 2026-05-15 =
 * **Added:** Add filter to disable page row actions (props [@sanketio](https://github.com/sanketio), [@faisal-alvi](https://github.com/faisal-alvi) via [#249](https://github.com/10up/simple-page-ordering/pull/249)).
 * **Fixed:** Resolved issue with emoji in page titles (props [@jamesmorrison](https://github.com/jamesmorrison), [@dkotter](https://github.com/dkotter) via [#248](https://github.com/10up/simple-page-ordering/pull/248)).
 * **Changed:** Indicate WordPress 7.0 compatibility (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jasperfrontend](https://github.com/jasperfrontend), [@jeffpaul](https://github.com/jeffpaul) via [#254](https://github.com/10up/simple-page-ordering/pull/254), [#271](https://github.com/10up/simple-page-ordering/pull/271)).
