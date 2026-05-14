@@ -20,7 +20,7 @@ if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator
 }
 
 // Useful global constants.
-require_once '10up-lib/wp-compat-validation-tool/src/Validator.php';
+require_once __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator.php';
 
 $compat_checker = new \Simple_Page_Ordering_Validator\Validator();
 $compat_checker
@@ -31,4 +31,4 @@ if ( ! $compat_checker->is_plugin_compatible() ) {
 	return;
 }
 
-require_once 'class-simple-page-ordering.php';
+require_once __DIR__ . '/class-simple-page-ordering.php';
