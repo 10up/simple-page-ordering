@@ -502,10 +502,10 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
-			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
-			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
-			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
+			$post_id = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
+			$previd  = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
+			$nextid  = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
+			$start   = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized after json_decode.
 			$excluded = empty( $_POST['excluded'] ) ? array( $post_id ) : array_filter( json_decode( wp_unslash( $_POST['excluded'] ), true ), 'intval' );
 
