@@ -620,7 +620,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting -- Intentionally suppressing errors from third-party plugins during ordering.
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting -- Intentionally suppressing errors from third-party plugins during ordering.
 				error_reporting( 0 );
 			}
 
