@@ -862,6 +862,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 							'required'    => false,
 							'type'        => 'integer',
 						),
+						// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- false positive.
 						'exclude' => array(
 							'default'     => array(),
 							'description' => __( 'Array of IDs we want to exclude', 'simple-page-ordering' ),
