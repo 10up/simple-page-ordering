@@ -16,6 +16,8 @@ permissions: {}
 jobs:
   build:
     uses: 10up/simple-page-ordering/.github/workflows/build-release-zip.yml@develop
+    permissions:
+      contents: read
 
   plugin-check:
     needs: build
