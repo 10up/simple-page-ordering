@@ -4,15 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "622f83de1a47facfba5dea097f10767a",
+    "content-hash": "5a6a2f855075722373df497eff4dfa03",
     "packages": [
         {
             "name": "10up/wp-compat-validation-tool",
-            "version": "dev-trunk",
+            "version": "dev-fix/11-translator-errors",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/wp-compat-validation-tool.git",
-                "reference": "19a8c7c1d39d3a4c896aeeac8d42edd20b8d2317"
+                "reference": "7b440004bde20e435af68dad8385912ec3398d00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/10up/wp-compat-validation-tool/zipball/7b440004bde20e435af68dad8385912ec3398d00",
+                "reference": "7b440004bde20e435af68dad8385912ec3398d00",
+                "shasum": ""
             },
             "require": {
                 "composer/installers": "^2.2"
@@ -26,6 +32,7 @@
                     "WP_Compat_Validation_Tool\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -39,7 +46,11 @@
             ],
             "description": "Perform PHP and WP version compatibility checks in your plugin.",
             "homepage": "https://github.com/10up/wp-compat-validation-tool",
-            "time": "2023-11-09T18:48:23+00:00"
+            "support": {
+                "issues": "https://github.com/10up/wp-compat-validation-tool/issues",
+                "source": "https://github.com/10up/wp-compat-validation-tool/tree/fix/11-translator-errors"
+            },
+            "time": "2026-05-15T01:59:09+00:00"
         },
         {
             "name": "composer/installers",
@@ -47,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "2a9170263fcd9cc4fd0b50917293c21d6c1a5bfe"
+                "reference": "7ae1e3c3742952c27a33b6e4459b5e2112a83f5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/2a9170263fcd9cc4fd0b50917293c21d6c1a5bfe",
-                "reference": "2a9170263fcd9cc4fd0b50917293c21d6c1a5bfe",
+                "url": "https://api.github.com/repos/composer/installers/zipball/7ae1e3c3742952c27a33b6e4459b5e2112a83f5d",
+                "reference": "7ae1e3c3742952c27a33b6e4459b5e2112a83f5d",
                 "shasum": ""
             },
             "require": {
@@ -60,12 +71,12 @@
                 "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "composer/composer": "1.6.* || ^2.0",
-                "composer/semver": "^1 || ^3",
-                "phpstan/phpstan": "^0.12.55",
-                "phpstan/phpstan-phpunit": "^0.12.16",
-                "symfony/phpunit-bridge": "^5.3",
-                "symfony/process": "^5"
+                "composer/composer": "^1.10.27 || ^2.7.8",
+                "composer/semver": "^1.7.2 || ^3.4.2",
+                "phpstan/phpstan": "^1.11.11",
+                "phpstan/phpstan-phpunit": "^1.4",
+                "phpunit/phpunit": "^8.5.39 || ^9.6.20",
+                "symfony/process": "^5 || ^6 || ^7.1.3"
             },
             "default-branch": true,
             "type": "composer-plugin",
@@ -93,7 +104,6 @@
                 }
             ],
             "description": "A multi-framework Composer library installer",
-            "homepage": "https://composer.github.io/installers/",
             "keywords": [
                 "Dolibarr",
                 "Eliasis",
@@ -123,6 +133,7 @@
                 "cockpit",
                 "codeigniter",
                 "concrete5",
+                "concreteCMS",
                 "croogo",
                 "dokuwiki",
                 "drupal",
@@ -179,13 +190,9 @@
                 {
                     "url": "https://github.com/composer",
                     "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
-                    "type": "tidelift"
                 }
             ],
-            "time": "2022-10-12T12:07:30+00:00"
+            "time": "2026-04-08T17:28:41+00:00"
         }
     ],
     "packages-dev": [
