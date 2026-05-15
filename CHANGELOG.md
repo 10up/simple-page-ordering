@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.8.0] - 2026-05-TBA
+## [2.8.0] - 2026-05-15
 **Note that this release bumps the WordPress minimum version from 6.6 to 6.8.**
 
 ### Added
-- Add filter to disable page row actions (props [@sanketio](https://github.com/sanketio), [@faisal-alvi][https://github.com/faisal-alvi] via [#249](https://github.com/10up/simple-page-ordering/pull/249)).
+- Add filter to disable page row actions (props [@sanketio](https://github.com/sanketio), [@faisal-alvi](https://github.com/faisal-alvi) via [#249](https://github.com/10up/simple-page-ordering/pull/249)).
 
 ### Fixed
 - Resolved issue with emoji in page titles (props [@jamesmorrison](https://github.com/jamesmorrison),[@dkotter](https://github.com/dkotter) via [#248](https://github.com/10up/simple-page-ordering/pull/248)).
