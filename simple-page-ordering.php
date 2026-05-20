@@ -15,6 +15,10 @@
  * @package simple-page-ordering
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator.php' ) ) {
 	return;
 }
@@ -22,12 +26,12 @@ if ( ! is_readable( __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator
 // Useful global constants.
 require_once __DIR__ . '/10up-lib/wp-compat-validation-tool/src/Validator.php';
 
-$compat_checker = new \Simple_Page_Ordering_Validator\Validator();
-$compat_checker
+$simple_page_ordering_compat_checker = new \Simple_Page_Ordering_Validator\Validator();
+$simple_page_ordering_compat_checker
 	->set_plugin_name( 'Simple Page Ordering' )
 	->set_php_min_required_version( '7.4' );
 
-if ( ! $compat_checker->is_plugin_compatible() ) {
+if ( ! $simple_page_ordering_compat_checker->is_plugin_compatible() ) {
 	return;
 }
 

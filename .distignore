@@ -21,3 +21,4 @@
 /package.json
 /README.md
 /webpack.config.js
+/10up-lib/wp-compat-validation-tool/replace-namespace.sh
