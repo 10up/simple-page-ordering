@@ -20,7 +20,7 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "10up/wp-compat-validation-tool": "dev-fix/11-translator-errors"
+    "10up/wp-compat-validation-tool": "0.4.0"
   },
   "config": {
     "allow-plugins": {

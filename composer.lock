@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a6a2f855075722373df497eff4dfa03",
+    "content-hash": "a9e310548c9b50259da92139b4b34a9e",
     "packages": [
         {
             "name": "10up/wp-compat-validation-tool",
-            "version": "dev-fix/11-translator-errors",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/wp-compat-validation-tool.git",
-                "reference": "7b440004bde20e435af68dad8385912ec3398d00"
+                "reference": "803d75864699503da0ff64db9b4ba51ea94a316a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/wp-compat-validation-tool/zipball/7b440004bde20e435af68dad8385912ec3398d00",
-                "reference": "7b440004bde20e435af68dad8385912ec3398d00",
+                "url": "https://api.github.com/repos/10up/wp-compat-validation-tool/zipball/803d75864699503da0ff64db9b4ba51ea94a316a",
+                "reference": "803d75864699503da0ff64db9b4ba51ea94a316a",
                 "shasum": ""
             },
             "require": {
@@ -48,9 +48,9 @@
             "homepage": "https://github.com/10up/wp-compat-validation-tool",
             "support": {
                 "issues": "https://github.com/10up/wp-compat-validation-tool/issues",
-                "source": "https://github.com/10up/wp-compat-validation-tool/tree/fix/11-translator-errors"
+                "source": "https://github.com/10up/wp-compat-validation-tool/tree/0.4.0"
             },
-            "time": "2026-05-15T01:59:09+00:00"
+            "time": "2026-05-20T00:33:32+00:00"
         },
         {
             "name": "composer/installers",
@@ -956,7 +956,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "10up/wp-compat-validation-tool": 20,
         "phpcompatibility/phpcompatibility-wp": 20
     },
     "prefer-stable": false,
