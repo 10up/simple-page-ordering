@@ -50,6 +50,11 @@ if grep -Eq "^## \[$next_version\]" CHANGELOG.md; then
 	exit 1
 fi
 
+if grep -Eq "^= $next_version( - .*)? =$" readme.txt; then
+	echo "readme.txt changelog already contains version $next_version" >&2
+	exit 1
+fi
+
 npm version "$bump_type" --no-git-tag-version >/dev/null
 
 new_version="$(node -p "require('./package.json').version")"
@@ -61,6 +66,8 @@ fi
 
 perl -0pi -e "s/^(Stable tag:\s+).*
 /\${1}$new_version\n/m" readme.txt
+
+perl -0pi -e "s/^(== Changelog ==\r?\n\r?\n)/\${1}= $new_version - TBD =\n\n/m" readme.txt
 
 perl -0pi -e "s/^(\s*\* Version:\s+).*
 /\${1}$new_version\n/m" simple-page-ordering.php
