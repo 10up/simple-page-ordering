@@ -19,8 +19,6 @@ The plug-in is "capabilities aware" - only users with the ability to edit others
 
 Integrated help is included: click the "help" tab at the top right of the screen.
 
-Please note that the plug-in is not compatible with Internet Explorer 7 and earlier, due to limitations within those browsers.
-
 === Contributing ===
 
 We'd love to have you join in on development over on [GitHub](https://github.com/10up/simple-page-ordering).
