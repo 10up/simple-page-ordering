@@ -16,8 +16,6 @@ The plug-in is "capabilities aware" - only users with the ability to edit others
 
 Integrated help is included: click the "help" tab at the top right of the screen.
 
-Please note that the plug-in is not compatible with Internet Explorer 7 and earlier, due to limitations within those browsers.
-
 Want to help? Check out our [contributing guidelines](CONTRIBUTING.md) to get started.
 
 ## Installation
