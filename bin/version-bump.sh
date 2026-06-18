@@ -50,6 +50,11 @@ if grep -Eq "^## \[$next_version\]" CHANGELOG.md; then
 	exit 1
 fi
 
+if grep -Eq "^\[$next_version\]: https://github.com/10up/simple-page-ordering/compare/" CHANGELOG.md; then
+	echo "Changelog footer already contains version $next_version" >&2
+	exit 1
+fi
+
 if grep -Eq "^= $next_version( - .*)? =$" readme.txt; then
 	echo "readme.txt changelog already contains version $next_version" >&2
 	exit 1
@@ -118,5 +123,7 @@ perl -0pi -e "s/^(define\( 'SIMPLE_PAGE_ORDERING_VERSION', ')([^']+)('\s*\);)
 /\${1}$new_version\${3}\n/m" class-simple-page-ordering.php
 
 perl -0pi -e "s/^(## \[Unreleased\].*\n\n)/\${1}## [$new_version] - TBD\n\n/m" CHANGELOG.md
+
+perl -0pi -e "s#^(\[Unreleased\]: .*\n)#\${1}[$new_version]: https://github.com/10up/simple-page-ordering/compare/$current_version...$new_version\n#m" CHANGELOG.md
 
 echo "Bumped version to $new_version"
