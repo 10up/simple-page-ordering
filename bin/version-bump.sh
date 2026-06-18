@@ -2,6 +2,21 @@
 
 set -euo pipefail
 
+required_commands=(awk dirname grep mktemp mv node npm perl)
+missing_commands=()
+
+for required_command in "${required_commands[@]}"; do
+	if ! command -v "$required_command" >/dev/null 2>&1; then
+		missing_commands+=("$required_command")
+	fi
+done
+
+if (( ${#missing_commands[@]} > 0 )); then
+	echo "Missing required command(s): ${missing_commands[*]}" >&2
+	echo "Please install the missing command(s) and try again." >&2
+	exit 1
+fi
+
 if [[ $# -ne 1 ]]; then
 	echo "Usage: $0 <major|minor|patch>" >&2
 	exit 1
