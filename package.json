@@ -10,7 +10,7 @@
     "@wordpress/env": "^10.28.0",
     "@wordpress/eslint-plugin": "^17.5.0",
     "10up-toolkit": "^6.5.0",
-    "cypress": "^13.0.0",
+    "cypress": "^15.20.0",
     "cypress-mochawesome-reporter": "^3.6.0",
     "mochawesome-json-to-md": "^0.7.2",
     "prettier": "^3.3.2"
