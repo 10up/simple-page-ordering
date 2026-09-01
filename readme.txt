@@ -2,7 +2,7 @@
 Contributors:      10up, jakemgold, welcher, helen, thinkoomph, jeffpaul
 Donate link:       http://10up.com/plugins/simple-page-ordering-wordpress/
 Tags:              order, re-order, ordering, page, menu order
-Requires at least: 6.8
+Requires at least: 6.9
 Tested up to:      7.1
 Stable tag:        2.8.0
 License:           GPLv2 or later
