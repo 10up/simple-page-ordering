@@ -5,7 +5,7 @@
   "author": "10up <opensource@10up.com> (https://10up.com)",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
-    "@10up/cypress-wp-utils": "^0.2.0",
+    "@10up/cypress-wp-utils": "^0.7.2",
     "@wordpress/dependency-extraction-webpack-plugin": "^5.1.0",
     "@wordpress/env": "^10.28.0",
     "@wordpress/eslint-plugin": "^17.5.0",
