@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Invalidate caches when resetting the menu order of a post type (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#283](https://github.com/10up/simple-page-ordering/pull/283)).
 
 ### Security
-- Resolve GHSA-2fw7-7pgf-rvwp (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-2fw7-7pgf-rvwp](https://github.com/10up/simple-page-ordering/security/advisories/GHSA-2fw7-7pgf-rvwp)).
+- Resolve GHSA-2fw7-7pgf-rvwp. Note this may be a breaking change if you deliberately call the `simple-page-ordering/v1/page_ordering` REST endpoint with lower privileged users (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-2fw7-7pgf-rvwp](https://github.com/10up/simple-page-ordering/security/advisories/GHSA-2fw7-7pgf-rvwp)).
 - Resolve GHSA-jfqp-r9rv-697f (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-jfqp-r9rv-697f](https://github.com/10up/simple-page-ordering/security/advisories/GHSA-jfqp-r9rv-697f)).
 
 ### Developer
