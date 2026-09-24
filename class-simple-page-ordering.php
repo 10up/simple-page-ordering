@@ -886,8 +886,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Check if a given request has access to reorder content.
 		 *
 		 * This check ensures the current user making the request has
-		 * proper permissions to edit the item, that the post type
-		 * is allowed in REST requests and the post type is sortable.
+		 * proper permissions to edit the item and other items of the same
+		 * post type, that the post type is allowed in REST requests and
+		 * the post type is sortable.
 		 *
 		 * @since 2.5.1
 		 *
@@ -915,7 +916,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return new WP_Error( 'not_enabled', esc_html__( 'This post type is not sortable.', 'simple-page-ordering' ) );
 			}
 
-			return true;
+			/*
+			 * Reordering rewrites the menu order of every sibling of the given item,
+			 * regardless of who authored them, so the caller needs the proper
+			 * post-type-level capabilities.
+			 */
+			return self::check_edit_others_caps( $post_type );
 		}
 
 		/**
