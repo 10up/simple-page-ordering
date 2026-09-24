@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.8.1] - 2026-09-24
+**Note that this release bumps the WordPress minimum version from 6.8 to 6.9.**
+
+### Changed
+- Bump WordPress "tested up to" version 7.1 (props [@zamanq](https://github.com/zamanq), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#298](https://github.com/10up/simple-page-ordering/pull/298), [#300](https://github.com/10up/simple-page-ordering/pull/300)).
+- Bump WordPress minimum from 6.8 to 6.9 (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#301](https://github.com/10up/simple-page-ordering/pull/301)).
+
+### Fixed
+- Invalidate caches when resetting the menu order of a post type (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#283](https://github.com/10up/simple-page-ordering/pull/283)).
+
+### Security
+- Resolve GHSA-2fw7-7pgf-rvwp. Note this may be a breaking change if you deliberately call the `simple-page-ordering/v1/page_ordering` REST endpoint with lower privileged users (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-2fw7-7pgf-rvwp](https://github.com/10up/simple-page-ordering/security/advisories/GHSA-2fw7-7pgf-rvwp)).
+- Resolve GHSA-jfqp-r9rv-697f (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-jfqp-r9rv-697f](https://github.com/10up/simple-page-ordering/security/advisories/GHSA-jfqp-r9rv-697f)).
+
+### Developer
+- Follow WordPress Coding Standards (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#283](https://github.com/10up/simple-page-ordering/pull/283)).
+- Pass WordPress Plugin Check (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#284](https://github.com/10up/simple-page-ordering/pull/284)).
+- Bump `webpack-dev-server` from 5.2.2 to 5.2.4 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#288](https://github.com/10up/simple-page-ordering/pull/288)).
+- Bump `tmp` from 0.2.5 to 0.2.7 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#289](https://github.com/10up/simple-page-ordering/pull/289)).
+- Introduce version bump script (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#294](https://github.com/10up/simple-page-ordering/pull/294)).
+- Bump `wp-coding-standards/wpcs` from 3.3.0 to 3.4.1 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#295](https://github.com/10up/simple-page-ordering/pull/295)).
+- Bump `10up/cypress-wp-utils` from 0.2.0 to 0.7.2 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#302](https://github.com/10up/simple-page-ordering/pull/302)).
+- Update node version required by repo to 20.19.x (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#302](https://github.com/10up/simple-page-ordering/pull/302)).
+- Bump `brace-expansion` from 1.1.12 to 1.1.21, `fast-uri` from 3.1.2 to 3.1.8, `form-data` from 4.0.4 to 4.0.6, `immutable` from 4.3.8 to 4.3.9, `launch-editor` from 2.12.0 to 2.14.1, `postcss` from 8.5.14 to 8.5.28, `shell-quote` from 1.8.3 to 1.10.0, `svgo` from 3.3.3 to 3.3.5, `webpack-dev-server` from 5.2.4 to 5.2.6, `ws` from 8.19.0 to 8.21.3, `ws` from 7.5.10 to 7.5.13 and `websocket-driver` from 0.7.4 to 0.7.5 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#307](https://github.com/10up/simple-page-ordering/pull/307)).
+
 ## [2.8.0] - 2026-05-15
 **Note that this release bumps the WordPress minimum version from 6.6 to 6.8.**
 
@@ -409,6 +434,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Updated version requirements.
 
 [Unreleased]: https://github.com/10up/simple-page-ordering/compare/trunk...develop
+[2.8.1]: https://github.com/10up/simple-page-ordering/compare/2.8.0...2.8.1
 [2.8.0]: https://github.com/10up/simple-page-ordering/compare/2.7.4...2.8.0
 [2.7.4]: https://github.com/10up/simple-page-ordering/compare/2.7.3...2.7.4
 [2.7.3]: https://github.com/10up/simple-page-ordering/compare/2.7.2...2.7.3

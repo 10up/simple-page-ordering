@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.0' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.1' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
