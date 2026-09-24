@@ -47,38 +47,62 @@ describe('Test Page Order Change', () => {
 		} );
 	});
 
-	it('Can preserve emojis in page titles during reordering', () => {
-		// Find the emoji page that was created during setup
-		cy.contains('.row-title', 'Hey there! 👋').should('exist').as('emojiPage');
-		
-		// Get the parent row of our emoji page
-		cy.get('@emojiPage').parents('tr').as('emojiPageRow');
-		
-		// Store the initial emoji title text
-		cy.get('@emojiPage').invoke('text').as('initialEmojiTitle');
-		
-		// Get the ID of the emoji page row for debugging
-		cy.get('@emojiPageRow').invoke('attr', 'id').then(rowId => {
-			cy.log('Emoji page row ID:', rowId);
-		});
-		
-		// Perform the drag operation to trigger the callback
-		cy.get('@emojiPageRow').drag(secondTopLevelPage);
-		
-		// Wait for the ordering update to complete with a timeout
-		cy.get('.wp-list-table tbody tr .check-column input', { timeout: 10000 }).should('exist');
-		
-		// Add a small wait to ensure the callback has completed
-		cy.wait(1000);
-		
-		// Verify the emoji is still present and unchanged in the title
-		cy.get('@initialEmojiTitle').then(initialTitle => {
-			cy.log('Initial title was:', initialTitle);
-			cy.contains('.row-title', 'Hey there! 👋')
-				.should('exist')
-				.should('have.text', initialTitle);
-		});
-	});
+	it( 'Can preserve emojis in page titles during reordering', () => {
+		const emojiTitle = 'Hey there! 👋';
+
+		// Current WP replaces emoji with images when the browser does not support
+		// the latest emoji set. The character then lives in the image alt text.
+		const readRowTitle = ( titleLink ) => {
+			const altText = Array.from( titleLink.querySelectorAll( 'img' ) )
+				.map( ( img ) => img.getAttribute( 'alt' ) || '' )
+				.join( '' );
+
+			return `${ titleLink.textContent || '' }${ altText }`;
+		};
+
+		cy.get( '.row-title' ).should( ( $titles ) => {
+			const found = [ ...$titles ].some(
+				( el ) => readRowTitle( el ).includes( emojiTitle )
+			);
+			expect( found, 'emoji page title' ).to.equal( true );
+		} ).then( ( $titles ) => {
+			const match = [ ...$titles ].find(
+				( el ) => readRowTitle( el ).includes( emojiTitle )
+			);
+
+			cy.wrap( readRowTitle( match ) ).as( 'initialEmojiTitle' );
+			cy.wrap( Cypress.$( match ).parents( 'tr' ) ).as( 'emojiPageRow' );
+		} );
+
+		cy.intercept( 'POST', '**/admin-ajax.php', ( req ) => {
+			let action = '';
+
+			if ( 'string' === typeof req.body ) {
+				action = new URLSearchParams( req.body ).get( 'action' ) || '';
+			} else if ( req.body && req.body.action ) {
+				action = req.body.action;
+			}
+
+			if ( 'simple_page_ordering' === action ) {
+				req.alias = 'pageOrdering';
+			}
+		} );
+
+		// Drag onto a different row. The emoji page is not always in the same position.
+		cy.get( '@emojiPageRow' ).invoke( 'index' ).then( ( index ) => {
+			const target = 0 === index ? secondTopLevelPage : firstTopLevelPage;
+			cy.get( '@emojiPageRow' ).drag( target );
+		} );
+
+		cy.wait( '@pageOrdering' );
+
+		cy.get( '@initialEmojiTitle' ).then( ( initialTitle ) => {
+			cy.get( '.row-title' ).should( ( $titles ) => {
+				const titles = [ ...$titles ].map( ( el ) => readRowTitle( el ) );
+				expect( titles, 'row titles after reorder' ).to.include( initialTitle );
+			} );
+		} );
+	} );
 
 	// Reset page ordering state.
 	after( () => {
