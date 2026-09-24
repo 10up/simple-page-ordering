@@ -624,15 +624,16 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				error_reporting( 0 );
 			}
 
-			global $wp_version;
+			global $wp_version, $wpdb;
 
 			$previd   = empty( $previd ) ? false : (int) $previd;
 			$nextid   = empty( $nextid ) ? false : (int) $nextid;
 			$start    = empty( $start ) ? 1 : (int) $start;
 			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) $excluded, 'intval' );
 
-			$new_pos     = array(); // store new positions for ajax
-			$return_data = new stdClass();
+			$new_pos          = array(); // store new positions for ajax
+			$updated_siblings = array();
+			$return_data      = new stdClass();
 
 			do_action( 'simple_page_ordering_pre_order_posts', $post, $start );
 
@@ -702,13 +703,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
 				if ( $nextid === $sibling->ID ) {
-					wp_update_post(
-						array(
-							'ID'          => $post->ID,
-							'menu_order'  => $start,
-							'post_parent' => $parent_id,
-						)
-					);
+					self::update_moved_post( $post, $parent_id, $start );
 
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
@@ -728,24 +723,22 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// set the menu order of the current sibling and increment the menu order
 				if ( $sibling->menu_order !== $start ) {
-					wp_update_post(
-						array(
-							'ID'         => $sibling->ID,
-							'menu_order' => $start,
-						)
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Deliberate; Caches are cleared after the loop.
+					$wpdb->update(
+						$wpdb->posts,
+						array( 'menu_order' => $start ),
+						array( 'ID' => $sibling->ID ),
+						array( '%d' ),
+						array( '%d' )
 					);
+
+					$updated_siblings[] = $sibling->ID;
 				}
 				$new_pos[ $sibling->ID ] = $start;
 				++$start;
 
 				if ( ! $nextid && $previd === $sibling->ID ) {
-					wp_update_post(
-						array(
-							'ID'          => $post->ID,
-							'menu_order'  => $start,
-							'post_parent' => $parent_id,
-						)
-					);
+					self::update_moved_post( $post, $parent_id, $start );
 
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
@@ -757,6 +750,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				}
 
 			endforeach;
+
+			// Clear the post caches for the siblings updated above.
+			if ( ! empty( $updated_siblings ) && empty( $GLOBALS['_wp_suspend_cache_invalidation'] ) ) {
+				wp_cache_delete_multiple( $updated_siblings, 'posts' );
+				wp_cache_set_posts_last_changed();
+			}
 
 			// max per request
 			if ( ! isset( $return_data->next ) && $siblings->max_num_pages > 1 ) {
@@ -797,6 +796,44 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			$return_data->new_pos = $new_pos;
 
 			return $return_data;
+		}
+
+		/**
+		 * Move a post to a new parent and menu order without re-filtering its content.
+		 *
+		 * Uses wp_update_post() instead of direct DB queries so core validates the
+		 * new parent (hierarchy loops, slug uniqueness) and save hooks fire.
+		 *
+		 * @param WP_Post $post       The post being moved.
+		 * @param int     $parent_id  The new post parent.
+		 * @param int     $menu_order The new menu order.
+		 */
+		private static function update_moved_post( $post, $parent_id, $menu_order ) {
+			$preserve_content = static function ( $data, $postarr ) use ( $post ) {
+				if ( (int) $postarr['ID'] !== (int) $post->ID ) {
+					return $data;
+				}
+
+				// `wp_insert_post_data` receives slashed data; the stored values are not slashed.
+				$data['post_title']            = wp_slash( $post->post_title );
+				$data['post_content']          = wp_slash( $post->post_content );
+				$data['post_content_filtered'] = wp_slash( $post->post_content_filtered );
+				$data['post_excerpt']          = wp_slash( $post->post_excerpt );
+
+				return $data;
+			};
+
+			add_filter( 'wp_insert_post_data', $preserve_content, PHP_INT_MAX, 2 );
+
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'menu_order'  => $menu_order,
+					'post_parent' => $parent_id,
+				)
+			);
+
+			remove_filter( 'wp_insert_post_data', $preserve_content, PHP_INT_MAX );
 		}
 
 		/**
