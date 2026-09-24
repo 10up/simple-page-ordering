@@ -20,10 +20,7 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "10up/wp-compat-validation-tool": "dev-trunk"
-  },
-  "require-dev": {
-    "10up/phpcs-composer": "dev-master"
+    "10up/wp-compat-validation-tool": "0.4.0"
   },
   "config": {
     "allow-plugins": {
@@ -32,23 +29,22 @@
     },
     "platform-check": false
   },
-  "repositories": [
-    {
-        "type": "git",
-        "url": "https://github.com/10up/wp-compat-validation-tool.git"
-    }
-  ],
   "scripts": {
       "post-install-cmd": [
-          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator simple-page-ordering"
       ],
       "post-update-cmd": [
-          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator"
+          "./10up-lib/wp-compat-validation-tool/replace-namespace.sh Simple_Page_Ordering_Validator simple-page-ordering"
       ]
   },
   "extra": {
     "installer-paths": {
       "./{$name}/": ["10up/wp-compat-validation-tool"]
     }
+  },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpcompatibility/phpcompatibility-wp": "^3.0@dev",
+    "automattic/vipwpcs": "^3.0"
   }
 }

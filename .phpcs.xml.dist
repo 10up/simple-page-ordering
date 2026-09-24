@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
-<ruleset name="Project Rules">
-	<rule ref="10up-Default" />
+<ruleset name="Custom Standard">
+	<rule ref="WordPress-Core">
+		<!-- Ignore file naming rules for PSR conventions -->
+		<exclude name="WordPress.Files.FileName"/>
+	</rule>
+	<rule ref="WordPress.DB"/>
+	<rule ref="WordPress.Security"/>
+	<rule ref="WordPressVIPMinimum"/>
+	<arg name="extensions" value="php" />
+	<arg value="s"/>
 
+	<file>.</file>
+	<exclude-pattern>10up-lib/</exclude-pattern>
 	<exclude-pattern>dist/</exclude-pattern>
+	<exclude-pattern>node_modules/</exclude-pattern>
+	<exclude-pattern>vendor/</exclude-pattern>
+	<exclude-pattern>tests/</exclude-pattern>
+
+	<config name="minimum_supported_wp_version" value="6.8"/>
+	<config name="testVersion" value="7.4-"/>
 </ruleset>

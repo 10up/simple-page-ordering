@@ -8,8 +8,12 @@ use WP_Post;
 use WP_REST_Response;
 use WP_Query;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Useful global constants.
-define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.0' );
+define( 'SIMPLE_PAGE_ORDERING_VERSION', '2.8.1' );
 
 if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
@@ -213,6 +217,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				// Catch and repair bad pages.
 				if ( $page->post_parent === $page->ID ) {
 					$page->post_parent = 0;
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Intentionally using query for speed, cache is cleared afterwards.
 					$wpdb->update( $wpdb->posts, array( 'post_parent' => 0 ), array( 'ID' => $page->ID ) );
 					clean_post_cache( $page );
 					$bad_parents[] = $page->ID;
@@ -303,7 +308,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return;
 			}
 
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Filtering of List Table does not require sanitization.
 			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === $_GET['id'] : false;
 
 			if ( ! $is_simple_page_ordering ) {
@@ -326,7 +331,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				$script_name       = 'dist/js/simple-page-ordering.js';
 				$script_asset_path = plugin_dir_path( __FILE__ ) . 'dist/js/simple-page-ordering.asset.php';
 				$script_asset      = file_exists( $script_asset_path )
-					? require $script_asset_path
+					? require $script_asset_path // phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable -- file exists check above.
 					: false;
 
 				if ( false !== $script_asset ) {
@@ -343,7 +348,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						)
 					);
 
-					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), [], $script_asset['version'] );
+					wp_enqueue_style( 'simple-page-ordering', plugins_url( '/dist/css/simple-page-ordering.css', __FILE__ ), array(), $script_asset['version'] );
 				} else {
 					add_action(
 						'admin_notices',
@@ -450,7 +455,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			if ( 0 === $post->post_parent ) {
 				$siblings = $top_level_pages;
 			} else {
-				$siblings = $children_pages[ $post->post_parent ] ?? [];
+				$siblings = $children_pages[ $post->post_parent ] ?? array();
 			}
 
 			// Assume no sibling.
@@ -501,11 +506,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			$post_id  = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
-			$previd   = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
-			$nextid   = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
-			$start    = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
-			$excluded = empty( $_POST['excluded'] ) ? array( $_POST['id'] ) : array_filter( (array) json_decode( $_POST['excluded'] ), 'intval' );
+			$post_id = empty( $_POST['id'] ) ? false : (int) $_POST['id'];
+			$previd  = empty( $_POST['previd'] ) ? false : (int) $_POST['previd'];
+			$nextid  = empty( $_POST['nextid'] ) ? false : (int) $_POST['nextid'];
+			$start   = empty( $_POST['start'] ) ? 1 : (int) $_POST['start'];
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized after json_decode.
+			$excluded = empty( $_POST['excluded'] ) ? array( $post_id ) : array_filter( json_decode( wp_unslash( $_POST['excluded'] ), true ), 'intval' );
 
 			// real post?
 			$post = empty( $post_id ) ? false : get_post( (int) $post_id );
@@ -553,8 +559,43 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				die( -1 );
 			}
 
-			// reset the order of all posts of given post type
-			$wpdb->update( 'wp_posts', array( 'menu_order' => 0 ), array( 'post_type' => $post_type ), array( '%d' ), array( '%s' ) );
+			/*
+			 * Reset the order of all posts of given post type.
+			 *
+			 * Doing this manually via a direct query for speed in order to bypass the overhead
+			 * of multiple calls to `wp_update_post()`.
+			 */
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$post_ids = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->posts WHERE post_type = %s AND menu_order != 0",
+					$post_type
+				)
+			);
+			$post_ids = array_map( 'intval', $post_ids ); // Required for cache keys.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->query(
+				$wpdb->prepare(
+					sprintf(
+						"UPDATE $wpdb->posts SET menu_order = 0 WHERE ID IN (%s)",
+						implode( ',', array_fill( 0, count( $post_ids ), '%d' ) )
+					),
+					$post_ids
+				)
+			);
+
+			/*
+			 * Clear the post caches.
+			 *
+			 * `clean_post_cache()` is not used here as it will clear the post, post meta, terms and
+			 * other related caches. This is much more expensive than necessary for clearing the menu
+			 * order cache.
+			 */
+			if ( empty( $_wp_suspend_cache_invalidation ) ) {
+				// Clear the post caches.
+				wp_cache_delete_multiple( $post_ids, 'posts' );
+				wp_cache_set_posts_last_changed();
+			}
 
 			die( 0 );
 		}
@@ -579,18 +620,20 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 			// Badly written plug-in hooks for save post can break things.
 			if ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) {
-				error_reporting( 0 ); // phpcs:ignore
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.prevent_path_disclosure_error_reporting, WordPress.PHP.DiscouragedPHPFunctions.runtime_configuration_error_reporting -- Intentionally suppressing errors from third-party plugins during ordering.
+				error_reporting( 0 );
 			}
 
-			global $wp_version;
+			global $wp_version, $wpdb;
 
 			$previd   = empty( $previd ) ? false : (int) $previd;
 			$nextid   = empty( $nextid ) ? false : (int) $nextid;
 			$start    = empty( $start ) ? 1 : (int) $start;
 			$excluded = empty( $excluded ) ? array( $post_id ) : array_filter( (array) $excluded, 'intval' );
 
-			$new_pos     = array(); // store new positions for ajax
-			$return_data = new stdClass();
+			$new_pos          = array(); // store new positions for ajax
+			$updated_siblings = array();
+			$return_data      = new stdClass();
 
 			do_action( 'simple_page_ordering_pre_order_posts', $post, $start );
 
@@ -631,14 +674,14 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				'post_type'              => $post->post_type,
 				'post_status'            => $post_stati,
 				'post_parent'            => $parent_id,
-				'post__not_in'           => $excluded, // phpcs:ignore
+				'post__not_in'           => $excluded, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- Likely faster via the DB than PHP.
 				'orderby'                => array(
 					'menu_order' => 'ASC',
 					'title'      => 'ASC',
 				),
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
-				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFiltersTrue
+				'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters
 				'ignore_sticky_posts'    => true,
 			);
 
@@ -660,13 +703,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// if this is the post that comes after our repositioned post, set our repositioned post position and increment menu order
 				if ( $nextid === $sibling->ID ) {
-					wp_update_post(
-						array(
-							'ID'          => $post->ID,
-							'menu_order'  => $start,
-							'post_parent' => $parent_id,
-						)
-					);
+					self::update_moved_post( $post, $parent_id, $start );
 
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
@@ -675,7 +712,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'depth'       => count( $ancestors ),
 					);
 
-					$start ++;
+					++$start;
 				}
 
 				// if repositioned post has been set, and new items are already in the right order, we can stop
@@ -686,24 +723,22 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 
 				// set the menu order of the current sibling and increment the menu order
 				if ( $sibling->menu_order !== $start ) {
-					wp_update_post(
-						array(
-							'ID'         => $sibling->ID,
-							'menu_order' => $start,
-						)
+					// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Deliberate; Caches are cleared after the loop.
+					$wpdb->update(
+						$wpdb->posts,
+						array( 'menu_order' => $start ),
+						array( 'ID' => $sibling->ID ),
+						array( '%d' ),
+						array( '%d' )
 					);
+
+					$updated_siblings[] = $sibling->ID;
 				}
 				$new_pos[ $sibling->ID ] = $start;
-				$start ++;
+				++$start;
 
 				if ( ! $nextid && $previd === $sibling->ID ) {
-					wp_update_post(
-						array(
-							'ID'          => $post->ID,
-							'menu_order'  => $start,
-							'post_parent' => $parent_id,
-						)
-					);
+					self::update_moved_post( $post, $parent_id, $start );
 
 					$ancestors            = get_post_ancestors( $post->ID );
 					$new_pos[ $post->ID ] = array(
@@ -711,10 +746,16 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 						'post_parent' => $parent_id,
 						'depth'       => count( $ancestors ),
 					);
-					$start ++;
+					++$start;
 				}
 
 			endforeach;
+
+			// Clear the post caches for the siblings updated above.
+			if ( ! empty( $updated_siblings ) && empty( $GLOBALS['_wp_suspend_cache_invalidation'] ) ) {
+				wp_cache_delete_multiple( $updated_siblings, 'posts' );
+				wp_cache_set_posts_last_changed();
+			}
 
 			// max per request
 			if ( ! isset( $return_data->next ) && $siblings->max_num_pages > 1 ) {
@@ -758,6 +799,44 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		}
 
 		/**
+		 * Move a post to a new parent and menu order without re-filtering its content.
+		 *
+		 * Uses wp_update_post() instead of direct DB queries so core validates the
+		 * new parent (hierarchy loops, slug uniqueness) and save hooks fire.
+		 *
+		 * @param WP_Post $post       The post being moved.
+		 * @param int     $parent_id  The new post parent.
+		 * @param int     $menu_order The new menu order.
+		 */
+		private static function update_moved_post( $post, $parent_id, $menu_order ) {
+			$preserve_content = static function ( $data, $postarr ) use ( $post ) {
+				if ( (int) $postarr['ID'] !== (int) $post->ID ) {
+					return $data;
+				}
+
+				// `wp_insert_post_data` receives slashed data; the stored values are not slashed.
+				$data['post_title']            = wp_slash( $post->post_title );
+				$data['post_content']          = wp_slash( $post->post_content );
+				$data['post_content_filtered'] = wp_slash( $post->post_content_filtered );
+				$data['post_excerpt']          = wp_slash( $post->post_excerpt );
+
+				return $data;
+			};
+
+			add_filter( 'wp_insert_post_data', $preserve_content, PHP_INT_MAX, 2 );
+
+			wp_update_post(
+				array(
+					'ID'          => $post->ID,
+					'menu_order'  => $menu_order,
+					'post_parent' => $parent_id,
+				)
+			);
+
+			remove_filter( 'wp_insert_post_data', $preserve_content, PHP_INT_MAX );
+		}
+
+		/**
 		 * Append a sort by order link to the post actions
 		 *
 		 * @param array $views An array of available list table views.
@@ -798,44 +877,45 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			register_rest_route(
 				'simple-page-ordering/v1',
 				'page_ordering',
-				[
+				array(
 					'methods'             => 'POST',
 					'callback'            => array( __CLASS__, 'rest_page_ordering' ),
 					'permission_callback' => array( __CLASS__, 'rest_page_ordering_permissions_check' ),
-					'args'                => [
-						'id'      => [
+					'args'                => array(
+						'id'      => array(
 							'description' => __( 'ID of item we want to sort', 'simple-page-ordering' ),
 							'required'    => true,
 							'type'        => 'integer',
 							'minimum'     => 1,
-						],
-						'previd'  => [
+						),
+						'previd'  => array(
 							'description' => __( 'ID of item we want to be previous to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'nextid'  => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'nextid'  => array(
 							'description' => __( 'ID of item we want to be next to after sorting', 'simple-page-ordering' ),
 							'required'    => true,
-							'type'        => [ 'boolean', 'integer' ],
-						],
-						'start'   => [
+							'type'        => array( 'boolean', 'integer' ),
+						),
+						'start'   => array(
 							'default'     => 1,
 							'description' => __( 'Index we start with when sorting', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'integer',
-						],
-						'exclude' => [
-							'default'     => [],
+						),
+						// phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude -- false positive.
+						'exclude' => array(
+							'default'     => array(),
 							'description' => __( 'Array of IDs we want to exclude', 'simple-page-ordering' ),
 							'required'    => false,
 							'type'        => 'array',
-							'items'       => [
+							'items'       => array(
 								'type' => 'integer',
-							],
-						],
-					],
-				]
+							),
+						),
+					),
+				)
 			);
 		}
 
@@ -843,8 +923,9 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * Check if a given request has access to reorder content.
 		 *
 		 * This check ensures the current user making the request has
-		 * proper permissions to edit the item, that the post type
-		 * is allowed in REST requests and the post type is sortable.
+		 * proper permissions to edit the item and other items of the same
+		 * post type, that the post type is allowed in REST requests and
+		 * the post type is sortable.
 		 *
 		 * @since 2.5.1
 		 *
@@ -872,7 +953,12 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return new WP_Error( 'not_enabled', esc_html__( 'This post type is not sortable.', 'simple-page-ordering' ) );
 			}
 
-			return true;
+			/*
+			 * Reordering rewrites the menu order of every sibling of the given item,
+			 * regardless of who authored them, so the caller needs the proper
+			 * post-type-level capabilities.
+			 */
+			return self::check_edit_others_caps( $post_type );
 		}
 
 		/**
