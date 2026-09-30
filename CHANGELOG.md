@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Added
+- Filter `simple_page_ordering_sort_by_order_link_args` to customize the query arguments used in the "Sort by Order" view link.
+- Filter `simple_page_ordering_sort_by_order_link_is_current` to customize whether the "Sort by Order" view is marked as the current view.
+- Filter `simple_page_ordering_new_post_position` to place newly created items at the top or bottom of their siblings. Defaults to `none`, which keeps the current behavior.
+
 ## [2.8.1] - 2026-09-24
 **Note that this release bumps the WordPress minimum version from 6.8 to 6.9.**
 
