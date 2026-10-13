@@ -7,10 +7,10 @@
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.7.2",
     "@wordpress/dependency-extraction-webpack-plugin": "^5.1.0",
-    "@wordpress/env": "^10.28.0",
+    "@wordpress/env": "^11.17.0",
     "@wordpress/eslint-plugin": "^17.5.0",
-    "10up-toolkit": "^6.5.0",
-    "cypress": "^13.0.0",
+    "10up-toolkit": "^7.0.0",
+    "cypress": "^16.1.1",
     "cypress-mochawesome-reporter": "^3.6.0",
     "mochawesome-json-to-md": "^0.7.2",
     "prettier": "^3.3.2"
