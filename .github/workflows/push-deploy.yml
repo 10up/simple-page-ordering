@@ -16,6 +16,36 @@ jobs:
     steps:
     - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+    - name: Validate tag is on trunk
+      run: |
+        set -euo pipefail
+
+        if [[ "${GITHUB_REF}" != refs/tags/* ]]; then
+          echo "Error: GITHUB_REF does not begin with refs/tags/" >&2
+          exit 1
+        fi
+
+        # For tag pushes, GitHub exposes the tag name in GITHUB_REF_NAME.
+        tag_ref="${GITHUB_REF_NAME}"
+
+        if [[ -z "${tag_ref}" ]]; then
+          echo "Error: GITHUB_REF_NAME is empty." >&2
+          exit 1
+        fi
+
+        if ! tag_commit=$(git rev-parse --verify "${tag_ref}^{commit}" 2>/dev/null); then
+          echo "Error: tag reference '${tag_ref}' does not exist or is not valid." >&2
+          exit 1
+        fi
+
+        # Ensure trunk is available locally, then verify the tag commit is on trunk.
+        git fetch origin trunk
+
+        if ! git merge-base --is-ancestor "${tag_commit}" "origin/trunk"; then
+          echo "Error: tag '${tag_ref}' is not on branch 'trunk'." >&2
+          exit 1
+        fi
+
     - name: Build
       run: |
         npm install
