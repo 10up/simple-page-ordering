@@ -100,6 +100,35 @@ add_filter( 'simple_page_ordering_is_sortable', function( $sortable, $post_type 
 
 Yes. The plugin registers the REST endpoint `simple-page-ordering/v1/page_ordering`.
 
+= How can I place new items in a predictable position? =
+
+New items start with a menu order of `0`, so before you reorder them they sit with any other unordered items and are sorted by title among them. To place new items at the top or bottom of their siblings as soon as they are created, use the `simple_page_ordering_new_post_position` filter. It defaults to `none`, which keeps the WordPress default of `0`:
+
+`
+add_filter( 'simple_page_ordering_new_post_position', function( $position ) {
+	return 'bottom'; // or 'top'
+} );
+`
+
+The filter runs on the first save of new items only, and only for post types this plugin can sort. Items created with a menu order already set (through quick edit, an import, or custom code) are left alone.
+
+= Can I change the "Sort by Order" view link? =
+
+Yes. Two filters let you customize that view link, which is useful if you sort by a different orderby value or want a different link active state:
+
+`
+add_filter( 'simple_page_ordering_sort_by_order_link_args', function( $args, $post_type ) {
+	$args['orderby'] = 'menu_order title';
+	return $args;
+}, 10, 2 );
+
+add_filter( 'simple_page_ordering_sort_by_order_link_is_current', function( $is_current, $args, $post_type ) {
+	return 'menu_order title' === get_query_var( 'orderby' );
+}, 10, 3 );
+`
+
+If you change the `id` argument, the plugin uses your value to detect the Sort by Order view, so pagination keeps working.
+
 = Where do I report security bugs found in this plugin? =
 
 Please report security bugs found in the source code of the Simple Page Ordering plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fbbad-6488-4bba-851e-b300dabc33a2).  The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
