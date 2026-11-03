@@ -54,6 +54,7 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			add_action( 'wp_ajax_simple_page_ordering', array( __CLASS__, 'ajax_simple_page_ordering' ) );
 			add_action( 'wp_ajax_reset_simple_page_ordering', array( __CLASS__, 'ajax_reset_simple_page_ordering' ) );
 			add_action( 'rest_api_init', array( __CLASS__, 'rest_api_init' ) );
+			add_action( 'transition_post_status', array( __CLASS__, 'maybe_place_new_post' ), 10, 3 );
 
 			// Custom edit page actions.
 			add_action( 'post_action_spo-move-under-grandparent', array( __CLASS__, 'handle_move_under_grandparent' ) );
@@ -309,13 +310,146 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 			}
 
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Filtering of List Table does not require sanitization.
-			$is_simple_page_ordering = isset( $_GET['id'] ) ? 'simple-page-ordering' === $_GET['id'] : false;
+			if ( ! isset( $_GET['id'] ) ) {
+				return;
+			}
 
-			if ( ! $is_simple_page_ordering ) {
+			$post_type = $query->get( 'post_type' );
+			$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+			if ( empty( $post_type ) ) {
+				$post_type = 'post';
+			}
+
+			$args = self::get_sort_by_order_args( $post_type );
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Filtering of List Table does not require sanitization.
+			if ( ! isset( $args['id'] ) || sanitize_key( wp_unslash( $_GET['id'] ) ) !== sanitize_key( $args['id'] ) ) {
 				return;
 			}
 
 			$query->set( 'posts_per_page', -1 );
+		}
+
+		/**
+		 * Place a newly created item at the top or bottom of its siblings.
+		 *
+		 * Off by default. Return `top` or `bottom` from the
+		 * `simple_page_ordering_new_post_position` filter to enable it.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param string  $new_status New post status.
+		 * @param string  $old_status Old post status.
+		 * @param WP_Post $post       Post object.
+		 */
+		public static function maybe_place_new_post( $new_status, $old_status, $post ) {
+			if ( ! $post instanceof WP_Post ) {
+				return;
+			}
+
+			// Only act when an item first leaves the draft/auto-draft stage.
+			if ( ! in_array( $old_status, array( 'new', 'auto-draft' ), true ) ) {
+				return;
+			}
+
+			if ( in_array( $new_status, array( 'new', 'auto-draft', 'inherit', 'trash' ), true ) ) {
+				return;
+			}
+
+			if ( wp_is_post_revision( $post ) || wp_is_post_autosave( $post ) ) {
+				return;
+			}
+
+			// Respect a menu order already set by the request, an import, or custom code.
+			if ( 0 !== (int) $post->menu_order ) {
+				return;
+			}
+
+			$post_type = $post->post_type;
+
+			if ( ! self::is_post_type_sortable( $post_type ) ) {
+				return;
+			}
+
+			/**
+			 * Filters the position of newly created items within the manual order.
+			 *
+			 * Return `top` or `bottom` to place a new item before or after its
+			 * siblings. The default, `none`, leaves the WordPress default of `0`.
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param string  $position  Where to place the new item. Default `none`.
+			 * @param WP_Post $post      The newly created post.
+			 * @param string  $post_type The post type of the new post.
+			 */
+			$position = apply_filters( 'simple_page_ordering_new_post_position', 'none', $post, $post_type );
+
+			if ( ! in_array( $position, array( 'top', 'bottom' ), true ) ) {
+				return;
+			}
+
+			$menu_order = self::get_new_post_menu_order( $post, $position );
+
+			// No siblings to position against.
+			if ( null === $menu_order ) {
+				return;
+			}
+
+			global $wpdb;
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Deliberate; the cache is cleared below.
+			$wpdb->update(
+				$wpdb->posts,
+				array( 'menu_order' => $menu_order ),
+				array( 'ID' => $post->ID ),
+				array( '%d' ),
+				array( '%d' )
+			);
+
+			// Also clears the posts last changed cache.
+			clean_post_cache( $post->ID );
+
+			// Keep the object handed to later save hooks in sync with the database.
+			$post->menu_order = $menu_order;
+		}
+
+		/**
+		 * Calculate the menu order for a new item relative to its siblings.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param WP_Post $post     The newly created post.
+		 * @param string  $position Either `top` or `bottom`.
+		 *
+		 * @return int|null Menu order, or null when there are no siblings.
+		 */
+		private static function get_new_post_menu_order( $post, $position ) {
+			$siblings = new WP_Query(
+				array(
+					'post_type'              => $post->post_type,
+					'post_status'            => get_post_stati( array( 'show_in_admin_all_list' => true ) ),
+					'post_parent'            => $post->post_parent,
+					'post__not_in'           => array( $post->ID ), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_post__not_in -- The new post must be excluded or its default order of 0 skews the result.
+					'posts_per_page'         => 1,
+					'orderby'                => 'menu_order',
+					'order'                  => 'top' === $position ? 'ASC' : 'DESC',
+					'fields'                 => 'ids',
+					'update_post_term_cache' => false,
+					'update_post_meta_cache' => false,
+					'suppress_filters'       => true, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.SuppressFilters_suppress_filters
+					'ignore_sticky_posts'    => true,
+					'no_found_rows'          => true,
+				)
+			);
+
+			if ( empty( $siblings->posts ) ) {
+				return null;
+			}
+
+			$edge_order = (int) get_post_field( 'menu_order', $siblings->posts[0] );
+
+			return 'top' === $position ? $edge_order - 1 : $edge_order + 1;
 		}
 
 		/**
@@ -837,6 +971,33 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		}
 
 		/**
+		 * Get the query arguments for the "Sort by Order" view link.
+		 *
+		 * Kept in a single place so the link and the pagination check stay in sync.
+		 *
+		 * @param string $post_type The post type being listed.
+		 *
+		 * @return array
+		 */
+		private static function get_sort_by_order_args( $post_type = '' ) {
+			$args = array(
+				'orderby' => 'menu_order title',
+				'order'   => 'asc',
+				'id'      => 'simple-page-ordering',
+			);
+
+			/**
+			 * Filters the query arguments added to the "Sort by Order" view link.
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param array  $args      Query arguments for the sort link.
+			 * @param string $post_type The post type being listed.
+			 */
+			return apply_filters( 'simple_page_ordering_sort_by_order_link_args', $args, $post_type );
+		}
+
+		/**
 		 * Append a sort by order link to the post actions
 		 *
 		 * @param array $views An array of available list table views.
@@ -844,14 +1005,33 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @return array
 		 */
 		public static function sort_by_order_link( $views ) {
-			$class        = ( get_query_var( 'orderby' ) === 'menu_order title' ) ? 'current' : '';
+			// The screen is a reliable source for the post type, unlike get_post_type(),
+			// which falls back to the global post and is empty on an empty list.
+			$screen    = get_current_screen();
+			$post_type = $screen->post_type ?? get_post_type();
+
+			$args         = array();
 			$query_string = remove_query_arg( array( 'orderby', 'order' ) );
-			if ( ! is_post_type_hierarchical( get_post_type() ) ) {
-				$query_string = add_query_arg( 'orderby', 'menu_order title', $query_string );
-				$query_string = add_query_arg( 'order', 'asc', $query_string );
-				$query_string = add_query_arg( 'id', 'simple-page-ordering', $query_string );
+
+			if ( ! is_post_type_hierarchical( $post_type ) ) {
+				$args         = self::get_sort_by_order_args( $post_type );
+				$query_string = add_query_arg( $args, $query_string );
 			}
-			$views['byorder'] = sprintf( '<a href="%s" class="%s">%s</a>', esc_url( $query_string ), $class, __( 'Sort by Order', 'simple-page-ordering' ) );
+
+			$is_current = ( 'menu_order title' === get_query_var( 'orderby' ) );
+
+			/**
+			 * Filters whether the "Sort by Order" view is marked as the current view.
+			 *
+			 * @since 2.9.0
+			 *
+			 * @param boolean $is_current Whether the current ordering matches the sort link.
+			 * @param array   $args       Query arguments used in the sort link.
+			 * @param string  $post_type  The post type being listed.
+			 */
+			$is_current = apply_filters( 'simple_page_ordering_sort_by_order_link_is_current', $is_current, $args, $post_type );
+
+			$views['byorder'] = sprintf( '<a href="%s" class="%s">%s</a>', esc_url( $query_string ), $is_current ? 'current' : '', __( 'Sort by Order', 'simple-page-ordering' ) );
 
 			return $views;
 		}
