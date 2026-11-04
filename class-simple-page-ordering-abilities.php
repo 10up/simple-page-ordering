@@ -196,6 +196,54 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 		}
 
 		/**
+		 * Checks that the neighbor items are usable for moving a post.
+		 *
+		 * The permission callback only checks the item being moved. A neighbor
+		 * must exist, must be the same post type, and must be editable by the
+		 * current user. Otherwise the ordering routine would treat an unrelated
+		 * post as a sibling, or silently do nothing and still report success.
+		 *
+		 * @param int   $post_id      The ID of the item being moved.
+		 * @param int[] $neighbor_ids IDs of the items before and after it. Zero means none.
+		 * @return true|WP_Error True if every neighbor is valid, a WP_Error if not.
+		 */
+		private static function check_neighbors( $post_id, $neighbor_ids ) {
+			$post = get_post( $post_id );
+			if ( ! $post ) {
+				return new WP_Error(
+					'invalid',
+					__( 'Missing mandatory parameters.', 'simple-page-ordering' ),
+					array( 'status' => 400 )
+				);
+			}
+
+			foreach ( $neighbor_ids as $neighbor_id ) {
+				if ( 0 === $neighbor_id ) {
+					continue;
+				}
+
+				$neighbor = get_post( $neighbor_id );
+				if ( ! $neighbor || $neighbor->post_type !== $post->post_type ) {
+					return new WP_Error(
+						'invalid_neighbor',
+						__( 'The previous and next items must exist and be the same post type as the item being moved.', 'simple-page-ordering' ),
+						array( 'status' => 400 )
+					);
+				}
+
+				if ( ! current_user_can( 'edit_post', $neighbor_id ) ) {
+					return new WP_Error(
+						'invalid_neighbor_permissions',
+						__( 'You are not allowed to edit the previous or next item.', 'simple-page-ordering' ),
+						array( 'status' => 403 )
+					);
+				}
+			}
+
+			return true;
+		}
+
+		/**
 		 * Runs the reorder ability.
 		 *
 		 * @param array|null $input The validated ability input.
@@ -215,6 +263,11 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 					__( 'Missing mandatory parameters.', 'simple-page-ordering' ),
 					array( 'status' => 400 )
 				);
+			}
+
+			$neighbors_check = self::check_neighbors( $post_id, array( $previd, $nextid ) );
+			if ( is_wp_error( $neighbors_check ) ) {
+				return $neighbors_check;
 			}
 
 			$new_pos      = array();

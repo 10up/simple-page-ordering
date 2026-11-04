@@ -95,6 +95,34 @@ $check( 'SQL-looking string is rejected', is_wp_error( $res ), is_wp_error( $res
 $res = $run( $users['editor'], array( 'id' => $post_id, 'previd' => $pages[1] ) );
 $check( 'Non-sortable post type is rejected', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
 
+// 6b. Neighbors must be real posts of the same type as the moved post.
+$q = wp_insert_post(
+	array(
+		'post_type'   => 'page',
+		'post_status' => 'publish',
+		'post_title'  => "SPO test parent {$suffix}",
+	)
+);
+$x = wp_insert_post(
+	array(
+		'post_type'   => 'page',
+		'post_status' => 'publish',
+		'post_title'  => "SPO test child {$suffix}",
+		'post_parent' => $q,
+	)
+);
+
+// A regular post has parent 0, so using it as a neighbor would move the child to the top level.
+$res = $run( $users['editor'], array( 'id' => $x, 'nextid' => $post_id ) );
+$check( 'Neighbor of another post type is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+$check( 'Rejected neighbor left the parent unchanged', (int) get_post_field( 'post_parent', $x, 'raw' ) === $q, 'parent ' . get_post_field( 'post_parent', $x, 'raw' ) );
+
+$res = $run( $users['editor'], array( 'id' => $x, 'previd' => 99999999 ) );
+$check( 'Nonexistent neighbor is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+
+$res = $run( $users['editor'], array( 'id' => $pages[2], 'previd' => $pages[0] ) );
+$check( 'Neighbor of the same post type is accepted', is_array( $res ) && ! empty( $res['success'] ), is_wp_error( $res ) ? $res->get_error_code() : '' );
+
 // 7. REST route (ability endpoint) via internal dispatch.
 wp_set_current_user( 0 );
 $req = new WP_REST_Request( 'POST', '/wp-abilities/v1/abilities/simple-page-ordering/reorder-post/run' );
@@ -125,6 +153,8 @@ foreach ( $pages as $p ) {
 	wp_delete_post( $p, true );
 }
 wp_delete_post( $post_id, true );
+wp_delete_post( $x, true );
+wp_delete_post( $q, true );
 require_once ABSPATH . 'wp-admin/includes/user.php';
 foreach ( $users as $uid ) {
 	wp_delete_user( $uid );
