@@ -51,13 +51,11 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 		const MAX_PASSES = 200;
 
 		/**
-		 * Registers the hooks. Does nothing when the Abilities API is missing.
+		 * Registers the hooks.
+		 *
+		 * The plugin requires WordPress 6.9, which includes the Abilities API.
 		 */
 		public static function init() {
-			if ( ! function_exists( 'wp_register_ability' ) ) {
-				return;
-			}
-
 			add_action( 'wp_abilities_api_categories_init', array( __CLASS__, 'register_category' ) );
 			add_action( 'wp_abilities_api_init', array( __CLASS__, 'register_abilities' ) );
 		}
@@ -97,6 +95,11 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 						),
 						'annotations'  => array(
 							'readonly'    => false,
+							/*
+							 * Reordering rewrites the stored order of many items, but it deletes
+							 * nothing. Core requires the DELETE method for abilities that are both
+							 * destructive and idempotent, so `true` here would break POST clients.
+							 */
 							'destructive' => false,
 							'idempotent'  => true,
 						),
@@ -167,7 +170,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 						'type'        => 'boolean',
 					),
 					'new_pos'      => array(
-						'description' => __( 'New position data keyed by item ID. The moved item has menu_order, post_parent and depth. Siblings have their new menu order.', 'simple-page-ordering' ),
+						'description' => __( 'New position data keyed by item ID. The moved item has menu_order, post_parent and depth. Siblings have their new menu order. This can be empty when has_children is true, so read the items again to confirm their order.', 'simple-page-ordering' ),
 						'type'        => 'object',
 					),
 					'has_children' => array(
