@@ -1,31 +1,71 @@
+const abilityUrl = '/wp-json/wp-abilities/v1/abilities/simple-page-ordering/reorder-post';
+
 describe( 'Test Abilities API', () => {
-	const abilityRunUrl = '/wp-json/wp-abilities/v1/abilities/simple-page-ordering/reorder-post/run';
+	let nonce;
+	let createdPageIds = [];
 
 	/**
-	 * Get the top level pages in menu order, using the REST API as the admin user.
+	 * Create a page through the REST API and remember it so it can be removed.
 	 *
-	 * @param {string} nonce REST nonce.
+	 * @param {string} title     Page title.
+	 * @param {number} menuOrder Starting menu order.
 	 */
-	const getTopLevelPages = ( nonce ) =>
+	const createPage = ( title, menuOrder ) =>
 		cy
 			.request( {
-				url: '/wp-json/wp/v2/pages?parent=0&orderby=menu_order&order=asc&per_page=20',
+				method: 'POST',
+				url: '/wp-json/wp/v2/pages',
+				headers: { 'X-WP-Nonce': nonce },
+				body: { title, status: 'publish', menu_order: menuOrder },
+			} )
+			.then( ( response ) => {
+				createdPageIds.push( response.body.id );
+				return response.body.id;
+			} );
+
+	const getMenuOrder = ( id ) =>
+		cy
+			.request( {
+				url: `/wp-json/wp/v2/pages/${ id }?_fields=menu_order`,
 				headers: { 'X-WP-Nonce': nonce },
 			} )
-			.then( ( response ) => response.body.map( ( page ) => page.id ) );
+			.then( ( response ) => response.body.menu_order );
+
+	const runAbility = ( input, options = {} ) =>
+		cy.request( {
+			method: 'POST',
+			url: `${ abilityUrl }/run`,
+			headers: { 'X-WP-Nonce': nonce },
+			body: { input },
+			...options,
+		} );
 
 	beforeEach( () => {
+		createdPageIds = [];
 		cy.login();
-		cy.visit( '/wp-admin/edit.php?post_type=page' );
-		cy.window().then( ( win ) => {
-			cy.wrap( win.wpApiSettings.nonce ).as( 'nonce' );
+		// The Pages screen does not load the REST API script, so ask for a nonce directly.
+		cy.request( '/wp-admin/admin-ajax.php?action=rest-nonce' )
+			.its( 'body' )
+			.then( ( body ) => {
+				nonce = body;
+			} );
+	} );
+
+	// Remove the pages created by the test so other specs see the original content.
+	afterEach( () => {
+		createdPageIds.forEach( ( id ) => {
+			cy.request( {
+				method: 'DELETE',
+				url: `/wp-json/wp/v2/pages/${ id }?force=true`,
+				headers: { 'X-WP-Nonce': nonce },
+			} );
 		} );
 	} );
 
-	it( 'Is registered and discoverable', function () {
+	it( 'Is registered and discoverable', () => {
 		cy.request( {
-			url: '/wp-json/wp-abilities/v1/abilities/simple-page-ordering/reorder-post',
-			headers: { 'X-WP-Nonce': this.nonce },
+			url: abilityUrl,
+			headers: { 'X-WP-Nonce': nonce },
 		} ).then( ( response ) => {
 			expect( response.status ).to.eq( 200 );
 			expect( response.body.category ).to.eq( 'simple-page-ordering' );
@@ -33,45 +73,50 @@ describe( 'Test Abilities API', () => {
 		} );
 	} );
 
-	it( 'Can reorder a page', function () {
-		getTopLevelPages( this.nonce ).then( ( before ) => {
-			const [ first, second ] = before;
+	it( 'Can reorder a page', () => {
+		createPage( 'Ability test A', 10 ).then( ( first ) => {
+			createPage( 'Ability test B', 20 ).then( ( second ) => {
+				// Move the first page directly after the second page.
+				runAbility( { id: first, previd: second } ).then( ( response ) => {
+					expect( response.status ).to.eq( 200 );
+					expect( response.body.success ).to.eq( true );
+				} );
 
-			// Move the first page directly after the second page.
-			cy.request( {
-				method: 'POST',
-				url: abilityRunUrl,
-				headers: { 'X-WP-Nonce': this.nonce },
-				body: { input: { id: first, previd: second } },
-			} ).then( ( response ) => {
-				expect( response.status ).to.eq( 200 );
-				expect( response.body.success ).to.eq( true );
-			} );
-
-			getTopLevelPages( this.nonce ).then( ( after ) => {
-				expect( after.indexOf( first ) ).to.be.greaterThan( after.indexOf( second ) );
+				getMenuOrder( first ).then( ( firstOrder ) => {
+					getMenuOrder( second ).then( ( secondOrder ) => {
+						expect( firstOrder ).to.be.greaterThan( secondOrder );
+					} );
+				} );
 			} );
 		} );
 	} );
 
-	it( 'Rejects a request with no neighbors', function () {
-		getTopLevelPages( this.nonce ).then( ( [ first ] ) => {
-			cy.request( {
-				method: 'POST',
-				url: abilityRunUrl,
-				headers: { 'X-WP-Nonce': this.nonce },
-				body: { input: { id: first } },
-				failOnStatusCode: false,
-			} ).then( ( response ) => {
+	it( 'Rejects a request with no neighbors', () => {
+		createPage( 'Ability test C', 10 ).then( ( id ) => {
+			runAbility( { id }, { failOnStatusCode: false } ).then( ( response ) => {
 				expect( response.status ).to.eq( 400 );
 			} );
 		} );
 	} );
 
-	it( 'Rejects requests from logged out users', () => {
+	it( 'Rejects a neighbor that does not exist', () => {
+		createPage( 'Ability test D', 10 ).then( ( id ) => {
+			runAbility( { id, previd: 99999999 }, { failOnStatusCode: false } ).then(
+				( response ) => {
+					expect( response.status ).to.eq( 400 );
+					expect( response.body.code ).to.eq( 'invalid_neighbor' );
+				}
+			);
+		} );
+	} );
+} );
+
+// Cypress clears cookies before every test, and this block never logs in.
+describe( 'Test Abilities API as a logged out visitor', () => {
+	it( 'Cannot run the ability', () => {
 		cy.request( {
 			method: 'POST',
-			url: abilityRunUrl,
+			url: `${ abilityUrl }/run`,
 			body: { input: { id: 1, previd: 2 } },
 			failOnStatusCode: false,
 		} ).then( ( response ) => {
