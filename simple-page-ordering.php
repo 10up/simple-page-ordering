@@ -35,3 +35,4 @@ if ( ! $simple_page_ordering_compat_checker->is_plugin_compatible() ) {
 }
 
 require_once __DIR__ . '/class-simple-page-ordering.php';
+require_once __DIR__ . '/class-simple-page-ordering-abilities.php';
