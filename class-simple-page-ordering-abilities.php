@@ -41,6 +41,16 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 		const REORDER_ABILITY = 'simple-page-ordering/reorder-post';
 
 		/**
+		 * Most follow-up passes one reorder may run before giving up.
+		 *
+		 * Each pass renumbers up to the `simple_page_ordering_limit` siblings, so
+		 * this only stops a runaway loop.
+		 *
+		 * @var int
+		 */
+		const MAX_PASSES = 200;
+
+		/**
 		 * Registers the hooks. Does nothing when the Abilities API is missing.
 		 */
 		public static function init() {
@@ -207,25 +217,60 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 				);
 			}
 
-			$result = Simple_Page_Ordering::page_ordering( $post_id, $previd, $nextid, $start, $exclude );
+			$new_pos      = array();
+			$has_children = false;
+			$next         = false;
+			$passes       = 0;
 
-			if ( is_wp_error( $result ) ) {
-				return $result;
-			}
+			/*
+			 * The ordering routine renumbers a limited number of siblings per call
+			 * and returns a `next` array when more are left. The wp-admin script
+			 * sends follow-up requests. Do the same here so the caller never gets
+			 * a success response for a partly renumbered list.
+			 */
+			do {
+				$result = Simple_Page_Ordering::page_ordering( $post_id, $previd, $nextid, $start, $exclude );
 
-			// The ordering routine returns the string "children" when the moved item has children.
-			if ( 'children' === $result ) {
-				return array(
-					'success'      => true,
-					'new_pos'      => new stdClass(),
-					'has_children' => true,
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
+
+				// The ordering routine returns the string "children" when the moved item has children.
+				if ( 'children' === $result ) {
+					$has_children = true;
+					$next         = false;
+					break;
+				}
+
+				if ( isset( $result->new_pos ) ) {
+					$new_pos = array_replace( $new_pos, (array) $result->new_pos );
+				}
+
+				$next = ! empty( $result->next ) ? (array) $result->next : false;
+
+				if ( $next ) {
+					$post_id = (int) $next['id'];
+					$previd  = (int) $next['previd'];
+					$nextid  = (int) $next['nextid'];
+					$start   = (int) $next['start'];
+					$exclude = array_map( 'intval', (array) $next['excluded'] );
+				}
+
+				++$passes;
+			} while ( $next && $passes < self::MAX_PASSES );
+
+			if ( $next ) {
+				return new WP_Error(
+					'incomplete',
+					__( 'The order could not be fully updated. Try again.', 'simple-page-ordering' ),
+					array( 'status' => 500 )
 				);
 			}
 
 			return array(
 				'success'      => true,
-				'new_pos'      => (object) ( isset( $result->new_pos ) ? $result->new_pos : array() ),
-				'has_children' => false,
+				'new_pos'      => (object) $new_pos,
+				'has_children' => $has_children,
 			);
 		}
 	}
