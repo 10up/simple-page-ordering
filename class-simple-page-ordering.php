@@ -933,14 +933,23 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 		 * @return bool|WP_Error
 		 */
 		public static function rest_page_ordering_permissions_check( \WP_REST_Request $request ) {
-			return self::can_reorder_post( $request->get_param( 'id' ) );
+			$post_id       = (int) $request->get_param( 'id' );
+			$post_type     = get_post_type( $post_id );
+			$post_type_obj = $post_type ? get_post_type_object( $post_type ) : null;
+
+			// Ensure the post type is allowed in REST endpoints. The ability does not need this.
+			if ( empty( $post_type_obj ) || empty( $post_type_obj->show_in_rest ) ) {
+				return false;
+			}
+
+			return self::can_reorder_post( $post_id );
 		}
 
 		/**
 		 * Check if the current user can reorder a post.
 		 *
-		 * Shared by the REST endpoint and the Abilities API ability so both
-		 * entry points enforce exactly the same rules.
+		 * Shared by the REST endpoint and the Abilities API ability. The REST
+		 * endpoint also requires the post type to be available in REST.
 		 *
 		 * @since x.x.x
 		 *
@@ -955,11 +964,8 @@ if ( ! class_exists( 'Simple_Page_Ordering' ) ) :
 				return false;
 			}
 
-			$post_type     = get_post_type( $post_id );
-			$post_type_obj = get_post_type_object( $post_type );
-
-			// Ensure the post type is allowed in REST endpoints.
-			if ( ! $post_type || empty( $post_type_obj ) || empty( $post_type_obj->show_in_rest ) ) {
+			$post_type = get_post_type( $post_id );
+			if ( ! $post_type ) {
 				return false;
 			}
 
