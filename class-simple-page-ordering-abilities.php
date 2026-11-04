@@ -81,7 +81,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 				self::REORDER_ABILITY,
 				array(
 					'label'               => __( 'Reorder a post', 'simple-page-ordering' ),
-					'description'         => __( 'Moves a page, or another sortable post, to a new position. Pass the ID of the item that should come before it, after it, or both. The item can also move under a new parent when its new neighbors have a different parent.', 'simple-page-ordering' ),
+					'description'         => __( 'Moves a page, or another sortable post, to a new position. Pass the ID of the item that should come before it, after it, or both. At least one of previd or nextid is required. The item can also move under a new parent when its new neighbors have a different parent.', 'simple-page-ordering' ),
 					'category'            => self::CATEGORY,
 					'input_schema'        => self::get_reorder_input_schema(),
 					'output_schema'       => self::get_reorder_output_schema(),
@@ -123,13 +123,13 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 						'minimum'     => 1,
 					),
 					'previd'  => array(
-						'description' => __( 'ID of the item that should come directly before the moved item. Use 0 for none.', 'simple-page-ordering' ),
+						'description' => __( 'ID of the item that should come directly before the moved item. Use 0 for none. Send this, nextid, or both.', 'simple-page-ordering' ),
 						'type'        => 'integer',
 						'minimum'     => 0,
 						'default'     => 0,
 					),
 					'nextid'  => array(
-						'description' => __( 'ID of the item that should come directly after the moved item. Use 0 for none.', 'simple-page-ordering' ),
+						'description' => __( 'ID of the item that should come directly after the moved item. Use 0 for none. Send this, previd, or both.', 'simple-page-ordering' ),
 						'type'        => 'integer',
 						'minimum'     => 0,
 						'default'     => 0,
@@ -152,6 +152,11 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 					),
 				),
 				'required'             => array( 'id' ),
+				/*
+				 * "At least one neighbor" is not a schema rule here. Some AI providers reject
+				 * anyOf at the top level of a tool schema, so the callback checks it and the
+				 * descriptions below tell the caller.
+				 */
 				'additionalProperties' => false,
 			);
 		}
@@ -247,6 +252,28 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 		}
 
 		/**
+		 * Builds the error for a reorder that stopped after some items were already saved.
+		 *
+		 * Running the same request again is safe. It renumbers the same items and finishes the job.
+		 *
+		 * @param WP_Error|null $cause The error from the failed pass, if there was one.
+		 * @return WP_Error
+		 */
+		private static function partial_update_error( $cause = null ) {
+			$message = __( 'The order was only partly updated. Some items already have their new position. Run the same request again to finish.', 'simple-page-ordering' );
+
+			if ( $cause instanceof WP_Error ) {
+				$message .= ' ' . $cause->get_error_message();
+			}
+
+			return new WP_Error(
+				'partial_update',
+				$message,
+				array( 'status' => 500 )
+			);
+		}
+
+		/**
 		 * Runs the reorder ability.
 		 *
 		 * @param array|null $input The validated ability input.
@@ -288,6 +315,11 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 				$result = Simple_Page_Ordering::page_ordering( $post_id, $previd, $nextid, $start, $exclude );
 
 				if ( is_wp_error( $result ) ) {
+					// An earlier pass already saved new positions, so say that the update is partial.
+					if ( $passes > 0 ) {
+						return self::partial_update_error( $result );
+					}
+
 					return $result;
 				}
 
@@ -316,11 +348,7 @@ if ( ! class_exists( __NAMESPACE__ . '\Simple_Page_Ordering_Abilities' ) ) :
 			} while ( $next && $passes < self::MAX_PASSES );
 
 			if ( $next ) {
-				return new WP_Error(
-					'incomplete',
-					__( 'The order could not be fully updated. Try again.', 'simple-page-ordering' ),
-					array( 'status' => 500 )
-				);
+				return self::partial_update_error();
 			}
 
 			return array(
