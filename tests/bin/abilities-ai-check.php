@@ -48,65 +48,68 @@ $show_order = function () use ( $ids ) {
 };
 WP_CLI::log( 'Order before: ' . $show_order() );
 
-$ability  = 'simple-page-ordering/reorder-post';
-$resolver = new WP_AI_Client_Ability_Function_Resolver( $ability );
-$request  = sprintf(
-	'Using the available function, move the page "AI Test Page C" so it comes directly before "AI Test Page A". Page IDs: A=%d, B=%d, C=%d. Then tell me in one sentence what happened.',
-	$ids['A'],
-	$ids['B'],
-	$ids['C']
-);
+try {
+	$ability  = 'simple-page-ordering/reorder-post';
+	$resolver = new WP_AI_Client_Ability_Function_Resolver( $ability );
+	$request  = sprintf(
+		'Using the available function, move the page "AI Test Page C" so it comes directly before "AI Test Page A". Page IDs: A=%d, B=%d, C=%d. Then tell me in one sentence what happened.',
+		$ids['A'],
+		$ids['B'],
+		$ids['C']
+	);
 
-$history = array( new UserMessage( array( new MessagePart( $request ) ) ) );
-$final   = '';
+	$history = array( new UserMessage( array( new MessagePart( $request ) ) ) );
+	$final   = '';
 
-for ( $turn = 1; $turn <= 4; $turn++ ) {
-	$builder = wp_ai_client_prompt()->using_abilities( $ability )->with_history( ...$history );
+	for ( $turn = 1; $turn <= 4; $turn++ ) {
+		$builder = wp_ai_client_prompt()->using_abilities( $ability )->with_history( ...$history );
 
-	if ( true !== $builder->is_supported_for_text_generation() ) {
-		WP_CLI::warning( 'No AI provider is configured for text generation. Add an API key on Settings > Connectors first.' );
-		break;
-	}
+		if ( true !== $builder->is_supported_for_text_generation() ) {
+			WP_CLI::warning( 'No AI provider is configured for text generation. Add an API key on Settings > Connectors first.' );
+			break;
+		}
 
-	$result = $builder->generate_result();
-	if ( is_wp_error( $result ) ) {
-		WP_CLI::warning( 'AI request failed: ' . $result->get_error_message() );
-		break;
-	}
+		$result = $builder->generate_result();
+		if ( is_wp_error( $result ) ) {
+			WP_CLI::warning( 'AI request failed: ' . $result->get_error_message() );
+			break;
+		}
 
-	$candidates = $result->getCandidates();
-	$message    = $candidates[0]->getMessage();
-	$history[]  = $message;
+		$candidates = $result->getCandidates();
+		$message    = $candidates[0]->getMessage();
+		$history[]  = $message;
 
-	if ( ! $resolver->has_ability_calls( $message ) ) {
+		if ( ! $resolver->has_ability_calls( $message ) ) {
+			foreach ( $message->getParts() as $part ) {
+				$final .= (string) $part->getText();
+			}
+			break;
+		}
+
 		foreach ( $message->getParts() as $part ) {
-			$final .= (string) $part->getText();
+			$call = $part->getFunctionCall();
+			if ( $call ) {
+				WP_CLI::log( "Turn {$turn}: model called " . $call->getName() . ' with ' . wp_json_encode( $call->getArgs() ) );
+			}
 		}
-		break;
-	}
 
-	foreach ( $message->getParts() as $part ) {
-		$call = $part->getFunctionCall();
-		if ( $call ) {
-			WP_CLI::log( "Turn {$turn}: model called " . $call->getName() . ' with ' . wp_json_encode( $call->getArgs() ) );
-		}
-	}
-
-	// Runs the ability. The ability's own permission check decides if it is allowed.
-	$response  = $resolver->execute_abilities( $message );
-	$history[] = $response;
-	foreach ( $response->getParts() as $part ) {
-		$fr = $part->getFunctionResponse();
-		if ( $fr ) {
-			WP_CLI::log( "Turn {$turn}: ability returned " . wp_json_encode( $fr->getResponse() ) );
+		// Runs the ability. The ability's own permission check decides if it is allowed.
+		$response  = $resolver->execute_abilities( $message );
+		$history[] = $response;
+		foreach ( $response->getParts() as $part ) {
+			$fr = $part->getFunctionResponse();
+			if ( $fr ) {
+				WP_CLI::log( "Turn {$turn}: ability returned " . wp_json_encode( $fr->getResponse() ) );
+			}
 		}
 	}
-}
 
-WP_CLI::log( 'Model said: ' . ( $final ? $final : '(no final text)' ) );
-WP_CLI::log( 'Order after:  ' . $show_order() );
-
-foreach ( $ids as $id ) {
-	wp_delete_post( $id, true );
+	WP_CLI::log( 'Model said: ' . ( $final ? $final : '(no final text)' ) );
+	WP_CLI::log( 'Order after:  ' . $show_order() );
+} finally {
+	// Always remove the temporary pages, even when the AI request fails.
+	foreach ( $ids as $id ) {
+		wp_delete_post( $id, true );
+	}
 }
 WP_CLI::success( 'Done. Temporary pages deleted.' );

@@ -6,7 +6,6 @@ $check   = function ( $name, $pass, $detail = '' ) use ( &$results ) {
 };
 
 // 1. Registration.
-do_action( 'init' );
 $ability = wp_get_ability( 'simple-page-ordering/reorder-post' );
 $check( 'Ability registered', (bool) $ability );
 $check( 'Category registered', (bool) wp_get_ability_category( 'simple-page-ordering' ) );
