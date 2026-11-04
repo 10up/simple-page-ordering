@@ -11,152 +11,197 @@ $check( 'Ability registered', (bool) $ability );
 $check( 'Category registered', (bool) wp_get_ability_category( 'simple-page-ordering' ) );
 $check( 'Exposed to REST', $ability && ! empty( $ability->get_meta()['show_in_rest'] ) );
 
-// 2. Fixtures.
-$suffix = wp_generate_password( 4, false );
-$users  = array();
-foreach ( array( 'subscriber', 'contributor', 'author', 'editor' ) as $role ) {
-	$users[ $role ] = wp_insert_user(
+// Fixture IDs start empty so the cleanup below can run even if setup stops halfway.
+$users   = array();
+$pages   = array();
+$post_id = 0;
+$q       = 0;
+$x       = 0;
+
+try {
+	// 2. Fixtures.
+	$suffix = wp_generate_password( 4, false );
+	foreach ( array( 'subscriber', 'contributor', 'author', 'editor' ) as $role ) {
+		$users[ $role ] = wp_insert_user(
+			array(
+				'user_login' => "spo_test_{$role}_{$suffix}",
+				'user_pass'  => wp_generate_password( 24 ),
+				'user_email' => "spo_{$role}_{$suffix}@example.test",
+				'role'       => $role,
+			)
+		);
+	}
+	foreach ( array( 10, 20, 30 ) as $i => $order ) {
+		$pages[ $i ] = wp_insert_post(
+			array(
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+				'post_title'  => "SPO test page {$suffix} " . ( $i + 1 ),
+				'menu_order'  => $order,
+			)
+		);
+	}
+	$post_id = wp_insert_post(
 		array(
-			'user_login' => "spo_test_{$role}_{$suffix}",
-			'user_pass'  => wp_generate_password( 24 ),
-			'user_email' => "spo_{$role}_{$suffix}@example.test",
-			'role'       => $role,
+			'post_type'   => 'post',
+			'post_status' => 'publish',
+			'post_title'  => "SPO test post {$suffix}",
 		)
 	);
-}
-$pages = array();
-foreach ( array( 10, 20, 30 ) as $i => $order ) {
-	$pages[ $i ] = wp_insert_post(
+	$order_of = function () use ( $pages ) {
+		$out = array();
+		foreach ( $pages as $p ) {
+			$out[] = (int) get_post_field( 'menu_order', $p, 'raw' );
+		}
+		return $out;
+	};
+
+	$run = function ( $uid, $input ) use ( $ability ) {
+		wp_set_current_user( $uid );
+		return $ability->execute( $input );
+	};
+
+	// 3. Permissions.
+	$before = $order_of();
+	foreach ( array( 'subscriber', 'contributor', 'author' ) as $role ) {
+		$res = $run( $users[ $role ], array( 'id' => $pages[0], 'previd' => $pages[1] ) );
+		$denied = is_wp_error( $res ) || false === $res;
+		$check( "Role {$role} is denied", $denied, is_wp_error( $res ) ? $res->get_error_code() : '' );
+	}
+	$check( 'Denied roles changed nothing', $order_of() === $before, wp_json_encode( $order_of() ) );
+
+	$res = $run( 0, array( 'id' => $pages[0], 'previd' => $pages[1] ) );
+	$check( 'Logged-out user is denied', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : '' );
+
+	// 4. Editor can reorder.
+	$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => $pages[1] ) );
+	$ok  = is_array( $res ) && ! empty( $res['success'] );
+	$check( 'Editor can move page 1 after page 2', $ok, is_wp_error( $res ) ? $res->get_error_message() : '' );
+	$after = $order_of();
+	$check( 'Page 1 now sorts after page 2', $after[0] > $after[1], wp_json_encode( $after ) );
+
+	// 5. Bad input.
+	$res = $run( $users['editor'], array( 'id' => $pages[0] ) );
+	$check( 'No neighbors is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'previd' => $pages[1] ) );
+	$check( 'Missing id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => 'abc', 'previd' => $pages[1] ) );
+	$check( 'Non-integer id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => -5, 'previd' => $pages[1] ) );
+	$check( 'Negative id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => 99999999, 'previd' => $pages[1] ) );
+	$check( 'Nonexistent id is rejected', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => $pages[1], 'evil' => 'x' ) );
+	$check( 'Unknown property is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => "1 OR 1=1" ) );
+	$check( 'SQL-looking string is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+
+	// 6. Non-sortable post type (posts are not sortable by default).
+	$res = $run( $users['editor'], array( 'id' => $post_id, 'previd' => $pages[1] ) );
+	$check( 'Non-sortable post type is rejected', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+
+	// 6b. Neighbors must be real posts of the same type as the moved post.
+	$q = wp_insert_post(
 		array(
 			'post_type'   => 'page',
 			'post_status' => 'publish',
-			'post_title'  => "SPO test page {$suffix} " . ( $i + 1 ),
-			'menu_order'  => $order,
+			'post_title'  => "SPO test parent {$suffix}",
 		)
 	);
-}
-$post_id = wp_insert_post(
-	array(
-		'post_type'   => 'post',
-		'post_status' => 'publish',
-		'post_title'  => "SPO test post {$suffix}",
-	)
-);
-$order_of = function () use ( $pages ) {
-	$out = array();
-	foreach ( $pages as $p ) {
-		$out[] = (int) get_post_field( 'menu_order', $p, 'raw' );
+	$x = wp_insert_post(
+		array(
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+			'post_title'  => "SPO test child {$suffix}",
+			'post_parent' => $q,
+		)
+	);
+
+	// A regular post has parent 0, so using it as a neighbor would move the child to the top level.
+	$res = $run( $users['editor'], array( 'id' => $x, 'nextid' => $post_id ) );
+	$check( 'Neighbor of another post type is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$check( 'Rejected neighbor left the parent unchanged', (int) get_post_field( 'post_parent', $x, 'raw' ) === $q, 'parent ' . get_post_field( 'post_parent', $x, 'raw' ) );
+
+	$res = $run( $users['editor'], array( 'id' => $x, 'previd' => 99999999 ) );
+	$check( 'Nonexistent neighbor is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+
+	$res = $run( $users['editor'], array( 'id' => $pages[2], 'previd' => $pages[0] ) );
+	$check( 'Neighbor of the same post type is accepted', is_array( $res ) && ! empty( $res['success'] ), is_wp_error( $res ) ? $res->get_error_code() : '' );
+
+	// 6c. A sortable post type that is not shown in REST can still be reordered by the ability.
+	register_post_type(
+		'spo_norest',
+		array(
+			'public'       => true,
+			'hierarchical' => true,
+			'show_in_rest' => false,
+		)
+	);
+	add_filter( 'simple_page_ordering_is_sortable', $norest_sortable = fn( $sortable, $type ) => 'spo_norest' === $type ? true : $sortable, 10, 2 );
+	$norest = array();
+	foreach ( array( 10, 20 ) as $order ) {
+		$norest[] = wp_insert_post(
+			array(
+				'post_type'   => 'spo_norest',
+				'post_status' => 'publish',
+				'post_title'  => "SPO no REST {$suffix} {$order}",
+				'menu_order'  => $order,
+			)
+		);
 	}
-	return $out;
-};
+	$res = $run( $users['editor'], array( 'id' => $norest[0], 'previd' => $norest[1] ) );
+	$check( 'Sortable type without show_in_rest can be reordered', is_array( $res ) && ! empty( $res['success'] ), is_wp_error( $res ) ? $res->get_error_code() : '' );
+	foreach ( $norest as $np ) {
+		wp_delete_post( $np, true );
+	}
+	remove_filter( 'simple_page_ordering_is_sortable', $norest_sortable, 10 );
+	unregister_post_type( 'spo_norest' );
 
-$run = function ( $uid, $input ) use ( $ability ) {
-	wp_set_current_user( $uid );
-	return $ability->execute( $input );
-};
+	// 6d. Both neighbors set to 0 is rejected.
+	$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => 0, 'nextid' => 0 ) );
+	$check( 'Zero for both neighbors is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	$res = $run( $users['editor'], array( 'id' => $pages[1], 'nextid' => $pages[2] ) );
+	$check( 'Only nextid is accepted', is_array( $res ) && ! empty( $res['success'] ), is_wp_error( $res ) ? $res->get_error_code() : '' );
 
-// 3. Permissions.
-$before = $order_of();
-foreach ( array( 'subscriber', 'contributor', 'author' ) as $role ) {
-	$res = $run( $users[ $role ], array( 'id' => $pages[0], 'previd' => $pages[1] ) );
-	$denied = is_wp_error( $res ) || false === $res;
-	$check( "Role {$role} is denied", $denied, is_wp_error( $res ) ? $res->get_error_code() : '' );
-}
-$check( 'Denied roles changed nothing', $order_of() === $before, wp_json_encode( $order_of() ) );
+	// 7. REST route (ability endpoint) via internal dispatch.
+	wp_set_current_user( 0 );
+	$req = new WP_REST_Request( 'POST', '/wp-abilities/v1/abilities/simple-page-ordering/reorder-post/run' );
+	$req->set_header( 'Content-Type', 'application/json' );
+	$req->set_body( wp_json_encode( array( 'input' => array( 'id' => $pages[0], 'previd' => $pages[2] ) ) ) );
+	$resp = rest_do_request( $req );
+	$check( 'REST run endpoint blocks logged-out user', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
 
-$res = $run( 0, array( 'id' => $pages[0], 'previd' => $pages[1] ) );
-$check( 'Logged-out user is denied', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : '' );
+	wp_set_current_user( $users['subscriber'] );
+	$resp = rest_do_request( $req );
+	$check( 'REST run endpoint blocks subscriber', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
 
-// 4. Editor can reorder.
-$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => $pages[1] ) );
-$ok  = is_array( $res ) && ! empty( $res['success'] );
-$check( 'Editor can move page 1 after page 2', $ok, is_wp_error( $res ) ? $res->get_error_message() : '' );
-$after = $order_of();
-$check( 'Page 1 now sorts after page 2', $after[0] > $after[1], wp_json_encode( $after ) );
+	wp_set_current_user( $users['editor'] );
+	$resp = rest_do_request( $req );
+	$check( 'REST run endpoint allows editor', 200 === $resp->get_status(), 'status ' . $resp->get_status() );
 
-// 5. Bad input.
-$res = $run( $users['editor'], array( 'id' => $pages[0] ) );
-$check( 'No neighbors is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'previd' => $pages[1] ) );
-$check( 'Missing id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'id' => 'abc', 'previd' => $pages[1] ) );
-$check( 'Non-integer id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'id' => -5, 'previd' => $pages[1] ) );
-$check( 'Negative id is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'id' => 99999999, 'previd' => $pages[1] ) );
-$check( 'Nonexistent id is rejected', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => $pages[1], 'evil' => 'x' ) );
-$check( 'Unknown property is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$res = $run( $users['editor'], array( 'id' => $pages[0], 'previd' => "1 OR 1=1" ) );
-$check( 'SQL-looking string is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
+	// 8. Existing REST route still behaves.
+	wp_set_current_user( $users['subscriber'] );
+	$old = new WP_REST_Request( 'POST', '/simple-page-ordering/v1/page_ordering' );
+	$old->set_param( 'id', $pages[0] );
+	$old->set_param( 'previd', $pages[1] );
+	$old->set_param( 'nextid', 0 );
+	$resp = rest_do_request( $old );
+	$check( 'Old REST route still blocks subscriber', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
 
-// 6. Non-sortable post type (posts are not sortable by default).
-$res = $run( $users['editor'], array( 'id' => $post_id, 'previd' => $pages[1] ) );
-$check( 'Non-sortable post type is rejected', is_wp_error( $res ) || false === $res, is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-
-// 6b. Neighbors must be real posts of the same type as the moved post.
-$q = wp_insert_post(
-	array(
-		'post_type'   => 'page',
-		'post_status' => 'publish',
-		'post_title'  => "SPO test parent {$suffix}",
-	)
-);
-$x = wp_insert_post(
-	array(
-		'post_type'   => 'page',
-		'post_status' => 'publish',
-		'post_title'  => "SPO test child {$suffix}",
-		'post_parent' => $q,
-	)
-);
-
-// A regular post has parent 0, so using it as a neighbor would move the child to the top level.
-$res = $run( $users['editor'], array( 'id' => $x, 'nextid' => $post_id ) );
-$check( 'Neighbor of another post type is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-$check( 'Rejected neighbor left the parent unchanged', (int) get_post_field( 'post_parent', $x, 'raw' ) === $q, 'parent ' . get_post_field( 'post_parent', $x, 'raw' ) );
-
-$res = $run( $users['editor'], array( 'id' => $x, 'previd' => 99999999 ) );
-$check( 'Nonexistent neighbor is rejected', is_wp_error( $res ), is_wp_error( $res ) ? $res->get_error_code() : 'no error' );
-
-$res = $run( $users['editor'], array( 'id' => $pages[2], 'previd' => $pages[0] ) );
-$check( 'Neighbor of the same post type is accepted', is_array( $res ) && ! empty( $res['success'] ), is_wp_error( $res ) ? $res->get_error_code() : '' );
-
-// 7. REST route (ability endpoint) via internal dispatch.
-wp_set_current_user( 0 );
-$req = new WP_REST_Request( 'POST', '/wp-abilities/v1/abilities/simple-page-ordering/reorder-post/run' );
-$req->set_header( 'Content-Type', 'application/json' );
-$req->set_body( wp_json_encode( array( 'input' => array( 'id' => $pages[0], 'previd' => $pages[2] ) ) ) );
-$resp = rest_do_request( $req );
-$check( 'REST run endpoint blocks logged-out user', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
-
-wp_set_current_user( $users['subscriber'] );
-$resp = rest_do_request( $req );
-$check( 'REST run endpoint blocks subscriber', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
-
-wp_set_current_user( $users['editor'] );
-$resp = rest_do_request( $req );
-$check( 'REST run endpoint allows editor', 200 === $resp->get_status(), 'status ' . $resp->get_status() );
-
-// 8. Existing REST route still behaves.
-wp_set_current_user( $users['subscriber'] );
-$old = new WP_REST_Request( 'POST', '/simple-page-ordering/v1/page_ordering' );
-$old->set_param( 'id', $pages[0] );
-$old->set_param( 'previd', $pages[1] );
-$old->set_param( 'nextid', 0 );
-$resp = rest_do_request( $old );
-$check( 'Old REST route still blocks subscriber', in_array( $resp->get_status(), array( 401, 403 ), true ), 'status ' . $resp->get_status() );
-
-// 9. Cleanup.
-foreach ( $pages as $p ) {
-	wp_delete_post( $p, true );
-}
-wp_delete_post( $post_id, true );
-wp_delete_post( $x, true );
-wp_delete_post( $q, true );
-require_once ABSPATH . 'wp-admin/includes/user.php';
-foreach ( $users as $uid ) {
-	wp_delete_user( $uid );
+} finally {
+	// 9. Cleanup runs even when a check above throws, so no test users or pages are left behind.
+	foreach ( $pages as $p ) {
+		wp_delete_post( $p, true );
+	}
+	foreach ( array( $post_id, $x, $q ) as $leftover_id ) {
+		if ( $leftover_id ) {
+			wp_delete_post( $leftover_id, true );
+		}
+	}
+	require_once ABSPATH . 'wp-admin/includes/user.php';
+	foreach ( $users as $uid ) {
+		wp_delete_user( $uid );
+	}
 }
 
 foreach ( $results as $r ) {

@@ -48,6 +48,8 @@ $show_order = function () use ( $ids ) {
 };
 WP_CLI::log( 'Order before: ' . $show_order() );
 
+$problem = '';
+
 try {
 	$ability  = 'simple-page-ordering/reorder-post';
 	$resolver = new WP_AI_Client_Ability_Function_Resolver( $ability );
@@ -65,13 +67,13 @@ try {
 		$builder = wp_ai_client_prompt()->using_abilities( $ability )->with_history( ...$history );
 
 		if ( true !== $builder->is_supported_for_text_generation() ) {
-			WP_CLI::warning( 'No AI provider is configured for text generation. Add an API key on Settings > Connectors first.' );
+			$problem = 'No AI provider is configured for text generation. Add an API key on Settings > Connectors first.';
 			break;
 		}
 
 		$result = $builder->generate_result();
 		if ( is_wp_error( $result ) ) {
-			WP_CLI::warning( 'AI request failed: ' . $result->get_error_message() );
+			$problem = 'AI request failed: ' . $result->get_error_message();
 			break;
 		}
 
@@ -106,10 +108,21 @@ try {
 
 	WP_CLI::log( 'Model said: ' . ( $final ? $final : '(no final text)' ) );
 	WP_CLI::log( 'Order after:  ' . $show_order() );
+
+	// The request asked for page C to come before page A.
+	$after_a = (int) get_post_field( 'menu_order', $ids['A'], 'raw' );
+	$after_c = (int) get_post_field( 'menu_order', $ids['C'], 'raw' );
+	if ( '' === $problem && $after_c >= $after_a ) {
+		$problem = 'The AI did not move page C before page A. This is expected when you run as a user who is not allowed to reorder.';
+	}
 } finally {
 	// Always remove the temporary pages, even when the AI request fails.
 	foreach ( $ids as $id ) {
 		wp_delete_post( $id, true );
 	}
 }
-WP_CLI::success( 'Done. Temporary pages deleted.' );
+
+if ( '' !== $problem ) {
+	WP_CLI::error( $problem . ' Temporary pages were deleted.' );
+}
+WP_CLI::success( 'The AI moved page C before page A. Temporary pages deleted.' );
