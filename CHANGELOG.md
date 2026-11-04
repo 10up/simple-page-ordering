@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Added
+- Add a `simple-page-ordering/reorder-post` ability to the WordPress Abilities API so AI agents and other clients can reorder pages and posts ([#311](https://github.com/10up/simple-page-ordering/issues/311)).
+
 ## [2.8.1] - 2026-09-24
 **Note that this release bumps the WordPress minimum version from 6.8 to 6.9.**
 
